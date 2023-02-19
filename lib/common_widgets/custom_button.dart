@@ -4,9 +4,14 @@ import 'package:sizer/sizer.dart';
 
 class CustomButton extends StatefulWidget {
   final String buttonText;
+  final Function() onPressed;
+  final bool loading;
+
   const CustomButton({
     Key? key,
     required this.buttonText,
+    required this.onPressed,
+    this.loading = false,
   }) : super(key: key);
 
   @override
@@ -37,7 +42,7 @@ class _CustomButtonState extends State<CustomButton> {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(15),
-          onTap: () {},
+          onTap: widget.loading ? null : widget.onPressed,
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
@@ -45,15 +50,19 @@ class _CustomButtonState extends State<CustomButton> {
             alignment: Alignment.center,
             height: 6.5.h,
             width: double.infinity,
-            child: Text(
-              widget.buttonText,
-              style: GoogleFonts.nunito(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w700,
-                color: Colors.white,
-              ),
-              textAlign: TextAlign.center,
-            ),
+            child: widget.loading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Text(
+                    widget.buttonText,
+                    style: GoogleFonts.nunito(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
           ),
         ),
       ),

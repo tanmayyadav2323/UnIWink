@@ -36,7 +36,6 @@ exports.createNewUser = async (req, res, next) => {
     });
 
     // save user
-
     const user = await createUser.save();
 
     res.status(200).json({

@@ -43,7 +43,7 @@ app.get("/", (req, res) => {
 
 // routes middlewares
 
-app.use("/api/auth", authRoutes);
+app.use( authRoutes);
 
 
 // page not found error handling  middleware

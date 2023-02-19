@@ -1,4 +1,8 @@
 import 'dart:math';
+import 'package:buddy_go/common_widgets/custom_button.dart';
+import 'package:buddy_go/config/utils.dart';
+import 'package:buddy_go/features/Authentication/screens/verify_screen.dart';
+import 'package:buddy_go/features/Authentication/services/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
@@ -12,6 +16,16 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final AuthService _authService = AuthService();
+  final _phoneController = TextEditingController();
+  bool loading = false;
+
+  @override
+  void dispose() {
+    _phoneController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -31,10 +45,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 80,
+                        height: 10.h,
                       ),
                       Text(
-                        "Buddy Go",
+                        "UniWink",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 30.sp,
@@ -88,6 +102,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           ],
                         ),
                         child: TextField(
+                          controller: _phoneController,
+                          keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                             hintText: "Enter Phone Number",
                             border: InputBorder.none,
@@ -100,38 +116,32 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           cursorColor: Colors.white,
                           maxLength: 10,
-                        ),
-                      ),
-                      Container(
-                        alignment: Alignment.center,
-                        height: 6.5.h,
-                        width: double.infinity,
-                        margin: EdgeInsets.only(
-                            left: 8.w, right: 8.w, top: 4.h, bottom: 3.h),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          gradient: LinearGradient(
-                            colors: [
-                              Color(0XFF642E9B),
-                              Color(0XFFFC08D5),
-                            ],
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color(0XFFFFF47E6).withOpacity(0.4),
-                              blurRadius: 30,
-                            ),
-                          ],
-                        ),
-                        child: Text(
-                          "Login",
+                          textAlign: TextAlign.center,
                           style: GoogleFonts.nunito(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.w700,
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w300,
                             color: Colors.white,
                           ),
-                          textAlign: TextAlign.center,
                         ),
+                      ),
+                      CustomButton(
+                        buttonText: "Login",
+                        loading: false,
+                        onPressed: () async {
+                          if (_phoneController.text.length != 10) {
+                            showSnackBar(
+                              context,
+                              "Phone number must be of 10 digits",
+                            );
+                          } else {
+                            _authService.authenticateUserPhone(
+                              phoneNumber: _phoneController.text,
+                              context: context,
+                            );
+                            Navigator.of(context)
+                                .pushNamed(VerifyPhoneNumberScreen.routename);
+                          }
+                        },
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8.w),

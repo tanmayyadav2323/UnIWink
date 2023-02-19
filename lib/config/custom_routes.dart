@@ -1,3 +1,4 @@
+import 'package:buddy_go/features/Authentication/screens/verify_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -18,6 +19,11 @@ class CustomRouter {
         return MaterialPageRoute(
           settings: const RouteSettings(name: LoginScreen.routename),
           builder: (_) =>  LoginScreen(),
+        );
+          case VerifyPhoneNumberScreen.routename:
+        return MaterialPageRoute(
+          settings: const RouteSettings(name: LoginScreen.routename),
+          builder: (_) =>  VerifyPhoneNumberScreen(),
         );
       default:
         return _errorRoute();
