@@ -4,8 +4,6 @@ const { AUTH_TOKEN_MISSING_ERR, AUTH_HEADER_MISSING_ERR, JWT_DECODE_ERR, USER_NO
 const { verifyJwtToken } = require("../utils/token.util")
 
 
-
-
 module.exports = async (req, res, next) => {
     try {
         // check for auth header from client 

@@ -74,7 +74,6 @@ async function main() {
     mongoose.set("strictQuery", false);
     await mongoose.connect(MONGODB_URI, {
         useNewUrlParser: true, 
-
         useUnifiedTopology: true 
     });
 

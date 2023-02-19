@@ -11,11 +11,9 @@ const {
 
 
 const { createJwtToken } = require("../utils/token.util");
-
 const { generateOTP, fast2sms } = require("../utils/otp.util");
 
 // --------------------- create new user ---------------------------------
-
 exports.createNewUser = async (req, res, next) => {
   try {
     let { phone, name } = req.body;
@@ -71,7 +69,6 @@ exports.createNewUser = async (req, res, next) => {
 
 
 // ------------ login with phone otp ----------------------------------
-
 exports.loginWithPhoneOtp = async (req, res, next) => {
   try {
 
@@ -112,7 +109,6 @@ exports.loginWithPhoneOtp = async (req, res, next) => {
 };
 
 // ---------------------- verify phone otp -------------------------
-
 exports.verifyPhoneOtp = async (req, res, next) => {
   try {
     const { otp, userId } = req.body;
@@ -147,7 +143,6 @@ exports.verifyPhoneOtp = async (req, res, next) => {
 
 
 // --------------- fetch current user -------------------------
-
 exports.fetchCurrentUser = async (req, res, next) => {
   try {
     const currentUser = res.locals.user;
@@ -167,7 +162,6 @@ exports.fetchCurrentUser = async (req, res, next) => {
 };
 
 // --------------- admin access only -------------------------
-
 exports.handleAdmin = async (req, res, next) => {
   try {
     const currentUser = res.locals.user;

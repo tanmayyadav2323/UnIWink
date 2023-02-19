@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 class LoginScreen extends StatefulWidget {
+  static const routename = '/login-screen';
   const LoginScreen({super.key});
 
   @override
@@ -11,7 +12,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -98,8 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               color: Colors.white,
                             ),
                           ),
-                          
-                                                    cursorColor: Colors.white,
+                          cursorColor: Colors.white,
                           maxLength: 10,
                         ),
                       ),

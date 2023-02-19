@@ -1,4 +1,5 @@
-import 'package:buddy_go/utils/theme_colors.dart';
+
+import 'package:buddy_go/config/theme_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
@@ -19,7 +20,7 @@ class _ChooseAvatarScreenState extends State<ChooseAvatarScreen> {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
-          color: backgoroundColor,
+          color: backgroundColor,
         ),
         child: Padding(
           padding: EdgeInsets.all(3.h),

@@ -18,7 +18,6 @@ router.post("/register", createNewUser);
 
 router.post("/login_with_phone", loginWithPhoneOtp);
 
-
 router.post("/verify", verifyPhoneOtp);
 
 router.get("/me", checkAuth, fetchCurrentUser);
