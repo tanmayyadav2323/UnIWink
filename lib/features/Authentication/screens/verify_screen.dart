@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-
 import 'package:buddy_go/common_widgets/custom_button.dart';
 import 'package:buddy_go/features/Authentication/services/auth_services.dart';
 
 class VerifyPhoneNumberScreen extends StatefulWidget {
   static const routename = 'verifyPhoneScreen';
 
-  
   const VerifyPhoneNumberScreen({
     Key? key,
-
   }) : super(key: key);
 
   @override
@@ -40,7 +37,9 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen> {
               buttonText: "Verify Otp",
               onPressed: () {
                 _authService.verifyPhoneNumber(
-                    otp: _textEditingController.text, context: context);
+                  otp: _textEditingController.text,
+                  context: context,
+                );
               },
             )
           ],

@@ -33,6 +33,11 @@ if (NODE_ENV === "development") {
 
 // index route
 
+
+
+// routes middlewares
+
+app.use( authRoutes);
 app.get("/", (req, res) => {
   res.status(200).json({
     type: "success",
@@ -40,11 +45,6 @@ app.get("/", (req, res) => {
     data: null,
   });
 });
-
-// routes middlewares
-
-app.use( authRoutes);
-
 
 // page not found error handling  middleware
 

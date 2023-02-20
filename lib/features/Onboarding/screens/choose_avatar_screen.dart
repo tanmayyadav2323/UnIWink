@@ -1,10 +1,10 @@
-
 import 'package:buddy_go/config/theme_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 class ChooseAvatarScreen extends StatefulWidget {
+  static const routename = 'choose-avatar-screen';
   const ChooseAvatarScreen({super.key});
 
   @override
@@ -12,7 +12,6 @@ class ChooseAvatarScreen extends StatefulWidget {
 }
 
 class _ChooseAvatarScreenState extends State<ChooseAvatarScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

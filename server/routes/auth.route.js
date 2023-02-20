@@ -1,5 +1,6 @@
 const express = require("express");
 const authRouter = express.Router();
+const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 const checkAuth = require("../middlewares/checkAuth");
 const checkAdmin = require("../middlewares/checkAdmin");
@@ -33,12 +34,11 @@ authRouter.post("/api/authenticatePhone", async (req, res, next) => {
     const { phone } = req.body;
 
     const user = await User.findOne({ phone });
-
     if (user) {
+      console.log("checkerror");
       const otp = generateOTP(6);
       user.phoneOtp = otp;
       user.isAccountVerified = true;
-      await user.save();
       res.status(200).json({
         type: "success",
         message: "OTP sent",
@@ -46,8 +46,17 @@ authRouter.post("/api/authenticatePhone", async (req, res, next) => {
           userId: user._id,
         },
       });
+      await user.save();
+      await fast2sms(
+        {
+          message: `Your OTP is ${otp}`,
+          contactNumber: user.phone,
+        },
+        next
+      );
     }
     else {
+      console.log("checkerror");
       const createUser = new User({
         phone,
         role: phone === process.env.ADMIN_PHONE ? "ADMIN" : "USER"
@@ -65,16 +74,17 @@ authRouter.post("/api/authenticatePhone", async (req, res, next) => {
 
       const otp = generateOTP(6);
       user.phoneOtp = otp;
+      user.isAccountVerified = true;
       await user.save();
-
+      await fast2sms(
+        {
+          message: `Your OTP is ${otp}`,
+          contactNumber: user.phone,
+        },
+        next
+      );
+      console.log("checkerror");
     }
-    await fast2sms(
-      {
-        message: `Your OTP is ${otp}`,
-        contactNumber: user.phone,
-      },
-      next
-    );
   }
   catch (e) {
     res.status(500).json({ error: e.message });
@@ -101,9 +111,10 @@ authRouter.post("/api/verifyPhone", async (req, res) => {
 
     const token = jwt.sign({ id: user._id }, "passwordKey");
     user.phoneOtp = "";
+    user.token = token;
     await user.save();
 
-    res.status(201).json({
+    res.status(200).json({
       type: "success",
       message: "OTP verified successfully",
       data: {
@@ -118,26 +129,27 @@ authRouter.post("/api/verifyPhone", async (req, res) => {
 });
 
 
-authRouter.post("/tokenIsValid",async(req,res)=>{
-  try{
+authRouter.post("/tokenIsValid", async (req, res) => {
+  try {
     const token = req.header('x-auth-token');
-    if(!token)return res.json(false);
-    const verified = jwt.verify(token,"passwordKey");
-    if(!verified)return res.json(false);
+    if (!token) return res.json(false);
+    const verified = jwt.verify(token, "passwordKey");
+    if (!verified) return res.json(false);
 
     const user = await User.findById(verified.id);
-    if(!user)return res.json(false);
-    return res.json(true);
+    if (!user) return res.json(false);
+    res.json(true);
   }
-  catch(e){
+  catch (e) {
     res.status(500).json({ error: e.message });
   }
 });
 
 //get user data
-authRouter.get('/',auth,async(req,res)=>{
+authRouter.get('/', auth, async (req, res) => {
   const user = await User.findById(req.user);
-  res.json({...user._doc,token:req.token});
+  res.json({ ...user._doc, token: req.token });
 });
+
 
 module.exports = authRouter;
