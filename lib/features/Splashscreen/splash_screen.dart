@@ -28,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void checkUserData() async {
     await authService.getUserData(context).then((value) {
-      final User user = Provider.of<UserProvider>(context,listen: false).user;
+      final User user = Provider.of<UserProvider>(context, listen: false).user;
       if (user.token.isEmpty) {
         Navigator.pushNamedAndRemoveUntil(
           context,
@@ -36,6 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
           (route) => false,
         );
       } else if (user.imageUrl == '') {
+        // AuthService().logOut(context);
         Navigator.pushNamedAndRemoveUntil(
           context,
           ChooseAvatarScreen.routename,

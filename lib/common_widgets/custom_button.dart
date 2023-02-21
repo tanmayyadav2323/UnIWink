@@ -22,6 +22,8 @@ class _CustomButtonState extends State<CustomButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 7.h,
+      width: 70.w,
       margin: EdgeInsets.only(left: 8.w, right: 8.w, top: 3.h, bottom: 3.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),

@@ -1,16 +1,38 @@
-import 'package:buddy_go/config/theme_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
+import 'package:buddy_go/config/theme_colors.dart';
+
+import '../../../models/user_model.dart';
+
 class AboutMeScreen extends StatefulWidget {
-  const AboutMeScreen({super.key});
+  static const routename = 'about-me-screen';
+
+  final User user;
+  final String image;
+
+  const AboutMeScreen({
+    Key? key,
+    required this.user,
+    required this.image,
+  }) : super(key: key);
 
   @override
   State<AboutMeScreen> createState() => _AboutMeScreenState();
 }
 
 class _AboutMeScreenState extends State<AboutMeScreen> {
+  List<String> desList = [
+    "“I love sports, parties and watching thriller movies. I wish to find an old school kinda girl to have a interactive and fun party eve”",
+    "“I am sports, parties and watching thriller movies. I wish to find an old school kinda girl to have a interactive and fun party eve”",
+    "“I you sports, parties and watching thriller movies. I wish to find an old school kinda girl to have a interactive and fun party eve”",
+    "“I love sports, parties and watching thriller movies. I wish to find an old school kinda girl to have a interactive and fun party eve”",
+  ];
+
+  int selectedDes = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +43,7 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
           color: backgroundColor,
         ),
         child: Padding(
-          padding: EdgeInsets.all(3.h),
+          padding: EdgeInsets.symmetric(horizontal: 4.w),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -53,7 +75,6 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                 ),
                 Container(
                   height: 22.h,
-                  width: 20.h,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: Colors.white, width: 0.5),
@@ -61,9 +82,10 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Transform.scale(
-                      scaleX: 1.1,
+                      scale: 1,
                       child: Image.asset(
-                        "assets/images/ai_image1.jpeg",
+                        widget.image,
+                        fit: BoxFit.fitHeight,
                       ),
                     ),
                   ),
@@ -99,38 +121,51 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                   ),
                   child: Row(
                     children: [
-                      SizedBox(
-                        width: 10.w,
-                        child: Icon(
-                          Icons.arrow_back_ios,
-                          color: Colors.white,
+                      InkWell(
+                        onTap: () {
+                          if (selectedDes > 0) {
+                            selectedDes--;
+                          } else {
+                            Fluttertoast.showToast(msg: "No more items");
+                          }
+                          setState(() {});
+                        },
+                        child: SizedBox(
+                          height: double.infinity,
+                          child: Icon(
+                            Icons.arrow_back_ios,
+                            color: Colors.white,
+                            size: 8.w,
+                          ),
                         ),
                       ),
                       Expanded(
-                        child: TextField(
-                          textAlign: TextAlign.center,
-                          readOnly: true,
-                          decoration: InputDecoration(
-                            hintText:
-                                "“I love sports, parties and watching thriller movies. I wish to find an old school kinda girl to have a interactive and fun party eve”",
-                            border: InputBorder.none,
-                            counterText: "",
-                            hintStyle: GoogleFonts.nunito(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w300,
-                              color: Colors.white,
-                            ),
+                        child: Text(
+                          desList[selectedDes],
+                          style: GoogleFonts.nunito(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w300,
+                            color: Colors.white,
                           ),
-                          cursorColor: Colors.white,
-                          maxLines: 5,
-                          minLines: 1,
+                          textAlign: TextAlign.center,
                         ),
                       ),
-                      SizedBox(
-                        width: 10.w,
-                        child: Icon(
-                          Icons.arrow_forward_ios,
-                          color: Colors.white,
+                      InkWell(
+                        onTap: () {
+                          if (selectedDes < desList.length - 1) {
+                            selectedDes++;
+                          } else {
+                            Fluttertoast.showToast(msg: "No more items");
+                          }
+                          setState(() {});
+                        },
+                        child: SizedBox(
+                          height: double.infinity,
+                          child: Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.white,
+                            size: 8.w,
+                          ),
                         ),
                       ),
                     ],

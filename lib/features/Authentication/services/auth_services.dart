@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:buddy_go/features/Authentication/screens/login_screen.dart';
 import 'package:buddy_go/features/Home/screens/home_screen.dart';
 import 'package:buddy_go/features/Splashscreen/splash_screen.dart';
 import 'package:buddy_go/providers/user_provider.dart';
@@ -21,7 +22,7 @@ class AuthService {
   Future<void> authenticateUserPhone(
       {required String phoneNumber, required BuildContext context}) async {
     try {
-      User user = User(id: '', phone: phoneNumber, token: '', imageUrl: '');
+      User user = User(id: '', phone: phoneNumber, token: '', imageUrl: '',gender: '');
 
       http.Response res = await http.post(
         Uri.parse('$uri/api/authenticatePhone'),
@@ -106,6 +107,21 @@ class AuthService {
         userProvider.setUser(userRes.body);
       }
       await http.post(Uri.parse('$uri/tokenIsValid'));
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  void logOut(BuildContext context) async {
+    try {
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      await sharedPreferences.setString('x-auth-token', '');
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        LoginScreen.routename,
+        (route) => false,
+      );
     } catch (e) {
       showSnackBar(context, e.toString());
     }

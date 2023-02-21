@@ -1,5 +1,7 @@
 import 'package:buddy_go/config/custom_routes.dart';
 import 'package:buddy_go/config/theme_colors.dart';
+import 'package:buddy_go/features/Authentication/screens/verify_screen.dart';
+import 'package:buddy_go/features/Onboarding/screens/choose_ai_avatar.dart';
 import 'package:buddy_go/features/Splashscreen/splash_screen.dart';
 import 'package:buddy_go/features/home/screens/home_screen.dart';
 import 'package:buddy_go/features/onboarding/screens/about_me_screen.dart';
@@ -28,7 +30,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   void initState() {
     super.initState();

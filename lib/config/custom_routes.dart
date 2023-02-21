@@ -1,10 +1,13 @@
 import 'package:buddy_go/features/Authentication/screens/verify_screen.dart';
 import 'package:buddy_go/features/Home/screens/home_screen.dart';
+import 'package:buddy_go/features/Onboarding/screens/about_me_screen.dart';
 import 'package:buddy_go/features/Onboarding/screens/choose_avatar_screen.dart';
+import 'package:buddy_go/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 import '../features/Authentication/screens/login_screen.dart';
+import '../features/Onboarding/screens/choose_ai_avatar.dart';
 import '../features/Splashscreen/splash_screen.dart';
 
 class CustomRouter {
@@ -26,6 +29,19 @@ class CustomRouter {
         return MaterialPageRoute(
           settings: const RouteSettings(name: ChooseAvatarScreen.routename),
           builder: (_) => ChooseAvatarScreen(),
+        );
+      case AboutMeScreen.routename:
+        return MaterialPageRoute(
+          settings: const RouteSettings(name: AboutMeScreen.routename),
+          builder: (_) => AboutMeScreen(
+            image: (settings.arguments as Map)["image"],
+            user: (settings.arguments as Map)["user"],
+          ),
+        );
+      case ChooseAIAvatarScreen.routename:
+        return MaterialPageRoute(
+          settings: const RouteSettings(name: ChooseAIAvatarScreen.routename),
+          builder: (_) => ChooseAIAvatarScreen(),
         );
       case VerifyPhoneNumberScreen.routename:
         return MaterialPageRoute(

@@ -1,4 +1,6 @@
+import 'package:buddy_go/common_widgets/custom_button.dart';
 import 'package:buddy_go/config/theme_colors.dart';
+import 'package:buddy_go/features/Onboarding/screens/choose_ai_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
@@ -29,7 +31,7 @@ class _ChooseAvatarScreenState extends State<ChooseAvatarScreen> {
                 height: 80,
               ),
               Text(
-                "Buddy Go",
+                "UniWink",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 30.sp,
@@ -75,37 +77,12 @@ class _ChooseAvatarScreenState extends State<ChooseAvatarScreen> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              Container(
-                alignment: Alignment.center,
-                height: 6.5.h,
-                width: double.infinity,
-                margin: EdgeInsets.only(
-                    left: 8.w, right: 8.w, top: 4.h, bottom: 3.h),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color(0XFF642E9B),
-                      Color(0XFFFC08D5),
-                    ],
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0XFFFFF47E6).withOpacity(0.4),
-                      blurRadius: 30,
-                    ),
-                  ],
-                ),
-                child: Text(
-                  "Choose my Avatar",
-                  style: GoogleFonts.nunito(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
+              CustomButton(
+                  buttonText: "Choose My Avatar",
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushNamed(ChooseAIAvatarScreen.routename);
+                  })
             ],
           ),
         ),
