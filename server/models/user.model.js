@@ -11,15 +11,16 @@ const userSchema = new Schema(
       unique: true,
     },
 
-    role :{
-     type : String,
-     enum:["ADMIN","USER"],
-     default:"USER",
+    role: {
+      type: String,
+      enum: ["ADMIN", "USER"],
+      default: "USER",
     },
 
-
-   phoneOtp:String
-
+    des: String,
+    phoneOtp: String,
+    gender: String,
+    imageUrl: String,
 
   },
   { timestamps: true }

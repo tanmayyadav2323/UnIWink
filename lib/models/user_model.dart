@@ -6,14 +6,16 @@ class User {
   final String token;
   final String imageUrl;
   final String gender;
+  final String des;
   User({
     required this.id,
     required this.phone,
     required this.token,
     required this.imageUrl,
     required this.gender,
+    required this.des,
   });
-
+  
 
 
   User copyWith({
@@ -22,6 +24,7 @@ class User {
     String? token,
     String? imageUrl,
     String? gender,
+    String? des,
   }) {
     return User(
       id: id ?? this.id,
@@ -29,16 +32,18 @@ class User {
       token: token ?? this.token,
       imageUrl: imageUrl ?? this.imageUrl,
       gender: gender ?? this.gender,
+      des: des ?? this.des,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      '_id': id,
+      'id': id,
       'phone': phone,
       'token': token,
       'imageUrl': imageUrl,
       'gender': gender,
+      'des': des,
     };
   }
 
@@ -49,6 +54,7 @@ class User {
       token: map['token'] ?? '',
       imageUrl: map['imageUrl'] ?? '',
       gender: map['gender'] ?? '',
+      des: map['des'] ?? '',
     );
   }
 

@@ -9,6 +9,7 @@ const { API_ENDPOINT_NOT_FOUND_ERR, SERVER_ERR } = require("./errors");
 
 // routes
 const authRoutes = require("./routes/auth.route");
+const userRouter = require("./routes/user.route");
 
 
 // init express app
@@ -37,7 +38,9 @@ if (NODE_ENV === "development") {
 
 // routes middlewares
 
-app.use( authRoutes);
+app.use(authRoutes);
+app.use(userRouter);
+
 app.get("/", (req, res) => {
   res.status(200).json({
     type: "success",

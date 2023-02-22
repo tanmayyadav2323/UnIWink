@@ -1,5 +1,7 @@
+import 'package:buddy_go/features/onboarding/services/onboarding_services.dart';
 import 'package:buddy_go/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
@@ -33,6 +35,14 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
   ];
 
   int selectedDes = 0;
+
+  TextEditingController _desController = TextEditingController();
+
+  @override
+  void dispose() {
+    _desController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +119,11 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                   SizedBox(
                     height: 2.h,
                   ),
-                  CarouselView(),
+                  CarouselView(
+                    onPressed: (text) {
+                      _desController.text = text;
+                    },
+                  ),
                   SizedBox(
                     height: 4.h,
                   ),
@@ -121,6 +135,7 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                       ),
                     ),
                     child: TextFormField(
+                      controller: _desController,
                       decoration: InputDecoration(
                         counterText: "",
                         hintText: "or write a custom description of your self",
@@ -129,7 +144,8 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                           fontStyle: FontStyle.italic,
                           color: Colors.white.withOpacity(0.5),
                         ),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 6.w),
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 6.w, vertical: 1.h),
                         border: InputBorder.none,
                       ),
                       cursorColor: Colors.white,
@@ -148,8 +164,18 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                   ),
                   CustomButton(
                     buttonText: "Set up my Profile",
-                    onPressed: () {
-
+                    onPressed: () async {
+                      if (_desController.text.isEmpty) {
+                        Fluttertoast.showToast(msg: "Please enter some text");
+                      } else {
+                       final user=  widget.user.copyWith(des: _desController.text);
+                        await OnBoardingServices().setUpAccount(
+                          context: context,
+                          user: user,
+                          imagePath: widget.image,
+                        );
+                        
+                      }
                     },
                   ),
                   SizedBox(

@@ -2,7 +2,7 @@ import 'package:buddy_go/models/user_model.dart';
 import 'package:flutter/cupertino.dart';
 
 class UserProvider extends ChangeNotifier {
-  User _user = User(id: '', phone: '', token: '', imageUrl: '',gender: '');
+  User _user = User(id: '', phone: '', token: '', imageUrl: '',gender: '',des: '');
 
   User get user => _user;
 
