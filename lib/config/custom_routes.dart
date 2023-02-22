@@ -1,4 +1,4 @@
-import 'package:buddy_go/features/Authentication/screens/verify_screen.dart';
+import 'package:buddy_go/features/authentication/screens/verify_screen.dart';
 import 'package:buddy_go/features/Home/screens/home_screen.dart';
 import 'package:buddy_go/features/Onboarding/screens/about_me_screen.dart';
 import 'package:buddy_go/features/Onboarding/screens/choose_avatar_screen.dart';
@@ -6,9 +6,9 @@ import 'package:buddy_go/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-import '../features/Authentication/screens/login_screen.dart';
+import '../features/authentication/screens/login_screen.dart';
 import '../features/Onboarding/screens/choose_ai_avatar.dart';
-import '../features/Splashscreen/splash_screen.dart';
+import '../features/splashscreen/splash_screen.dart';
 
 class CustomRouter {
   static Route onGenerateRoute(RouteSettings settings) {

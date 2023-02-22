@@ -5,7 +5,7 @@ import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:sizer/sizer.dart';
-import 'package:buddy_go/features/Authentication/services/auth_services.dart';
+import 'package:buddy_go/features/authentication/services/auth_services.dart';
 import 'package:telephony/telephony.dart';
 
 final OtpFieldController otpFieldController = OtpFieldController();

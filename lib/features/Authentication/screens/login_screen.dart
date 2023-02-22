@@ -1,8 +1,8 @@
 import 'dart:math';
-import 'package:buddy_go/common_widgets/custom_button.dart';
+import 'package:buddy_go/widgets/custom_button.dart';
 import 'package:buddy_go/config/utils.dart';
-import 'package:buddy_go/features/Authentication/screens/verify_screen.dart';
-import 'package:buddy_go/features/Authentication/services/auth_services.dart';
+import 'package:buddy_go/features/authentication/screens/verify_screen.dart';
+import 'package:buddy_go/features/authentication/services/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';

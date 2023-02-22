@@ -1,6 +1,5 @@
-import 'package:buddy_go/common_widgets/custom_button.dart';
+import 'package:buddy_go/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
@@ -150,7 +149,7 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                   CustomButton(
                     buttonText: "Set up my Profile",
                     onPressed: () {
-                      
+
                     },
                   ),
                   SizedBox(

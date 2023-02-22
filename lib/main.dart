@@ -1,12 +1,12 @@
 import 'package:buddy_go/config/theme_colors.dart';
-import 'package:buddy_go/features/Onboarding/screens/about_me_screen.dart';
+import 'package:buddy_go/features/onboarding/screens/about_me_screen.dart';
 import 'package:buddy_go/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import 'config/custom_routes.dart';
-import 'features/Splashscreen/splash_screen.dart';
+import 'features/splashscreen/splash_screen.dart';
 import 'providers/user_provider.dart';
 
 void main() {

@@ -1,9 +1,9 @@
 import 'dart:ui';
 
-import 'package:buddy_go/common_widgets/custom_button.dart';
+import 'package:buddy_go/widgets/custom_button.dart';
 import 'package:buddy_go/config/theme_colors.dart';
-import 'package:buddy_go/features/Authentication/services/auth_services.dart';
-import 'package:buddy_go/features/Onboarding/screens/about_me_screen.dart';
+import 'package:buddy_go/features/authentication/services/auth_services.dart';
+import 'package:buddy_go/features/onboarding/screens/about_me_screen.dart';
 import 'package:buddy_go/models/user_model.dart';
 import 'package:buddy_go/providers/user_provider.dart';
 import 'package:flutter/gestures.dart';

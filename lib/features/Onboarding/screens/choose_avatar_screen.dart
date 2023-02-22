@@ -1,6 +1,6 @@
-import 'package:buddy_go/common_widgets/custom_button.dart';
+import 'package:buddy_go/widgets/custom_button.dart';
 import 'package:buddy_go/config/theme_colors.dart';
-import 'package:buddy_go/features/Onboarding/screens/choose_ai_avatar.dart';
+import 'package:buddy_go/features/onboarding/screens/choose_ai_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:buddy_go/features/Authentication/screens/login_screen.dart';
+import 'package:buddy_go/features/authentication/screens/login_screen.dart';
 import 'package:buddy_go/features/Home/screens/home_screen.dart';
 import 'package:buddy_go/features/Splashscreen/splash_screen.dart';
 import 'package:buddy_go/providers/user_provider.dart';

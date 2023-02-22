@@ -1,6 +1,6 @@
-import 'package:buddy_go/features/Authentication/screens/login_screen.dart';
-import 'package:buddy_go/features/Authentication/services/auth_services.dart';
-import 'package:buddy_go/features/Home/screens/home_screen.dart';
+import 'package:buddy_go/features/authentication/screens/login_screen.dart';
+import 'package:buddy_go/features/authentication/services/auth_services.dart';
+import 'package:buddy_go/features/home/screens/home_screen.dart';
 import 'package:buddy_go/features/Onboarding/screens/choose_avatar_screen.dart';
 import 'package:buddy_go/providers/user_provider.dart';
 import 'package:flutter/material.dart';
