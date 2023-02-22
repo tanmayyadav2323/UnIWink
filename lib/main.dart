@@ -1,17 +1,12 @@
-import 'package:buddy_go/config/custom_routes.dart';
 import 'package:buddy_go/config/theme_colors.dart';
-import 'package:buddy_go/features/Authentication/screens/verify_screen.dart';
-import 'package:buddy_go/features/Onboarding/screens/choose_ai_avatar.dart';
-import 'package:buddy_go/features/Splashscreen/splash_screen.dart';
-import 'package:buddy_go/features/home/screens/home_screen.dart';
-import 'package:buddy_go/features/onboarding/screens/about_me_screen.dart';
-import 'package:buddy_go/features/onboarding/screens/choose_avatar_screen.dart';
+import 'package:buddy_go/features/Onboarding/screens/about_me_screen.dart';
+import 'package:buddy_go/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-import 'features/Authentication/screens/login_screen.dart';
-import 'features/Authentication/services/auth_services.dart';
+import 'config/custom_routes.dart';
+import 'features/Splashscreen/splash_screen.dart';
 import 'providers/user_provider.dart';
 
 void main() {
@@ -46,8 +41,12 @@ class _MyAppState extends State<MyApp> {
             backgroundColor: backgroundColor,
             scaffoldBackgroundColor: backgroundColor,
           ),
-          initialRoute: SplashScreen.routename,
-          onGenerateRoute: CustomRouter.onGenerateRoute,
+          // initialRoute: SplashScreen.routename,
+          // onGenerateRoute: CustomRouter.onGenerateRoute,
+          home: AboutMeScreen(
+              user: User(
+                  id: 'id', phone: '', token: ' ', imageUrl: '', gender: ''),
+              image: ''),
         );
       },
     );
