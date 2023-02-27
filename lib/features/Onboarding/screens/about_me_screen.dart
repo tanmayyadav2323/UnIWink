@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
-
 import 'package:buddy_go/config/theme_colors.dart';
-
 import '../../../models/user_model.dart';
 import 'expandable_carsouel.dart';
 
