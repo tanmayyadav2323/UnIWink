@@ -14,6 +14,7 @@ class EventModel {
   final double rating;
   final DateTime startDateTime;
   final DateTime endDateTime;
+
   EventModel({
     this.id,
     required this.title,
@@ -27,7 +28,6 @@ class EventModel {
     required this.startDateTime,
     required this.endDateTime,
   });
- 
 
   EventModel copyWith({
     String? id,
@@ -79,55 +79,18 @@ class EventModel {
       title: map['title'] ?? '',
       authorId: map['authorId'] ?? '',
       memberIds: List<String>.from(map['memberIds']),
-      creationDate: DateTime.fromMillisecondsSinceEpoch(map['creationDate']),
+      creationDate: DateTime.parse(map['creationDate']),
       about: map['about'] ?? '',
       image: map['image'] ?? '',
       images: List<String>.from(map['images']),
       rating: map['rating']?.toDouble() ?? 0.0,
-      startDateTime: DateTime.fromMillisecondsSinceEpoch(map['startDateTime']),
-      endDateTime: DateTime.fromMillisecondsSinceEpoch(map['endDateTime']),
+      startDateTime: DateTime.parse(map['startDateTime']),
+      endDateTime: DateTime.parse(map['endDateTime']),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory EventModel.fromJson(String source) => EventModel.fromMap(json.decode(source));
-
-  @override
-  String toString() {
-    return 'EventModel(id: $id, title: $title, authorId: $authorId, memberIds: $memberIds, creationDate: $creationDate, about: $about, image: $image, images: $images, rating: $rating, startDateTime: $startDateTime, endDateTime: $endDateTime)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-  
-    return other is EventModel &&
-      other.id == id &&
-      other.title == title &&
-      other.authorId == authorId &&
-      listEquals(other.memberIds, memberIds) &&
-      other.creationDate == creationDate &&
-      other.about == about &&
-      other.image == image &&
-      listEquals(other.images, images) &&
-      other.rating == rating &&
-      other.startDateTime == startDateTime &&
-      other.endDateTime == endDateTime;
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^
-      title.hashCode ^
-      authorId.hashCode ^
-      memberIds.hashCode ^
-      creationDate.hashCode ^
-      about.hashCode ^
-      image.hashCode ^
-      images.hashCode ^
-      rating.hashCode ^
-      startDateTime.hashCode ^
-      endDateTime.hashCode;
-  }
+  factory EventModel.fromJson(String source) =>
+      EventModel.fromMap(json.decode(source));
 }

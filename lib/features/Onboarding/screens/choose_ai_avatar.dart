@@ -2,19 +2,13 @@ import 'dart:ui';
 
 import 'package:buddy_go/widgets/custom_button.dart';
 import 'package:buddy_go/config/theme_colors.dart';
-import 'package:buddy_go/features/authentication/services/auth_services.dart';
 import 'package:buddy_go/features/onboarding/screens/about_me_screen.dart';
-import 'package:buddy_go/models/user_model.dart';
 import 'package:buddy_go/providers/user_provider.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../../providers/user_provider.dart';
 
 class ChooseAIAvatarScreen extends StatefulWidget {
   static const routename = '/choose-ai-avatar';

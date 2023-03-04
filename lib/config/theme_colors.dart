@@ -1,3 +1,3 @@
 import 'package:flutter/material.dart';
 
-const backgroundColor = Color(0XFF150829);
+const backgroundColor = Color(0XFF0D0E34);

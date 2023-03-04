@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:buddy_go/config/global_variables.dart';
 import 'package:http/http.dart' as http;
 import 'package:buddy_go/config/error_handling.dart';
@@ -72,5 +74,91 @@ class HomeServices {
     }
   }
 
-  Future<void> getEvents()
+  Future<List<EventModel>> getAllEvents({
+    required BuildContext context,
+  }) async {
+    List<EventModel> events = [];
+
+    try {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      http.Response res = await http.get(
+        Uri.parse('$uri/api/all-events'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': userProvider.user.token,
+        },
+      );
+      // ignore: use_build_context_synchronously
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          print(res.body);
+          for (int i = 0; i < jsonDecode(res.body).length; i++) {
+            events.add(EventModel.fromJson(jsonEncode(
+              jsonDecode(
+                res.body,
+              )[i],
+            )));
+          }
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+
+    return events;
+  }
+
+  Future<void> getAllPastEvents({
+    required BuildContext context,
+  }) async {
+    try {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      http.Response res = await http.get(
+        Uri.parse('$uri/api/past-events'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': userProvider.user.token,
+        },
+      );
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {},
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  Future<void> getMyEvents({
+    required BuildContext context,
+  }) async {
+    try {} catch (e) {}
+  }
+
+  Future<void> joinEvent(
+      {required BuildContext context, required EventModel event}) async {
+    try {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/join-event'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': userProvider.user.token,
+        },
+        body: jsonEncode({"userId": userProvider.user.id, "eventId": event.id}),
+      );
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          print("event joined successfully");
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
 }
