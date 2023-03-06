@@ -1,5 +1,4 @@
 import 'package:buddy_go/config/theme_colors.dart';
-import 'package:buddy_go/features/home/demo/demo_screen.dart';
 import 'package:buddy_go/features/onboarding/screens/about_me_screen.dart';
 import 'package:buddy_go/models/user_model.dart';
 import 'package:flutter/material.dart';
@@ -44,8 +43,8 @@ class _MyAppState extends State<MyApp> {
               scaffoldBackgroundColor: backgroundColor,
               iconTheme: IconThemeData(color: Colors.white),
               colorScheme: ColorScheme.dark()),
-          initialRoute: SplashScreen.routename,
-          onGenerateRoute: CustomRouter.onGenerateRoute,
+          // initialRoute: SplashScreen.routename,
+          // onGenerateRoute: CustomRouter.onGenerateRoute,
           // home: DemoScreen()
         );
       },

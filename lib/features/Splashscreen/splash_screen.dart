@@ -36,7 +36,6 @@ class _SplashScreenState extends State<SplashScreen> {
           (route) => false,
         );
       } else if (user.imageUrl == '') {
-        // AuthService().logOut(context);
         Navigator.pushNamedAndRemoveUntil(
           context,
           ChooseAvatarScreen.routename,

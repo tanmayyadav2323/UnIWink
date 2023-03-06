@@ -15,6 +15,7 @@ class CreateEventScreen extends StatefulWidget {
 class _CreateEventScreenState extends State<CreateEventScreen> {
   TextEditingController _titleController = TextEditingController();
   TextEditingController _aboutController = TextEditingController();
+  TextEditingController _orgController = TextEditingController();
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now().add(Duration(days: 1));
   final ImagePicker _picker = ImagePicker();
@@ -57,6 +58,40 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                     cursorColor: Colors.white,
                     decoration: InputDecoration(
                       hintText: "Title",
+                      hintStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 3.h,
+                  ),
+                  TextFormField(
+                    controller: _orgController,
+                    cursorColor: Colors.white,
+                    decoration: InputDecoration(
+                      hintText: "Organizer",
                       hintStyle: TextStyle(
                         color: Colors.white,
                       ),
@@ -198,13 +233,15 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   ElevatedButton(
                     onPressed: () {
                       HomeServices().createEvent(
-                          context: context,
-                          title: _titleController.text,
-                          about: _aboutController.text,
-                          startDate: startDate,
-                          endDate: endDate,
-                          profileImage: images!,
-                          images: eventImage!);
+                        organizer: _orgController.text,
+                        context: context,
+                        title: _titleController.text,
+                        about: _aboutController.text,
+                        startDate: startDate,
+                        endDate: endDate,
+                        profileImage: images!,
+                        images: eventImage!,
+                      );
                     },
                     child: Text("Save"),
                   )

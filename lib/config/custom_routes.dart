@@ -2,6 +2,7 @@ import 'package:buddy_go/features/authentication/screens/verify_screen.dart';
 import 'package:buddy_go/features/Home/screens/home_screen.dart';
 import 'package:buddy_go/features/Onboarding/screens/about_me_screen.dart';
 import 'package:buddy_go/features/Onboarding/screens/choose_avatar_screen.dart';
+import 'package:buddy_go/features/events/screen/event_screen.dart';
 import 'package:buddy_go/features/home/screens/create_event_screen.dart';
 import 'package:buddy_go/models/user_model.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +44,13 @@ class CustomRouter {
         return MaterialPageRoute(
           settings: const RouteSettings(name: CreateEventScreen.routename),
           builder: (_) => CreateEventScreen(),
+        );
+      case EventScreen.routename:
+        return MaterialPageRoute(
+          settings: const RouteSettings(name: EventScreen.routename),
+          builder: (_) => EventScreen(
+            event: (settings.arguments as Map)["event"],
+          ),
         );
       case ChooseAIAvatarScreen.routename:
         return MaterialPageRoute(

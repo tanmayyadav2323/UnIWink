@@ -11,7 +11,13 @@ const eventSchema = new Schema(
             type:String,
             required:true
         },
+        organizer:{
+            type:String,
+            required:true
+        },
+        savedMembers:[String],
         memberIds: [String],
+        memberImageUrls:[String],
         creationDate: Date,
         about: String,
         image: String,
