@@ -4,10 +4,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 List<String> desList = [
-  "“I love sports, parties and watching thriller movies. I wish to find an old school kinda girl to have a interactive and fun party eve”",
-  "“I am sports, parties and watching thriller movies. I wish to find an old school kinda girl to have a interactive and fun party eve”",
-  "“I you sports, parties and watching thriller movies. I wish to find an old school kinda girl to have a interactive and fun party eve”",
-  "“I love sports, parties and watching thriller movies. I wish to find an old school kinda girl to have a interactive and fun party eve”",
+  "I enjoy reading sci-fi novels, playing video games, and attending comic book conventions. I hope to meet someone who shares my love for geek culture.",
+  "I'm passionate about environmental activism, hiking, and trying new plant-based recipes. I'm seeking someone who values sustainability and adventure.",
+  "I love listening to jazz music, painting, and visiting museums. I'm looking for a creative partner who enjoys exploring the art world with me.",
+  "I'm an avid traveler, language learner, and cultural enthusiast. I want to meet someone who is open to exploring the world and learning about different lifestyles.",
+  "I enjoy practicing yoga, mindfulness meditation, and volunteering for mental health advocacy organizations. I'm hoping to find someone who values personal growth and social responsibility.",
+  "I'm passionate about entrepreneurship, networking, and attending startup events. I want to meet someone who shares my ambition and drive for success.",
+  "I love playing with my pets, gardening, and crafting DIY projects. I'm looking for a partner who shares my love for animals and creativity.",
+  "I'm into weightlifting, cooking healthy meals, and learning about nutrition. I want to find someone who prioritizes their health and wellness.",
+  "I enjoy watching indie films, attending poetry slams, and volunteering for social justice causes. I'm seeking someone who is passionate about making a positive impact in their community.",
+  "I love attending music festivals, trying new cocktail recipes, and exploring the city's nightlife. I hope to find someone who shares my love for fun and spontaneity.",
 ];
 
 class Slide {
@@ -54,18 +60,19 @@ class _CarouselViewState extends State<CarouselView> {
         setState(() {});
       },
       child: Container(
-        height: 25.h,
+        height: 20.h,
         width: double.infinity,
         alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(horizontal: 2.w),
+        padding: EdgeInsets.symmetric(horizontal: 3.w),
         decoration: BoxDecoration(
+          color: Colors.white,
           border: Border.all(
               color: Colors.white.withOpacity(0.6), width: selected ? 2 : 0.5),
           borderRadius: BorderRadius.circular(15),
           gradient: LinearGradient(
             colors: [
-              Colors.white.withOpacity(0.3),
-              Color(0XFFC4C4C4).withOpacity(0.1),
+              Color(0XFF6C6D83),
+              Color(0XFF202143),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -87,10 +94,13 @@ class _CarouselViewState extends State<CarouselView> {
                 height: double.infinity,
                 child: Icon(
                   Icons.arrow_back_ios,
-                  color: Colors.white,
-                  size: 4.h,
+                  color: Color(0XFF9B9B9B),
+                  size: 2.h,
                 ),
               ),
+            ),
+            SizedBox(
+              width: 1.w,
             ),
             Expanded(
               child: ExpandableCarousel.builder(
@@ -111,11 +121,12 @@ class _CarouselViewState extends State<CarouselView> {
                   return Center(
                     child: Text(
                       slides[index].title,
-                      style: GoogleFonts.nunito(
-                        fontSize: 14.sp,
+                      style: GoogleFonts.poppins(
+                        fontSize: 12.sp,
                         fontWeight: FontWeight.w300,
                         color: Colors.white,
-                        height: 1.5,
+                        height: 1.4,
+                        fontStyle: FontStyle.italic,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -124,14 +135,17 @@ class _CarouselViewState extends State<CarouselView> {
                 itemCount: slides.length,
               ),
             ),
+            SizedBox(
+              width: 1.w,
+            ),
             GestureDetector(
               onTap: _controller.nextPage,
               child: SizedBox(
                 height: double.infinity,
                 child: Icon(
                   Icons.arrow_forward_ios,
-                  color: Colors.white,
-                  size: 4.h,
+                  color: Color(0XFF9B9B9B),
+                  size: 2.h,
                 ),
               ),
             ),

@@ -1,3 +1,4 @@
+import 'package:buddy_go/features/background/bg_screen.dart';
 import 'package:buddy_go/features/onboarding/services/onboarding_services.dart';
 import 'package:buddy_go/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -25,12 +26,6 @@ class AboutMeScreen extends StatefulWidget {
 }
 
 class _AboutMeScreenState extends State<AboutMeScreen> {
-  List<String> desList = [
-    "“I love sports, parties and watching thriller movies. I wish to find an old school kinda girl to have a interactive and fun party eve”",
-    "“I am sports, parties and watching thriller movies. I wish to find an old school kinda girl to have a interactive and fun party eve”",
-    "“I you sports, parties and watching thriller movies. I wish to find an old school kinda girl to have a interactive and fun party eve”",
-    "“I love sports, parties and watching thriller movies. I wish to find an old school kinda girl to have a interactive and fun party eve”",
-  ];
 
   int selectedDes = 0;
 
@@ -47,139 +42,177 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        body: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          decoration: const BoxDecoration(
-            color: backgroundColor,
-          ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 4.w),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 80,
-                  ),
-                  Text(
-                    "About Me",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30.sp,
-                      fontWeight: FontWeight.w600,
+        body: BgScreen(
+          centerGradient: false,
+          singleCenterGradient: true,
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 4.w),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 8.h,
                     ),
-                  ),
-                  SizedBox(
-                    height: 1.h,
-                  ),
-                  Text(
-                    "Write something about yourself like a quote, your areas of interest, what do you seek e.t.c",
-                    style: GoogleFonts.nunito(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w200,
-                      color: Colors.white,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: 3.h,
-                  ),
-                  Container(
-                    height: 22.h,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.white, width: 0.5),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Transform.scale(
-                        scale: 1,
-                        child: Image.asset(
-                          widget.image,
-                          fit: BoxFit.fitHeight,
-                        ),
+                    Text(
+                      "About Me",
+                      style: GoogleFonts.poppins(
+                        fontSize: 28.sp,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 4.h,
-                  ),
-                  Text(
-                    "Choose your perfect description",
-                    style: GoogleFonts.nunito(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w100,
-                      color: Colors.white,
-                      fontStyle: FontStyle.italic,
+                    SizedBox(
+                      height: 2.h,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: 2.h,
-                  ),
-                  CarouselView(
-                    onPressed: (text) {
-                      _desController.text = text;
-                    },
-                  ),
-                  SizedBox(
-                    height: 4.h,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                            width: 1.0, color: Colors.white.withOpacity(0.4)),
-                      ),
-                    ),
-                    child: TextFormField(
-                      controller: _desController,
-                      decoration: InputDecoration(
-                        counterText: "",
-                        hintText: "or write a custom description of your self",
-                        hintStyle: GoogleFonts.nunito(
-                          fontWeight: FontWeight.w100,
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 4.w),
+                      child: Text(
+                        'Write something about yourself like a quote, your areas of interest, what do you seek e.t.c',
+                        maxLines: 3,
+                        style: GoogleFonts.poppins(
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.italic,
-                          color: Colors.white.withOpacity(0.5),
+                          height: 1.2,
                         ),
-                        contentPadding: EdgeInsets.symmetric(
-                            horizontal: 6.w, vertical: 1.h),
-                        border: InputBorder.none,
+                        textAlign: TextAlign.center,
                       ),
-                      cursorColor: Colors.white,
-                      style: GoogleFonts.nunito(
-                        fontWeight: FontWeight.w400,
-                        color: Colors.white,
-                        fontSize: 12.sp,
-                      ),
-                      minLines: 1,
-                      maxLines: 5,
-                      maxLength: 200,
                     ),
-                  ),
-                  SizedBox(
-                    height: 2.h,
-                  ),
-                  CustomButton(
-                    buttonText: "Set up my Profile",
-                    onPressed: () async {
-                      if (_desController.text.isEmpty) {
-                        Fluttertoast.showToast(msg: "Please enter some text");
-                      } else {
-                       final user=  widget.user.copyWith(des: _desController.text);
-                        await OnBoardingServices().setUpAccount(
-                          context: context,
-                          user: user,
-                          imagePath: widget.image,
-                        );
-                        
-                      }
-                    },
-                  ),
-                  SizedBox(
-                    height: 4.h,
-                  ),
-                ],
+                    SizedBox(
+                      height: 4.h,
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(1.75),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0XFFA5A5A5),
+                            Colors.black.withOpacity(0.5),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      child: Container(
+                        height: 18.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Transform.scale(
+                            scale: 1,
+                            child: Image.asset(
+                              "assets/images/ai_bimg/${widget.image}.png",
+                              fit: BoxFit.fitHeight,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 4.h,
+                    ),
+                    Text(
+                      "Choose what best describes you",
+                      style: GoogleFonts.nunito(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w100,
+                        color: Colors.white,
+                        fontStyle: FontStyle.italic,
+                        decoration: TextDecoration.underline,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: 3.h,
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 3.w),
+                      padding: EdgeInsets.all(1),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.white,
+                            Color(0XFF25AECC).withOpacity(0.1),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      child: CarouselView(
+                        onPressed: (text) {
+                          _desController.text = text;
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 4.h,
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 4.w),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                              width: 1.0, color: Colors.white.withOpacity(0.4)),
+                        ),
+                      ),
+                      child: TextFormField(
+                        controller: _desController,
+                        decoration: InputDecoration(
+                          counterText: "",
+                          hintText: "or write a custom description",
+                          hintStyle: GoogleFonts.poppins(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 9.5.sp,
+                            fontStyle: FontStyle.italic,
+                            color: Colors.white.withOpacity(0.5),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(vertical: 1.h),
+                          border: InputBorder.none,
+                        ),
+                        cursorColor: Colors.white,
+                        style: GoogleFonts.nunito(
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                          fontSize: 12.sp,
+                        ),
+                        textAlign: TextAlign.center,
+                        minLines: 1,
+                        maxLines: 1,
+                        maxLength: 200,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 2.h,
+                    ),
+                    CustomButton(
+                      buttonText: "Set Profile",
+                      onPressed: () async {
+                        if (_desController.text.isEmpty) {
+                          Fluttertoast.showToast(msg: "Please enter some text");
+                        } else {
+                          final user =
+                              widget.user.copyWith(des: _desController.text);
+                          await OnBoardingServices().setUpAccount(
+                            context: context,
+                            user: user,
+                            imagePath:
+                                "assets/images/ai_bimg/${widget.image}.png",
+                          );
+                        }
+                      },
+                    ),
+                    SizedBox(
+                      height: 4.h,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

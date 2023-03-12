@@ -39,6 +39,7 @@ eventRouter.get('/api/all-events', auth, async (req, res) => {
     try {
         const today = new Date();
         const events = await Events.find({ endDateTime: { $gt: today } }).sort({ endDateTime: 1 });
+        console.log(events);
         res.json(events);
     }
     catch (e) {
@@ -52,6 +53,7 @@ eventRouter.get('/api/saved-events/:userId', auth, async (req, res) => {
     try {
         const userId = req.params.userId;
         const events = await Events.find({ savedMembers: { $in: [userId] } });
+        console.log(events);
         res.json(events);
     }
     catch (e) {
@@ -64,6 +66,7 @@ eventRouter.get('/api/my-events/:userId', auth, async (req, res) => {
     try {
         const userId = req.params.userId;
         const events = await Events.find({}).where('authorId').equals(userId);
+        console.log(events);
         res.json(events);
     }
     catch (e) {

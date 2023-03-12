@@ -22,32 +22,22 @@ class _CustomButtonState extends State<CustomButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 7.h,
-      width: 70.w,
+      height: 5.5.h,
+      width: 60.w,
       margin: EdgeInsets.only(left: 8.w, right: 8.w, top: 3.h, bottom: 3.h),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        gradient: LinearGradient(
-          colors: [
-            Color(0XFF642E9B),
-            Color(0XFFFC08D5),
-          ],
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0XFFFFF47E6).withOpacity(0.4),
-            blurRadius: 30,
-          ),
-        ],
+        borderRadius: BorderRadius.circular(30),
+        color: Color(0XFFFF005C),
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(30),
           onTap: widget.loading ? null : widget.onPressed,
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(30),
+              color: Color(0XFFFF005C),
             ),
             alignment: Alignment.center,
             height: 6.5.h,
@@ -58,9 +48,9 @@ class _CustomButtonState extends State<CustomButton> {
                   )
                 : Text(
                     widget.buttonText,
-                    style: GoogleFonts.nunito(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w700,
+                    style: GoogleFonts.poppins(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
                       color: Colors.white,
                     ),
                     textAlign: TextAlign.center,

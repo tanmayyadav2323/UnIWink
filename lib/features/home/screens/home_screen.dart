@@ -51,136 +51,134 @@ class _HomeScreenState extends State<HomeScreen> {
           },
         ),
         body: SafeArea(
-          child: BgScreen(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 4.w),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    Row(
-                      children: [
-                        const Spacer(),
-                        SvgPicture.asset(
-                          "assets/icons/logo_icon.svg",
-                          height: 2.h,
-                        ),
-                        SizedBox(
-                          width: 6.w,
-                        ),
-                        SvgPicture.asset(
-                          "assets/icons/profile_icon.svg",
-                          height: 2.5.h,
-                        ),
-                        SizedBox(
-                          width: 6.w,
-                        ),
-                        SvgPicture.asset(
-                          "assets/icons/message_icon.svg",
-                          height: 2.5.h,
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 3.h,
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(1.w),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            const Color(0xFFFFFFFF).withOpacity(0.0),
-                            const Color(0x00CC2525),
-                          ],
-                        ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 4.w),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  Row(
+                    children: [
+                      const Spacer(),
+                      SvgPicture.asset(
+                        "assets/icons/logo_icon.svg",
+                        height: 2.h,
                       ),
-                      child: Container(
-                        height: 5.5.h,
-                        width: double.infinity,
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.symmetric(horizontal: 4.w),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          gradient: const LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Color(0x66FFFEFE),
-                              Color(0x1AC4C4C4),
-                            ],
-                          ),
-                        ),
-                        child: TextFormField(
-                          cursorColor: Colors.white,
-                          decoration: InputDecoration(
-                            hintText: "Search for an event",
-                            hintStyle: GoogleFonts.poppins(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                            ),
-                            border: InputBorder.none,
-                            suffix: const Padding(
-                              padding: EdgeInsets.only(top: 10),
-                              child: Icon(
-                                Icons.search,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
+                      SizedBox(
+                        width: 6.w,
                       ),
-                    ),
-                    SizedBox(
-                      height: 1.h,
-                    ),
-                    const Divider(
-                      color: Colors.white,
-                    ),
-                    SizedBox(
-                      height: 1.h,
-                    ),
-                    SizedBox(
-                      height: 8.h,
-                      child: Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(100),
-                            child: Image.network(userProvider.user.imageUrl),
-                          ),
+                      SvgPicture.asset(
+                        "assets/icons/profile_icon.svg",
+                        height: 2.5.h,
+                      ),
+                      SizedBox(
+                        width: 6.w,
+                      ),
+                      SvgPicture.asset(
+                        "assets/icons/message_icon.svg",
+                        height: 2.5.h,
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 3.h,
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(1.w),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          const Color(0xFFFFFFFF).withOpacity(0.0),
+                          const Color(0x00CC2525),
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: 1.5.h,
-                    ),
-                    const Divider(
-                      color: Colors.white,
-                    ),
-                    GestureDetector(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(eventsStatus[eventIndex % 4]),
+                    child: Container(
+                      height: 5.5.h,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.symmetric(horizontal: 4.w),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        gradient: const LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color(0x66FFFEFE),
+                            Color(0x1AC4C4C4),
+                          ],
+                        ),
                       ),
-                      onTap: () {
-                        eventIndex++;
-                        setState(() {});
-                      },
+                      child: TextFormField(
+                        cursorColor: Colors.white,
+                        decoration: InputDecoration(
+                          hintText: "Search for an event",
+                          hintStyle: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                          border: InputBorder.none,
+                          suffix: const Padding(
+                            padding: EdgeInsets.only(top: 10),
+                            child: Icon(
+                              Icons.search,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                    eventIndex % 4 == 0
-                        ? allOngoingEvents(userProvider.user.id)
-                        : eventIndex % 4 == 1
-                            ? myEvents(userProvider.user.id)
-                            : eventIndex % 4 == 2
-                                ? prevEvent(userProvider.user.id)
-                                : saved(userProvider.user.id),
-                  ],
-                ),
+                  ),
+                  SizedBox(
+                    height: 1.h,
+                  ),
+                  const Divider(
+                    color: Colors.white,
+                  ),
+                  SizedBox(
+                    height: 1.h,
+                  ),
+                  SizedBox(
+                    height: 8.h,
+                    child: Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: Image.network(userProvider.user.imageUrl),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 1.5.h,
+                  ),
+                  const Divider(
+                    color: Colors.white,
+                  ),
+                  GestureDetector(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(eventsStatus[eventIndex % 4]),
+                    ),
+                    onTap: () {
+                      eventIndex++;
+                      setState(() {});
+                    },
+                  ),
+                  eventIndex % 4 == 0
+                      ? allOngoingEvents(userProvider.user.id)
+                      : eventIndex % 4 == 1
+                          ? myEvents(userProvider.user.id)
+                          : eventIndex % 4 == 2
+                              ? prevEvent(userProvider.user.id)
+                              : saved(userProvider.user.id),
+                ],
               ),
             ),
           ),
