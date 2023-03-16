@@ -45,9 +45,9 @@ class _MyAppState extends State<MyApp> {
               scaffoldBackgroundColor: backgroundColor,
               iconTheme: IconThemeData(color: Colors.white),
               colorScheme: ColorScheme.dark()),
-          // initialRoute: SplashScreen.routename,
+          initialRoute: SplashScreen.routename,
           onGenerateRoute: CustomRouter.onGenerateRoute,
-          home: ChooseAIAvatarScreen(),
+          // home: ChooseAIAvatarScreen(),
         );
       },
     );

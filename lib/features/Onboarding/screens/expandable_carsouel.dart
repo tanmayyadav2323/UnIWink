@@ -4,16 +4,36 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 List<String> desList = [
-  "I enjoy reading sci-fi novels, playing video games, and attending comic book conventions. I hope to meet someone who shares my love for geek culture.",
-  "I'm passionate about environmental activism, hiking, and trying new plant-based recipes. I'm seeking someone who values sustainability and adventure.",
-  "I love listening to jazz music, painting, and visiting museums. I'm looking for a creative partner who enjoys exploring the art world with me.",
-  "I'm an avid traveler, language learner, and cultural enthusiast. I want to meet someone who is open to exploring the world and learning about different lifestyles.",
-  "I enjoy practicing yoga, mindfulness meditation, and volunteering for mental health advocacy organizations. I'm hoping to find someone who values personal growth and social responsibility.",
-  "I'm passionate about entrepreneurship, networking, and attending startup events. I want to meet someone who shares my ambition and drive for success.",
-  "I love playing with my pets, gardening, and crafting DIY projects. I'm looking for a partner who shares my love for animals and creativity.",
-  "I'm into weightlifting, cooking healthy meals, and learning about nutrition. I want to find someone who prioritizes their health and wellness.",
-  "I enjoy watching indie films, attending poetry slams, and volunteering for social justice causes. I'm seeking someone who is passionate about making a positive impact in their community.",
-  "I love attending music festivals, trying new cocktail recipes, and exploring the city's nightlife. I hope to find someone who shares my love for fun and spontaneity.",
+  "Music junkie seeking a concert buddy to rock out with",
+  "Cinephile hoping to find someone to discuss movies with",
+  "Outdoor explorer searching for a trailblazing partner",
+  "Foodie on the hunt for a fellow gastronome to dine with",
+  "Wanderlust traveler in search of an adventure companion",
+  "Sports aficionado seeking a fellow fan to watch games with",
+  "Fitness fanatic seeking a workout warrior to sweat with",
+  "Culture seeker seeking an art lover to explore museums with",
+  "Bookworm seeking a reading partner for cozy evenings in",
+  "Gamer looking for a gaming buddy for virtual adventures",
+  "Humanitarian looking for a charity partner to make a difference",
+  "Polyglot seeking a language exchange partner to practice with",
+  "Shutterbug seeking a photography buddy to capture memories with",
+  "Animal admirer hoping to find a pet-friendly friend for furry fun",
+  "Night owl seeking a fellow night owl to chat with late into the night",
+  "Early riser seeking a morning person to exercise with",
+  "Entrepreneur hoping to find a business-minded buddy to network with",
+  "Oenophile seeking a fellow wine enthusiast for tasting adventures",
+  "Fashionista seeking a shopping companion to hunt for style steals",
+  "Spiritual seeker looking for a like-minded friend for mindful moments",
+  "Musician seeking a jam session buddy to make beautiful music with",
+  "Comedy fan looking for a fellow humor enthusiast to share laughs with",
+  "Karaoke superstar seeking a singing partner to belt out tunes with",
+  "Dancer hoping to find a dance partner to groove with",
+  "Yogi seeking a yoga buddy to stretch and unwind with",
+  "Coffee aficionado seeking a coffee shop companion to savor a cup with",
+  "Green thumb looking for a fellow gardener to share tips and plants with",
+  "DIY lover seeking a crafting companion for creative projects",
+  "Film buff seeking a fellow movie lover to debate the classics with",
+  "Social butterfly seeking a friendly face to share new experiences with"
 ];
 
 class Slide {
@@ -115,6 +135,13 @@ class _CarouselViewState extends State<CarouselView> {
                   autoPlay: !selected,
                   controller: _controller,
                   restorationId: 'expandable_carousel',
+                  onScrolled: (val) {
+                    if (selected && val == val!.toInt()) {
+                      widget
+                          .onPressed(selected ? slides[val.toInt()].title : '');
+                      setState(() {});
+                    }
+                  },
                 ),
                 itemBuilder: (context, index, realIndex) {
                   selectedText = slides[realIndex].title;

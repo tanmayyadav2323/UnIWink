@@ -24,7 +24,7 @@ eventRouter.post('/api/create-event', auth, async (req, res) => {
         });
         await event.save();
 
-        let updatedEvent = await joinEvent(event.id, req.body.authorId, req.body.image);
+        let updatedEvent = await joinEvent(event.id, req.body.authorId,);
 
         res.json(updatedEvent);
     }
