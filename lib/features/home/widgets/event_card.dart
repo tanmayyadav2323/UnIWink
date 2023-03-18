@@ -4,6 +4,7 @@ import 'package:avatar_stack/avatar_stack.dart';
 import 'package:buddy_go/features/events/screen/event_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:glassmorphism/glassmorphism.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
@@ -94,36 +95,26 @@ class _EventCardState extends State<EventCard> {
             ),
             Positioned(
               bottom: 1.h,
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0XFFFFFFFF),
-                      Color(0XFFCC2525).withOpacity(0.0)
-                    ],
-                  ),
+              child: GlassmorphicContainer(
+                height: 15.h,
+                border: 1,
+                borderRadius: 15,
+                borderGradient: LinearGradient(colors: [
+                  Color(0XFFFFFFFF),
+                  Color(0XFFCC2525).withOpacity(0.0)
+                ]),
+                alignment: Alignment.center,
+                width: MediaQuery.of(context).size.width * 0.9,
+                linearGradient: LinearGradient(
+                  colors: [
+                    Color(0XFFFFFEFE).withOpacity(0.4),
+                    Color(0XFFC4C4C4).withOpacity(0.1),
+                  ],
                 ),
-                child: Container(
-                  alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width * 0.9,
+                blur: 24,
+                
+                child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.black,
-                    // gradient: LinearGradient(
-                    //   colors: [
-                    //     Color(0XFFFFFEFE).withOpacity(0.4),
-                    //     Color(0XFFC4C4C4).withOpacity(0.1),
-                    //   ],
-                    // ),
-                    // boxShadow: [
-                    //   BoxShadow(
-                    //     blurRadius: 24,
-                    //     color: Color(0XFF000000).withOpacity(0.2),
-                    //     offset: Offset(0, 4),
-                    //   )
-                    // ],
-                  ),
                   child: Column(
                     children: [
                       Row(

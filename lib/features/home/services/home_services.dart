@@ -48,7 +48,7 @@ class HomeServices {
         memberIds: [],
         creationDate: DateTime.now(),
         about: about,
-        memberImageUrls: [],
+        memberImageUrls: [userProvider.user.imageUrl],
         organizer: organizer,
         savedMembers: [],
         image: pfImage,
@@ -99,12 +99,16 @@ class HomeServices {
         context: context,
         onSuccess: () {
           print(res.body);
-          for (int i = 0; i < jsonDecode(res.body).length; i++) {
-            events.add(EventModel.fromJson(jsonEncode(
-              jsonDecode(
-                res.body,
-              )[i],
-            )));
+          try {
+            for (int i = 0; i < jsonDecode(res.body).length; i++) {
+              events.add(EventModel.fromJson(jsonEncode(
+                jsonDecode(
+                  res.body,
+                )[i],
+              )));
+            }
+          } catch (e) {
+            showSnackBar(context, e.toString());
           }
         },
       );
