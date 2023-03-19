@@ -3,6 +3,7 @@ const auth = require("../middlewares/auth");
 const eventRouter = express.Router();
 const Events = require("../models/event.model");
 const UserEvents = require("../models/user.events");
+const User = require("../models/user.model");
 
 eventRouter.post('/api/create-event', auth, async (req, res) => {
     try {
@@ -23,7 +24,7 @@ eventRouter.post('/api/create-event', auth, async (req, res) => {
             endDateTime: req.body.endDateTime
         });
         await event.save();
-        
+
         let updatedEvent = await joinEvent(event.id, req.body.authorId, req.body.memberImageUrls[0]);
 
         res.json(updatedEvent);
@@ -109,9 +110,9 @@ eventRouter.post('/api/save-event', auth, async (req, res) => {
 
 eventRouter.post('/api/join-event', auth, async (req, res) => {
     try {
-        const { eventId, userId } = req.body;
+        const { eventId, userId, imageUrl } = req.body;
 
-        const updatedEvent = await joinEvent(eventId, userId);
+        const updatedEvent = await joinEvent(eventId, userId, imageUrl);
 
         res.json(updatedEvent);
     }
@@ -120,6 +121,18 @@ eventRouter.post('/api/join-event', auth, async (req, res) => {
     }
 });
 
+
+eventRouter.post('/api/event-users', auth, async (req, res) => {
+    try {
+        const userIds = req.body.userIds;
+        console.log(userIds);
+        let users = await User.find({ _id: { $in: userIds } });
+        res.json(users);
+    }
+    catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
 
 async function joinEvent(eventId, userId, imageUrl) {
     try {

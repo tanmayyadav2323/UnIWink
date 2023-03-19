@@ -1,9 +1,17 @@
+import 'dart:developer';
 import 'dart:ui';
 
+import 'package:buddy_go/config/session_helper.dart';
+import 'package:buddy_go/config/utils.dart';
+import 'package:buddy_go/features/authentication/services/auth_services.dart';
+import 'package:buddy_go/features/events/services/event_services.dart';
+import 'package:buddy_go/models/user_model.dart';
+import 'package:buddy_go/providers/user_provider.dart';
 import 'package:buddy_go/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:buddy_go/models/event_model.dart';
 
@@ -20,8 +28,19 @@ class EventScreen extends StatefulWidget {
 }
 
 class _EventScreenState extends State<EventScreen> {
+  final EventServices eventServices = EventServices();
+
+  List<User> participants = [];
+  List<String> memberIds = [];
+  @override
+  void initState() {
+    memberIds = widget.event.memberIds;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final curUser = Provider.of<UserProvider>(context, listen: false).getUser();
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -45,13 +64,18 @@ class _EventScreenState extends State<EventScreen> {
                     Positioned(
                       top: 1.h,
                       left: 2.w,
-                      child: CircleAvatar(
-                        radius: 2.5.h,
-                        child: Center(
-                          child: Icon(
-                            Icons.arrow_back_ios,
-                            color: Colors.white,
-                            size: 2.h,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: CircleAvatar(
+                          radius: 2.5.h,
+                          child: Center(
+                            child: Icon(
+                              Icons.arrow_back_ios,
+                              color: Colors.white,
+                              size: 2.h,
+                            ),
                           ),
                         ),
                       ),
@@ -79,9 +103,14 @@ class _EventScreenState extends State<EventScreen> {
                           ),
                           textAlign: TextAlign.start,
                         ),
-                        Icon(
-                          Icons.more_vert,
-                          size: 4.h,
+                        InkWell(
+                          onTap: () {
+                            modalSheet();
+                          },
+                          child: Icon(
+                            Icons.more_vert,
+                            size: 4.h,
+                          ),
                         )
                       ],
                     ),
@@ -92,60 +121,86 @@ class _EventScreenState extends State<EventScreen> {
                         fontWeight: FontWeight.w200,
                       ),
                     ),
+                    SizedBox(
+                      height: 2.h,
+                    ),
                     Row(
                       children: [
                         Expanded(
-                          flex: 2,
-                          child: Row(
+                          flex: 4,
+                          child: Column(
                             children: [
-                              Icon(
-                                Icons.location_on,
-                                color: Color(0XFFFF005C),
+                              const Row(
+                                children: [
+                                  Icon(
+                                    Icons.location_on,
+                                    color: Color(0XFFFF005C),
+                                  ),
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  Flexible(
+                                    child: Text(
+                                      "Plot no: 2/36 vandhe marg nagar near ",
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  )
+                                ],
                               ),
                               SizedBox(
-                                width: 4,
+                                height: 1.h,
                               ),
-                              Flexible(
-                                child: Text(
-                                  "Plot no: 2/36 vandhe marg nagar near ",
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Row(
-                            children: [
-                              Icon(Icons.watch_later_outlined,
-                                  color: Color(0XFFFF005C)),
-                              SizedBox(
-                                width: 4,
+                              Row(
+                                children: [
+                                  const Icon(Icons.watch_later_outlined,
+                                      color: Color(0XFFFF005C)),
+                                  const SizedBox(
+                                    width: 4,
+                                  ),
+                                  const SizedBox(
+                                    width: 4,
+                                  ),
+                                  Text(
+                                    DateFormat("hh:mm a")
+                                        .format(widget.event.startDateTime)
+                                        .toString(),
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 10.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                      height: 1,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 2.w,
+                                  ),
+                                  Column(
+                                    children: [
+                                      SizedBox(
+                                        width: 2.w,
+                                        child: const Divider(
+                                          color: Colors.white,
+                                          thickness: 1,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 2.w,
+                                  ),
+                                  Text(
+                                    DateFormat("hh:mm a")
+                                        .format(widget.event.endDateTime)
+                                        .toString(),
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 10.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                      height: 1,
+                                    ),
+                                  )
+                                ],
                               ),
-                              Text(
-                                DateFormat("hh:mm")
-                                    .format(widget.event.startDateTime)
-                                    .toString(),
-                                style: GoogleFonts.poppins(
-                                  fontSize: 10.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white,
-                                  height: 1,
-                                ),
-                              ),
-                              Text(" - "),
-                              Text(
-                                DateFormat("hh:mm")
-                                    .format(widget.event.endDateTime)
-                                    .toString(),
-                                style: GoogleFonts.poppins(
-                                  fontSize: 10.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white,
-                                  height: 1,
-                                ),
-                              )
                             ],
                           ),
                         ),
@@ -155,7 +210,7 @@ class _EventScreenState extends State<EventScreen> {
                             children: [
                               Container(
                                 decoration: BoxDecoration(
-                                  color: Color(0XFFFF005C),
+                                  color: const Color(0XFFFF005C),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 padding: EdgeInsets.symmetric(
@@ -205,7 +260,7 @@ class _EventScreenState extends State<EventScreen> {
                       margin: EdgeInsets.symmetric(horizontal: 2.w),
                       padding: EdgeInsets.all(1.h),
                       decoration: BoxDecoration(
-                        color: Color(0XFF272A70),
+                        color: const Color(0XFF272A70),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
@@ -226,56 +281,10 @@ class _EventScreenState extends State<EventScreen> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
+                    participantsContainer(curUser)
                   ],
                 ),
               ),
-              Stack(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0XFFFFFEFE).withOpacity(0.4),
-                          Color(0XFFC4C4C4).withOpacity(0.1)
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                    child: ImageFiltered(
-                      imageFilter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 4.h,
-                          ),
-                          participantBox(),
-                          participantBox(),
-                          participantBox(),
-                          participantBox(),
-                          participantBox(),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Positioned.fill(
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 3.h,
-                          ),
-                          Text(
-                            "Join the event to view and chat with the pariticipants ",
-                          ),
-                          CustomButton(buttonText: "Join", onPressed: () {}),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              )
             ],
           ),
         ),
@@ -283,7 +292,7 @@ class _EventScreenState extends State<EventScreen> {
     );
   }
 
-  Widget participantBox() {
+  Widget participantBox(User user) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -293,8 +302,8 @@ class _EventScreenState extends State<EventScreen> {
             Container(
               height: 8.h,
               width: 8.h,
-              padding: EdgeInsets.all(2),
-              decoration: BoxDecoration(
+              padding: const EdgeInsets.all(2),
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: LinearGradient(
                   colors: [
@@ -307,8 +316,8 @@ class _EventScreenState extends State<EventScreen> {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10.w),
-                child: Image.asset(
-                  "assets/images/ai_bimg/img_9.png",
+                child: Image.network(
+                  user.imageUrl,
                   fit: BoxFit.contain,
                 ),
               ),
@@ -318,7 +327,7 @@ class _EventScreenState extends State<EventScreen> {
             ),
             Flexible(
               child: Text(
-                "“I love drinks, parties and watching thriller movies. I wish to find an old school guy to have an interactive and fun party eve”",
+                '"${user.des}"',
                 maxLines: 4,
                 overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.poppins(
@@ -332,28 +341,410 @@ class _EventScreenState extends State<EventScreen> {
         SizedBox(
           height: 2.h,
         ),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
-          child: Text(
-            "Chat",
-            style: GoogleFonts.poppins(
-              fontSize: 10.sp,
-              fontWeight: FontWeight.w300,
+        if (user.id != SessionHelper.id)
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
+            child: Text(
+              "Chat",
+              style: GoogleFonts.poppins(
+                fontSize: 10.sp,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: const Color(0XFFFF005C),
             ),
           ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: Color(0XFFFF005C),
-          ),
-        ),
         SizedBox(
           height: 1.h,
         ),
-        Divider(
+        const Divider(
           color: Colors.white,
           thickness: 0.2,
         )
       ],
+    );
+  }
+
+  Widget participantsContainer(User curUser) {
+    return FutureBuilder(
+      future: eventServices.getMembers(
+          context: context, members: widget.event.memberIds),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          showSnackBar(context, snapshot.error.toString());
+        } else if (snapshot.hasData) {
+          participants = snapshot.data;
+          bool joinedEvent = memberIds.contains(SessionHelper.id);
+          return Column(
+            children: [
+              SizedBox(
+                height: 2.h,
+              ),
+              if (joinedEvent == false)
+                Stack(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            const Color(0XFFFFFEFE).withOpacity(0.4),
+                            const Color(0XFFC4C4C4).withOpacity(0.1)
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      child: ImageFiltered(
+                        imageFilter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                        child: Column(
+                          children: participants.map((participant) {
+                            return participantBox(participant);
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                    Positioned.fill(
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 1.h,
+                            ),
+                            Text(
+                              "View and chat with the pariticipants ",
+                              style: GoogleFonts.poppins(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w500,
+                                fontStyle: FontStyle.italic,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            CustomButton(
+                              buttonText: "Join",
+                              onPressed: () async {
+                                await eventServices.joinEvent(
+                                  context: context,
+                                  event: widget.event,
+                                );
+                                setState(() {
+                                  memberIds.add(SessionHelper.id);
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              if (joinedEvent)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 4.w),
+                  child: Column(
+                    children: participants.map((participant) {
+                      return participantBox(participant);
+                    }).toList(),
+                  ),
+                )
+            ],
+          );
+        } else {
+          return const Center(child: Text('No data'));
+        }
+        return const SizedBox.shrink();
+      },
+    );
+  }
+
+  modalSheet() {
+    showModalBottomSheet(
+      backgroundColor: Colors.white,
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(25),
+          topRight: Radius.circular(25),
+        ),
+      ),
+      builder: (context) {
+        return ClipRRect(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(25),
+            topRight: Radius.circular(25),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                height: 1.h,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                    color: Color(0XFF444444),
+                    borderRadius: BorderRadius.circular(20)),
+                height: 0.8.h,
+                width: 20.w,
+              ),
+              SizedBox(
+                height: 1.h,
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.logout,
+                  color: Colors.black,
+                  size: 3.h,
+                ),
+                minLeadingWidth: 1.w,
+                title: Text(
+                  "Leave Event",
+                  style: GoogleFonts.poppins(
+                    fontSize: 12.sp,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.person,
+                  color: Colors.black,
+                  size: 3.h,
+                ),
+                minLeadingWidth: 1.w,
+                title: Text(
+                  "Connect with admin",
+                  style: GoogleFonts.poppins(
+                    fontSize: 12.sp,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.bookmark,
+                  color: Colors.black,
+                  size: 3.h,
+                ),
+                minLeadingWidth: 1.w,
+                title: Text(
+                  "Save",
+                  style: GoogleFonts.poppins(
+                    fontSize: 12.sp,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.report_gmailerrorred,
+                  color: Colors.red,
+                  size: 3.h,
+                ),
+                onTap: () {
+                  reportmodalSheet();
+                },
+                minLeadingWidth: 1.w,
+                title: Text(
+                  "Report Event",
+                  style: GoogleFonts.poppins(
+                    fontSize: 12.sp,
+                    color: Colors.red,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  reportmodalSheet() {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(25),
+          topRight: Radius.circular(25),
+        ),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 4.w),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                height: 1.h,
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Color(0XFF444444),
+                      borderRadius: BorderRadius.circular(20)),
+                  height: 0.8.h,
+                  width: 20.w,
+                ),
+              ),
+              SizedBox(
+                height: 1.h,
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "Report",
+                  style: GoogleFonts.poppins(
+                    fontSize: 14.sp,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 4.h,
+              ),
+              Text(
+                "Why are you reporting this event?",
+                style: GoogleFonts.poppins(
+                  fontSize: 12.sp,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.all(0),
+                minLeadingWidth: 0,
+                leading: null,
+                title: Text(
+                  "Connect with admin",
+                  style: GoogleFonts.poppins(
+                    fontSize: 12.sp,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.all(0),
+                minLeadingWidth: 0,
+                leading: null,
+                title: Text(
+                  "Connect with admin",
+                  style: GoogleFonts.poppins(
+                    fontSize: 12.sp,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.all(0),
+                minLeadingWidth: 0,
+                leading: null,
+                title: Text(
+                  "Connect with admin",
+                  style: GoogleFonts.poppins(
+                    fontSize: 12.sp,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.all(0),
+                minLeadingWidth: 0,
+                leading: null,
+                title: Text(
+                  "Connect with admin",
+                  style: GoogleFonts.poppins(
+                    fontSize: 12.sp,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.all(0),
+                minLeadingWidth: 0,
+                leading: null,
+                title: Text(
+                  "Connect with admin",
+                  style: GoogleFonts.poppins(
+                    fontSize: 12.sp,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.all(0),
+                minLeadingWidth: 0,
+                leading: null,
+                title: Text(
+                  "Connect with admin",
+                  style: GoogleFonts.poppins(
+                    fontSize: 12.sp,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.all(0),
+                minLeadingWidth: 0,
+                leading: null,
+                title: Text(
+                  "Connect with admin",
+                  style: GoogleFonts.poppins(
+                    fontSize: 12.sp,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.all(0),
+                minLeadingWidth: 0,
+                leading: null,
+                title: Text(
+                  "Connect with admin",
+                  style: GoogleFonts.poppins(
+                    fontSize: 12.sp,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.all(0),
+                minLeadingWidth: 0,
+                leading: null,
+                title: Text(
+                  "Connect with admin",
+                  style: GoogleFonts.poppins(
+                    fontSize: 12.sp,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 }

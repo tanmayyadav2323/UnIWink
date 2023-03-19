@@ -97,7 +97,7 @@ class _EventCardState extends State<EventCard> {
               bottom: 1.h,
               child: GlassmorphicContainer(
                 height: 15.h,
-                border: 1,
+                border: 2,
                 borderRadius: 15,
                 borderGradient: LinearGradient(colors: [
                   Color(0XFFFFFFFF),
@@ -112,7 +112,6 @@ class _EventCardState extends State<EventCard> {
                   ],
                 ),
                 blur: 24,
-                
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
                   child: Column(
