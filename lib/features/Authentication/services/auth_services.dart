@@ -22,7 +22,7 @@ class AuthService {
   Future<void> authenticateUserPhone(
       {required String phoneNumber, required BuildContext context}) async {
     try {
-      User user = User(id: '', phone: phoneNumber, token: '', imageUrl: '',gender: '',des: '');
+      User user = User(id: '', phone: phoneNumber, token: '', imageUrl: '',gender: '',des: '', winks: []);
 
       http.Response res = await http.post(
         Uri.parse('$uri/api/authenticatePhone'),

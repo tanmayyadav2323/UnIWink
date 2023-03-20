@@ -3,15 +3,14 @@ import 'dart:ui';
 
 import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/config/utils.dart';
-import 'package:buddy_go/features/authentication/services/auth_services.dart';
 import 'package:buddy_go/features/events/services/event_services.dart';
+import 'package:buddy_go/features/events/widgets/participant_box.dart';
 import 'package:buddy_go/models/user_model.dart';
-import 'package:buddy_go/providers/user_provider.dart';
+import 'package:buddy_go/models/wink_model.dart';
 import 'package:buddy_go/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:buddy_go/models/event_model.dart';
 
@@ -40,7 +39,6 @@ class _EventScreenState extends State<EventScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final curUser = Provider.of<UserProvider>(context, listen: false).getUser();
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -281,7 +279,7 @@ class _EventScreenState extends State<EventScreen> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    participantsContainer(curUser)
+                    participantsContainer()
                   ],
                 ),
               ),
@@ -292,82 +290,7 @@ class _EventScreenState extends State<EventScreen> {
     );
   }
 
-  Widget participantBox(User user) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Row(
-          children: [
-            Container(
-              height: 8.h,
-              width: 8.h,
-              padding: const EdgeInsets.all(2),
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  colors: [
-                    Color(0XFFFF005C),
-                    Color(0XFFFFFFFF),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10.w),
-                child: Image.network(
-                  user.imageUrl,
-                  fit: BoxFit.contain,
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 4.w,
-            ),
-            Flexible(
-              child: Text(
-                '"${user.des}"',
-                maxLines: 4,
-                overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.poppins(
-                  fontSize: 10.sp,
-                  fontWeight: FontWeight.w300,
-                ),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 2.h,
-        ),
-        if (user.id != SessionHelper.id)
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
-            child: Text(
-              "Chat",
-              style: GoogleFonts.poppins(
-                fontSize: 10.sp,
-                fontWeight: FontWeight.w300,
-              ),
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: const Color(0XFFFF005C),
-            ),
-          ),
-        SizedBox(
-          height: 1.h,
-        ),
-        const Divider(
-          color: Colors.white,
-          thickness: 0.2,
-        )
-      ],
-    );
-  }
-
-  Widget participantsContainer(User curUser) {
+  Widget participantsContainer() {
     return FutureBuilder(
       future: eventServices.getMembers(
           context: context, members: widget.event.memberIds),
@@ -402,7 +325,9 @@ class _EventScreenState extends State<EventScreen> {
                         imageFilter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                         child: Column(
                           children: participants.map((participant) {
-                            return participantBox(participant);
+                            return ParticipantBox(
+                              user: participant,
+                            );
                           }).toList(),
                         ),
                       ),
@@ -447,7 +372,9 @@ class _EventScreenState extends State<EventScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 4.w),
                   child: Column(
                     children: participants.map((participant) {
-                      return participantBox(participant);
+                      return ParticipantBox(
+                        user: participant,
+                      );
                     }).toList(),
                   ),
                 )
@@ -465,7 +392,7 @@ class _EventScreenState extends State<EventScreen> {
     showModalBottomSheet(
       backgroundColor: Colors.white,
       context: context,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(25),
           topRight: Radius.circular(25),
@@ -473,7 +400,7 @@ class _EventScreenState extends State<EventScreen> {
       ),
       builder: (context) {
         return ClipRRect(
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(25),
             topRight: Radius.circular(25),
           ),
@@ -485,7 +412,7 @@ class _EventScreenState extends State<EventScreen> {
               ),
               Container(
                 decoration: BoxDecoration(
-                    color: Color(0XFF444444),
+                    color: const Color(0XFF444444),
                     borderRadius: BorderRadius.circular(20)),
                 height: 0.8.h,
                 width: 20.w,
@@ -572,7 +499,7 @@ class _EventScreenState extends State<EventScreen> {
       isScrollControlled: true,
       backgroundColor: Colors.white,
       context: context,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(25),
           topRight: Radius.circular(25),
@@ -593,7 +520,7 @@ class _EventScreenState extends State<EventScreen> {
                 alignment: Alignment.center,
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Color(0XFF444444),
+                      color: const Color(0XFF444444),
                       borderRadius: BorderRadius.circular(20)),
                   height: 0.8.h,
                   width: 20.w,
@@ -625,7 +552,7 @@ class _EventScreenState extends State<EventScreen> {
                 ),
               ),
               ListTile(
-                contentPadding: EdgeInsets.all(0),
+                contentPadding: const EdgeInsets.all(0),
                 minLeadingWidth: 0,
                 leading: null,
                 title: Text(
@@ -638,7 +565,7 @@ class _EventScreenState extends State<EventScreen> {
                 ),
               ),
               ListTile(
-                contentPadding: EdgeInsets.all(0),
+                contentPadding: const EdgeInsets.all(0),
                 minLeadingWidth: 0,
                 leading: null,
                 title: Text(
@@ -651,7 +578,7 @@ class _EventScreenState extends State<EventScreen> {
                 ),
               ),
               ListTile(
-                contentPadding: EdgeInsets.all(0),
+                contentPadding: const EdgeInsets.all(0),
                 minLeadingWidth: 0,
                 leading: null,
                 title: Text(
@@ -664,7 +591,7 @@ class _EventScreenState extends State<EventScreen> {
                 ),
               ),
               ListTile(
-                contentPadding: EdgeInsets.all(0),
+                contentPadding: const EdgeInsets.all(0),
                 minLeadingWidth: 0,
                 leading: null,
                 title: Text(
@@ -677,7 +604,7 @@ class _EventScreenState extends State<EventScreen> {
                 ),
               ),
               ListTile(
-                contentPadding: EdgeInsets.all(0),
+                contentPadding: const EdgeInsets.all(0),
                 minLeadingWidth: 0,
                 leading: null,
                 title: Text(
@@ -690,7 +617,7 @@ class _EventScreenState extends State<EventScreen> {
                 ),
               ),
               ListTile(
-                contentPadding: EdgeInsets.all(0),
+                contentPadding: const EdgeInsets.all(0),
                 minLeadingWidth: 0,
                 leading: null,
                 title: Text(
@@ -703,7 +630,7 @@ class _EventScreenState extends State<EventScreen> {
                 ),
               ),
               ListTile(
-                contentPadding: EdgeInsets.all(0),
+                contentPadding: const EdgeInsets.all(0),
                 minLeadingWidth: 0,
                 leading: null,
                 title: Text(
@@ -716,7 +643,7 @@ class _EventScreenState extends State<EventScreen> {
                 ),
               ),
               ListTile(
-                contentPadding: EdgeInsets.all(0),
+                contentPadding: const EdgeInsets.all(0),
                 minLeadingWidth: 0,
                 leading: null,
                 title: Text(
@@ -729,7 +656,7 @@ class _EventScreenState extends State<EventScreen> {
                 ),
               ),
               ListTile(
-                contentPadding: EdgeInsets.all(0),
+                contentPadding: const EdgeInsets.all(0),
                 minLeadingWidth: 0,
                 leading: null,
                 title: Text(

@@ -4,6 +4,7 @@ const eventRouter = express.Router();
 const Events = require("../models/event.model");
 const UserEvents = require("../models/user.events");
 const User = require("../models/user.model");
+const Wink = require("../models/wink.model");
 
 eventRouter.post('/api/create-event', auth, async (req, res) => {
     try {
@@ -126,8 +127,48 @@ eventRouter.post('/api/event-users', auth, async (req, res) => {
     try {
         const userIds = req.body.userIds;
         console.log(userIds);
-        let users = await User.find({ _id: { $in: userIds } });
+        let users = await User.find({ _id: { $in: userIds } }).populate('winks');
         res.json(users);
+    }
+    catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+eventRouter.post('/api/update-wink', auth, async (req, res) => {
+    try {
+        const winkId = req.body.winkId;
+        const status = req.body.status;
+
+        let wink = await Wink.findById(winkId);
+
+
+        wink.status = status;
+        await wink.save();
+        res.json({});
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+
+
+eventRouter.post('/api/wink-user', auth, async (req, res) => {
+    try {
+        const toUser = await User.findById(req.body.winkedToId);
+        const byUser = await User.findById(req.body.winkedById);
+
+        let wink = new Wink({
+            winkedById: req.body.winkedById,
+            winkedToId: req.body.winkedToId,
+            status: req.body.status
+        });
+
+        await wink.save();
+        toUser.winks.push(wink._id);
+        byUser.winks.push(wink._id);
+        await toUser.save();
+        await byUser.save();
     }
     catch (e) {
         res.status(500).json({ error: e.message });

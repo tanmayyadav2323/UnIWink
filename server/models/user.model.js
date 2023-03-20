@@ -21,7 +21,7 @@ const userSchema = new Schema(
     phoneOtp: String,
     gender: String,
     imageUrl: String,
-
+    winks: [{ type: Schema.Types.ObjectId, ref: "Wink" }],
   },
   { timestamps: true }
 );

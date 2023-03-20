@@ -5,7 +5,7 @@ import '../config/session_helper.dart';
 
 class UserProvider extends ChangeNotifier {
   User _user =
-      User(id: '', phone: '', token: '', imageUrl: '', gender: '', des: '');
+      User(id: '', phone: '', token: '', imageUrl: '', gender: '', des: '', winks: []);
 
   User get user => _user;
 

@@ -42,7 +42,6 @@ class _SplashScreenState extends State<SplashScreen> {
           (route) => false,
         );
       } else {
-        // AuthService().logOut(context);
         Navigator.pushNamedAndRemoveUntil(
           context,
           HomeScreen.routename,

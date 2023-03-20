@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:buddy_go/models/event_model.dart';
 import 'package:buddy_go/models/user_model.dart';
+import 'package:buddy_go/models/wink_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -41,7 +42,7 @@ class EventServices {
     }
   }
 
- Future<List<User>> getMembers(
+  Future<List<User>> getMembers(
       {required BuildContext context, required List<String> members}) async {
     List<User> users = [];
     try {
@@ -59,13 +60,13 @@ class EventServices {
         response: res,
         context: context,
         onSuccess: () {
-            for (int i = 0; i < jsonDecode(res.body).length; i++) {
-              users.add(User.fromJson(jsonEncode(
-                jsonDecode(
-                  res.body,
-                )[i],
-              )));
-            }
+          for (int i = 0; i < jsonDecode(res.body).length; i++) {
+            users.add(User.fromJson(jsonEncode(
+              jsonDecode(
+                res.body,
+              )[i],
+            )));
+          }
         },
       );
     } catch (e) {
@@ -73,5 +74,57 @@ class EventServices {
     }
     log(users.toString());
     return users;
+  }
+
+  Future<void> wink(
+      {required BuildContext context, required String winkToId}) async {
+    try {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/wink-user'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': userProvider.user.token,
+        },
+        body: WinkModel(
+                winkedById: userProvider.user.id,
+                status: WinkStatus.winked,
+                winkedToId: winkToId)
+            .toJson(),
+      );
+      // ignore: use_build_context_synchronously
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {},
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  Future<void> updateWink(
+      {required BuildContext context,
+      required String winkId,
+      required int status}) async {
+    try {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/update-wink'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': userProvider.user.token,
+        },
+        body: jsonEncode({"winkId": winkId, "status": status}),
+      );
+      // ignore: use_build_context_synchronously
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {},
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
   }
 }
