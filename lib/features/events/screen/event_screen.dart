@@ -4,7 +4,9 @@ import 'dart:ui';
 import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/config/utils.dart';
 import 'package:buddy_go/features/events/services/event_services.dart';
+import 'package:buddy_go/features/events/widgets/custom_modal_sheet.dart';
 import 'package:buddy_go/features/events/widgets/participant_box.dart';
+import 'package:buddy_go/features/home/screens/home_screen.dart';
 import 'package:buddy_go/models/user_model.dart';
 import 'package:buddy_go/models/wink_model.dart';
 import 'package:buddy_go/widgets/custom_button.dart';
@@ -420,38 +422,131 @@ class _EventScreenState extends State<EventScreen> {
               SizedBox(
                 height: 1.h,
               ),
-              ListTile(
-                leading: Icon(
-                  Icons.logout,
-                  color: Colors.black,
-                  size: 3.h,
-                ),
-                minLeadingWidth: 1.w,
-                title: Text(
-                  "Leave Event",
-                  style: GoogleFonts.poppins(
-                    fontSize: 12.sp,
+              if (widget.event.authorId != SessionHelper.id)
+                ListTile(
+                  leading: Icon(
+                    Icons.logout,
                     color: Colors.black,
-                    fontWeight: FontWeight.w500,
+                    size: 3.h,
+                  ),
+                  minLeadingWidth: 1.w,
+                  title: Text(
+                    "Leave Event",
+                    style: GoogleFonts.poppins(
+                      fontSize: 12.sp,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  onTap: () async {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text("Are you sure to leave event ?"),
+                            actions: [
+                              CustomButton(
+                                buttonText: "Yes",
+                                onPressed: () async {
+                                  await eventServices
+                                      .leaveEvent(
+                                    context: context,
+                                    eventId: widget.event.id!,
+                                  )
+                                      .then((value) {
+                                    Navigator.of(context).popUntil(
+                                      ModalRoute.withName(
+                                        HomeScreen.routename,
+                                      ),
+                                    );
+                                    Navigator.of(context).pushReplacementNamed(
+                                        HomeScreen.routename);
+                                  });
+                                },
+                              ),
+                              CustomButton(
+                                buttonText: "No",
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              )
+                            ],
+                          );
+                        });
+                  },
+                ),
+              if (widget.event.authorId == SessionHelper.id)
+                ListTile(
+                  leading: Icon(
+                    Icons.delete,
+                    color: Colors.black,
+                    size: 3.h,
+                  ),
+                  minLeadingWidth: 1.w,
+                  title: Text(
+                    "Delete Event",
+                    style: GoogleFonts.poppins(
+                      fontSize: 12.sp,
+                      color: Colors.red,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text("Are you sure to delete event ?"),
+                            content: Text(
+                                "All the data will be deleted and you will no longer be able to recover it"),
+                            actions: [
+                              CustomButton(
+                                buttonText: "Yes",
+                                onPressed: () async {
+                                  await eventServices
+                                      .deleteEvent(
+                                    context: context,
+                                    eventId: widget.event.id!,
+                                  )
+                                      .then((value) {
+                                    Navigator.of(context).popUntil(
+                                      ModalRoute.withName(
+                                        HomeScreen.routename,
+                                      ),
+                                    );
+                                    Navigator.of(context).pushReplacementNamed(
+                                        HomeScreen.routename);
+                                  });
+                                },
+                              ),
+                              CustomButton(
+                                buttonText: "No",
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              )
+                            ],
+                          );
+                        });
+                  },
+                ),
+              if (widget.event.authorId != SessionHelper.id)
+                ListTile(
+                  leading: Icon(
+                    Icons.person,
+                    color: Colors.black,
+                    size: 3.h,
+                  ),
+                  minLeadingWidth: 1.w,
+                  title: Text(
+                    "Connect with admin",
+                    style: GoogleFonts.poppins(
+                      fontSize: 12.sp,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.person,
-                  color: Colors.black,
-                  size: 3.h,
-                ),
-                minLeadingWidth: 1.w,
-                title: Text(
-                  "Connect with admin",
-                  style: GoogleFonts.poppins(
-                    fontSize: 12.sp,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
               ListTile(
                 leading: Icon(
                   Icons.bookmark,
@@ -468,25 +563,26 @@ class _EventScreenState extends State<EventScreen> {
                   ),
                 ),
               ),
-              ListTile(
-                leading: Icon(
-                  Icons.report_gmailerrorred,
-                  color: Colors.red,
-                  size: 3.h,
-                ),
-                onTap: () {
-                  reportmodalSheet();
-                },
-                minLeadingWidth: 1.w,
-                title: Text(
-                  "Report Event",
-                  style: GoogleFonts.poppins(
-                    fontSize: 12.sp,
+              if (widget.event.authorId != SessionHelper.id)
+                ListTile(
+                  leading: Icon(
+                    Icons.report_gmailerrorred,
                     color: Colors.red,
-                    fontWeight: FontWeight.w500,
+                    size: 3.h,
+                  ),
+                  onTap: () {
+                    reportmodalSheet();
+                  },
+                  minLeadingWidth: 1.w,
+                  title: Text(
+                    "Report Event",
+                    style: GoogleFonts.poppins(
+                      fontSize: 12.sp,
+                      color: Colors.red,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         );
@@ -494,6 +590,19 @@ class _EventScreenState extends State<EventScreen> {
     );
   }
 
+  List<String> messages = [
+    "I just don't like it",
+    "It's Spam",
+    "Nudity or sexual activity",
+    "Hate speech or symbols",
+    "False information",
+    "Bullying or harrasment",
+    "Violence or dangerous organization",
+    "Scam or fraud",
+    "Intellectual property violation",
+    "Sale of illegalor regulated goods",
+  ];
+  bool _showSecond = true;
   reportmodalSheet() {
     showModalBottomSheet(
       isScrollControlled: true,
@@ -506,170 +615,8 @@ class _EventScreenState extends State<EventScreen> {
         ),
       ),
       builder: (context) {
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 4.w),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                height: 1.h,
-              ),
-              Align(
-                alignment: Alignment.center,
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: const Color(0XFF444444),
-                      borderRadius: BorderRadius.circular(20)),
-                  height: 0.8.h,
-                  width: 20.w,
-                ),
-              ),
-              SizedBox(
-                height: 1.h,
-              ),
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "Report",
-                  style: GoogleFonts.poppins(
-                    fontSize: 14.sp,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 4.h,
-              ),
-              Text(
-                "Why are you reporting this event?",
-                style: GoogleFonts.poppins(
-                  fontSize: 12.sp,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              ListTile(
-                contentPadding: const EdgeInsets.all(0),
-                minLeadingWidth: 0,
-                leading: null,
-                title: Text(
-                  "Connect with admin",
-                  style: GoogleFonts.poppins(
-                    fontSize: 12.sp,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              ListTile(
-                contentPadding: const EdgeInsets.all(0),
-                minLeadingWidth: 0,
-                leading: null,
-                title: Text(
-                  "Connect with admin",
-                  style: GoogleFonts.poppins(
-                    fontSize: 12.sp,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              ListTile(
-                contentPadding: const EdgeInsets.all(0),
-                minLeadingWidth: 0,
-                leading: null,
-                title: Text(
-                  "Connect with admin",
-                  style: GoogleFonts.poppins(
-                    fontSize: 12.sp,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              ListTile(
-                contentPadding: const EdgeInsets.all(0),
-                minLeadingWidth: 0,
-                leading: null,
-                title: Text(
-                  "Connect with admin",
-                  style: GoogleFonts.poppins(
-                    fontSize: 12.sp,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              ListTile(
-                contentPadding: const EdgeInsets.all(0),
-                minLeadingWidth: 0,
-                leading: null,
-                title: Text(
-                  "Connect with admin",
-                  style: GoogleFonts.poppins(
-                    fontSize: 12.sp,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              ListTile(
-                contentPadding: const EdgeInsets.all(0),
-                minLeadingWidth: 0,
-                leading: null,
-                title: Text(
-                  "Connect with admin",
-                  style: GoogleFonts.poppins(
-                    fontSize: 12.sp,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              ListTile(
-                contentPadding: const EdgeInsets.all(0),
-                minLeadingWidth: 0,
-                leading: null,
-                title: Text(
-                  "Connect with admin",
-                  style: GoogleFonts.poppins(
-                    fontSize: 12.sp,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              ListTile(
-                contentPadding: const EdgeInsets.all(0),
-                minLeadingWidth: 0,
-                leading: null,
-                title: Text(
-                  "Connect with admin",
-                  style: GoogleFonts.poppins(
-                    fontSize: 12.sp,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              ListTile(
-                contentPadding: const EdgeInsets.all(0),
-                minLeadingWidth: 0,
-                leading: null,
-                title: Text(
-                  "Connect with admin",
-                  style: GoogleFonts.poppins(
-                    fontSize: 12.sp,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              )
-            ],
-          ),
+        return CustomModalSheet(
+          eventId: widget.event.id!,
         );
       },
     );

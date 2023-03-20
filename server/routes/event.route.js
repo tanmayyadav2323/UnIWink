@@ -5,6 +5,7 @@ const Events = require("../models/event.model");
 const UserEvents = require("../models/user.events");
 const User = require("../models/user.model");
 const Wink = require("../models/wink.model");
+const Report = require("../models/report.model");
 
 eventRouter.post('/api/create-event', auth, async (req, res) => {
     try {
@@ -67,7 +68,7 @@ eventRouter.get('/api/saved-events/:userId', auth, async (req, res) => {
 eventRouter.get('/api/my-events/:userId', auth, async (req, res) => {
     try {
         const userId = req.params.userId;
-        const events = await Events.find({}).where('authorId').equals(userId);
+        const events = await Events.find({ memberIds: { $in: [userId] } });
         console.log(events);
         res.json(events);
     }
@@ -135,6 +136,38 @@ eventRouter.post('/api/event-users', auth, async (req, res) => {
     }
 });
 
+
+eventRouter.post('/api/report-event', auth, async (req, res) => {
+    try {
+        const userId = req.body.userId;
+        const eventId = req.body.eventId;
+        const message = req.body.message;
+
+        let report = new Report({
+            userId: userId,
+            eventId: eventId,
+            message: message,
+        },);
+
+        await report.save();
+        res.json();
+    }
+    catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+eventRouter.post('/api/delete-event', auth, async (req, res) => {
+    try {
+        const eventId = req.body.eventId;
+        await Events.findByIdAndDelete(eventId);
+        res.json();
+    }
+    catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
 eventRouter.post('/api/update-wink', auth, async (req, res) => {
     try {
         const winkId = req.body.winkId;
@@ -174,6 +207,31 @@ eventRouter.post('/api/wink-user', auth, async (req, res) => {
         res.status(500).json({ error: e.message });
     }
 });
+
+eventRouter.post('/api/leave-event', auth, async (req, res) => {
+    try {
+        const eventId = req.body.eventId;
+        const userId = req.body.userId;
+        const imageUrl = req.body.imageUrl;
+
+        let updatedEvent = await Events.findById(eventId);
+        updatedEvent.memberIds = updatedEvent.memberIds.filter(id => id !== userId);
+        updatedEvent.memberImageUrls = updatedEvent.memberImageUrls.filter(url => url !== imageUrl);
+
+        let userEvents = await UserEvents.findById(userId);
+        if (userEvents) {
+            userEvents.eventIds = userEvents.eventIds.filter(id => id !== eventId);
+            await userEvents.save();
+        }
+
+        await updatedEvent.save();
+        return res.json();
+    }
+    catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
 
 async function joinEvent(eventId, userId, imageUrl) {
     try {

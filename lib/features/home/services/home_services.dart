@@ -218,7 +218,6 @@ class HomeServices {
   Future<void> saveEvent(
       {required BuildContext context,
       required String eventId,
-      required String userId,
       required bool add}) async {
     try {
       final userProvider = Provider.of<UserProvider>(context, listen: false);

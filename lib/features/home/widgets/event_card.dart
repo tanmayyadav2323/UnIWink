@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:avatar_stack/avatar_stack.dart';
 import 'package:buddy_go/features/events/screen/event_screen.dart';
+import 'package:buddy_go/features/home/services/home_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:glassmorphism/glassmorphism.dart';
@@ -28,6 +29,8 @@ class EventCard extends StatefulWidget {
 
 class _EventCardState extends State<EventCard> {
   bool bookMarked = false;
+  final HomeServices homeService = HomeServices();
+
   @override
   void initState() {
     bookMarked = widget.bookMarked;
@@ -77,9 +80,13 @@ class _EventCardState extends State<EventCard> {
               top: 1.5.h,
               right: 2.w,
               child: InkWell(
-                onTap: () {
+                onTap: () async {
                   bookMarked = !bookMarked;
-                  widget.onSaved(bookMarked);
+                  await homeService.saveEvent(
+                    context: context,
+                    eventId: widget.event.id!,
+                    add: bookMarked,
+                  );
                   setState(() {});
                 },
                 child: CircleAvatar(

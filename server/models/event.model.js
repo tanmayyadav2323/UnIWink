@@ -1,27 +1,27 @@
-const {model, Schema} = require("mongoose");
+const { model, Schema } = require("mongoose");
 
 const eventSchema = new Schema(
     {
-        title:{
+        title: {
             type: String,
-            required:true,
+            required: true,
 
         },
-        authorId:{
-            type:String,
-            required:true
+        authorId: {
+            type: String,
+            required: true
         },
-        organizer:{
-            type:String,
-            required:true
+        organizer: {
+            type: String,
+            required: true
         },
-        savedMembers:[String],
+        savedMembers: [String],
         memberIds: [String],
-        memberImageUrls:[String],
+        memberImageUrls: [String],
         creationDate: Date,
         about: String,
         image: String,
-        images: [String],  
+        images: [String],
         rating: Number,
         startDateTime: Date,
         endDateTime: Date
