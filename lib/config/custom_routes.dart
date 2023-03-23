@@ -2,6 +2,7 @@ import 'package:buddy_go/features/authentication/screens/verify_screen.dart';
 import 'package:buddy_go/features/Home/screens/home_screen.dart';
 import 'package:buddy_go/features/Onboarding/screens/about_me_screen.dart';
 import 'package:buddy_go/features/Onboarding/screens/choose_avatar_screen.dart';
+import 'package:buddy_go/features/chat/screens/channel_list_page.dart';
 import 'package:buddy_go/features/events/screen/event_screen.dart';
 import 'package:buddy_go/features/home/screens/create_event_screen.dart';
 import 'package:buddy_go/models/user_model.dart';
@@ -44,6 +45,11 @@ class CustomRouter {
         return MaterialPageRoute(
           settings: const RouteSettings(name: CreateEventScreen.routename),
           builder: (_) => CreateEventScreen(),
+        );
+      case ChannelListPage.routename:
+        return MaterialPageRoute(
+          settings: const RouteSettings(name: ChannelListPage.routename),
+          builder: (_) => ChannelListPage(),
         );
       case EventScreen.routename:
         return MaterialPageRoute(

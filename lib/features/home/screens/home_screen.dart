@@ -1,5 +1,6 @@
 import 'package:buddy_go/config/theme_colors.dart';
 import 'package:buddy_go/config/utils.dart';
+import 'package:buddy_go/features/chat/screens/channel_list_page.dart';
 
 import 'package:buddy_go/features/home/screens/create_event_screen.dart';
 import 'package:buddy_go/features/home/services/home_services.dart';
@@ -97,9 +98,12 @@ class _HomeScreenState extends State<HomeScreen>
                       SizedBox(
                         width: 6.w,
                       ),
-                      SvgPicture.asset(
-                        "assets/icons/message_icon.svg",
-                        height: 2.5.h,
+                      InkWell(
+                        onTap: ()=>Navigator.of(context).pushNamed(ChannelListPage.routename),
+                        child: SvgPicture.asset(
+                          "assets/icons/message_icon.svg",
+                          height: 2.5.h,
+                        ),
                       )
                     ],
                   ),

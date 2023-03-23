@@ -1,13 +1,17 @@
+import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/features/authentication/screens/login_screen.dart';
 import 'package:buddy_go/features/authentication/services/auth_services.dart';
+import 'package:buddy_go/features/chat/api/stream_api.dart';
+import 'package:buddy_go/features/chat/utils/chat_client.dart';
 import 'package:buddy_go/features/home/screens/home_screen.dart';
 import 'package:buddy_go/features/Onboarding/screens/choose_avatar_screen.dart';
 import 'package:buddy_go/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
-import '../../models/user_model.dart';
+import '../../models/user_model.dart' as UserModel;
 
 class SplashScreen extends StatefulWidget {
   static const routename = '/splashscreen';
@@ -27,8 +31,10 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void checkUserData() async {
-    await authService.getUserData(context).then((value) {
-      final User user = Provider.of<UserProvider>(context, listen: false).user;
+    await authService.getUserData(context).then((value) async {
+      final UserModel.User user =
+          Provider.of<UserProvider>(context, listen: false).user;
+
       if (user.token.isEmpty) {
         Navigator.pushNamedAndRemoveUntil(
           context,
@@ -42,11 +48,20 @@ class _SplashScreenState extends State<SplashScreen> {
           (route) => false,
         );
       } else {
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          HomeScreen.routename,
-          (route) => false,
-        );
+   
+        await StreamApi.initUser(
+          StreamChat.of(context).client,
+          name: '',
+          imageUrl: SessionHelper.imageUrl,
+          id: SessionHelper.id,
+          context: context,
+        ).then((value) {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            HomeScreen.routename,
+            (route) => false,
+          );
+        });
       }
     });
   }

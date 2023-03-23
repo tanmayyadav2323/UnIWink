@@ -130,7 +130,7 @@ class _EventScreenState extends State<EventScreen> {
                           flex: 4,
                           child: Column(
                             children: [
-                              const Row(
+                               Row(
                                 children: [
                                   Icon(
                                     Icons.location_on,

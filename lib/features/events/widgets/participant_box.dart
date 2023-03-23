@@ -2,11 +2,14 @@ import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/features/events/services/event_services.dart';
 import 'package:flutter/material.dart';
 
-import 'package:buddy_go/models/user_model.dart';
+import 'package:buddy_go/models/user_model.dart' as UserModel;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 import '../../../models/wink_model.dart';
+import '../../chat/api/stream_api.dart';
+import '../../chat/screens/channel_page.dart';
 
 enum WinkBoxStatus {
   winkById,
@@ -17,7 +20,7 @@ enum WinkBoxStatus {
 }
 
 class ParticipantBox extends StatefulWidget {
-  final User user;
+  final UserModel.User user;
   const ParticipantBox({
     Key? key,
     required this.user,
@@ -29,7 +32,7 @@ class ParticipantBox extends StatefulWidget {
 
 class _ParticipantBoxState extends State<ParticipantBox> {
   WinkBoxStatus status = WinkBoxStatus.none;
-  late User user;
+  late UserModel.User user;
   final eventService = EventServices();
   late WinkModel winkModel;
 
@@ -157,6 +160,19 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                     context: context,
                     winkId: winkModel.id!,
                     status: WinkStatus.accepted.index);
+                final channel = StreamChat.of(context).client.channel(
+                      'messaging',
+                      extraData: {
+                        'members': [SessionHelper.id, widget.user.id],
+                        'u1id': SessionHelper.id,
+                        'u2id': widget.user.id,
+                      },
+                      id: StreamApi.generateChannelId(
+                        SessionHelper.id,
+                        widget.user.id,
+                      ),
+                    );
+                await channel.watch();
                 setState(() {
                   status = WinkBoxStatus.accepted;
                 });
@@ -230,27 +246,50 @@ class _ParticipantBoxState extends State<ParticipantBox> {
           ),
         );
       case WinkBoxStatus.accepted:
-        return Container(
-          padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: const Color(0XFFFF005C),
-          ),
-          child: Text(
-            "Chat",
-            style: GoogleFonts.poppins(
-              fontSize: 10.sp,
-              fontWeight: FontWeight.w300,
+        return InkWell(
+          onTap: () async {
+            final client = StreamChat.of(context).client;
+            final channel = await client
+                .queryChannels(
+                  state: true,
+                  watch: true,
+                  filter: Filter.in_(
+                    'members',
+                    [widget.user.id, SessionHelper.id],
+                  ),
+                )
+                .first;
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => StreamChannel(
+                  key: ValueKey(channel.first.cid),
+                  channel: channel.first,
+                  child: const ChannelPage(),
+                ),
+              ),
+            );
+          },
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: const Color(0XFFFF005C),
+            ),
+            child: Text(
+              "Chat",
+              style: GoogleFonts.poppins(
+                fontSize: 10.sp,
+                fontWeight: FontWeight.w300,
+              ),
             ),
           ),
         );
       case WinkBoxStatus.none:
         return InkWell(
           onTap: () async {
-            await eventService.wink(
-              context: context,
-              winkToId: widget.user.id
-            );
+            await eventService.wink(context: context, winkToId: widget.user.id);
             setState(() {
               status = WinkBoxStatus.winkById;
             });
