@@ -1,6 +1,10 @@
+import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/config/utils.dart';
 import 'package:buddy_go/features/chat/screens/channel_page.dart';
+import 'package:buddy_go/widgets/members_row.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:sizer/sizer.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class ChannelListPage extends StatefulWidget {
@@ -40,79 +44,58 @@ class _ChannelListPageState extends State<ChannelListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamChannelListView(
-        controller: _listController,
-        itemBuilder: (context, channels, index, defaultChannelTile) {
-          if (channels.isNotEmpty) {
-            return ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text("Tanmay"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => StreamChannel(
-                      key: ValueKey(channels[index].cid),
-                      channel: channels[index],
-                      child: const ChannelPage(),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Text(
+              "Chat Page",
+              style: GoogleFonts.poppins(
+                  fontSize: 16.sp, fontWeight: FontWeight.w400),
+            ),
+            MembersRow(),
+            StreamChannelListView(
+              shrinkWrap: true,
+              controller: _listController,
+              itemBuilder: (context, channels, index, defaultChannelTile) {
+                final member = channels[index]
+                    .state!
+                    .members
+                    .firstWhere((m) => m.userId != SessionHelper.id)
+                    .user;
+                if (channels.isNotEmpty) {
+                  return ListTile(
+                    tileColor: Colors.black,
+                    leading: CircleAvatar(
+                      radius: 40,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: Image.network(
+                          member!.image!,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
-                  ),
-                );
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => StreamChannel(
+                            key: ValueKey(channels[index].cid),
+                            channel: channels[index],
+                            child: const ChannelPage(),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }
+                return const SizedBox.shrink();
               },
-            );
-          }
-          return const SizedBox.shrink();
-        },
-        onChannelTap: (channel) {},
+              onChannelTap: (channel) {},
+            ),
+          ],
+        ),
       ),
     );
-  }
-
-  Widget _channelTileBuilder(BuildContext context, List<Channel> channels,
-      int index, StreamChannelListTile defaultChannelTile) {
-    try {
-      final channel = channels[index];
-      final lastMessage = channel.state?.messages.reversed.firstWhere(
-        (message) => message.isDeleted,
-      );
-
-      final subtitle = lastMessage == null ? 'nothing yet' : lastMessage.text!;
-      final opacity = (channel.state?.unreadCount ?? 0) > 0 ? 1.0 : 0.5;
-
-      final theme = StreamChatTheme.of(context);
-
-      return ListTile(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => StreamChannel(
-                channel: channel,
-                child: const ChannelPage(),
-              ),
-            ),
-          );
-        },
-        leading: StreamChannelAvatar(
-          channel: channel,
-        ),
-        title: StreamChannelName(
-          channel: channel,
-          textStyle: theme.channelPreviewTheme.titleStyle!.copyWith(
-            color: theme.colorTheme.textHighEmphasis.withOpacity(opacity),
-          ),
-        ),
-        subtitle: Text(subtitle),
-        trailing: channel.state!.unreadCount > 0
-            ? CircleAvatar(
-                radius: 10,
-                child: Text(channel.state!.unreadCount.toString()),
-              )
-            : const SizedBox(),
-      );
-    } catch (e) {
-      showSnackBar(context, e.toString());
-    }
-    return const SizedBox();
   }
 }

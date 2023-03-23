@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/config/theme_colors.dart';
 import 'package:buddy_go/config/utils.dart';
 import 'package:buddy_go/features/chat/screens/channel_list_page.dart';
@@ -6,11 +9,13 @@ import 'package:buddy_go/features/home/screens/create_event_screen.dart';
 import 'package:buddy_go/features/home/services/home_services.dart';
 import 'package:buddy_go/features/home/widgets/event_card.dart';
 import 'package:buddy_go/models/event_model.dart';
+import 'package:buddy_go/widgets/members_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import '../../../providers/user_provider.dart';
 import '../../background/bg_screen.dart';
 
@@ -99,7 +104,8 @@ class _HomeScreenState extends State<HomeScreen>
                         width: 6.w,
                       ),
                       InkWell(
-                        onTap: ()=>Navigator.of(context).pushNamed(ChannelListPage.routename),
+                        onTap: () => Navigator.of(context)
+                            .pushNamed(ChannelListPage.routename),
                         child: SvgPicture.asset(
                           "assets/icons/message_icon.svg",
                           height: 2.5.h,
@@ -169,36 +175,7 @@ class _HomeScreenState extends State<HomeScreen>
                   ),
                 ),
                 SliverToBoxAdapter(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 1.h,
-                      ),
-                      const Divider(
-                        color: Colors.white,
-                      ),
-                      SizedBox(
-                        height: 1.h,
-                      ),
-                      SizedBox(
-                        height: 8.h,
-                        child: Row(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child: Image.network(userProvider.user.imageUrl),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 1.5.h,
-                      ),
-                      const Divider(
-                        color: Colors.white,
-                      ),
-                    ],
-                  ),
+                  child: MembersRow(),
                 ),
                 SliverAppBar(
                   backgroundColor: backgroundColor,
