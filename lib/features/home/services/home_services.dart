@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:buddy_go/config/global_variables.dart';
+import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/models/user_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:buddy_go/config/error_handling.dart';
@@ -117,6 +119,39 @@ class HomeServices {
     }
 
     return events;
+  }
+
+  Future<List<User>> winkMembers({required BuildContext context}) async {
+    List<User> users = [];
+    try {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/user-winks'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': userProvider.user.token,
+        },
+        body: jsonEncode({"userId": userProvider.user.id}),
+      );
+      // ignore: use_build_context_synchronously
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          for (int i = 0; i < jsonDecode(res.body).length; i++) {
+            users.add(User.fromJson(jsonEncode(
+              jsonDecode(
+                res.body,
+              )[i],
+            )));
+          }
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+
+    return users;
   }
 
   Future<List<EventModel>> getAllPastEvents({

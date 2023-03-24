@@ -6,8 +6,13 @@ import 'package:buddy_go/config/utils.dart';
 import 'package:buddy_go/features/chat/screens/channel_list_page.dart';
 
 import 'package:buddy_go/features/home/screens/create_event_screen.dart';
+import 'package:buddy_go/features/home/screens/winks_screen.dart';
 import 'package:buddy_go/features/home/services/home_services.dart';
 import 'package:buddy_go/features/home/widgets/event_card.dart';
+import 'package:buddy_go/features/home/widgets/my_events.dart';
+import 'package:buddy_go/features/home/widgets/ongoing_events.dart';
+import 'package:buddy_go/features/home/widgets/past_events.dart';
+
 import 'package:buddy_go/models/event_model.dart';
 import 'package:buddy_go/widgets/members_row.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +23,8 @@ import 'package:sizer/sizer.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import '../../../providers/user_provider.dart';
 import '../../background/bg_screen.dart';
+import '../../search/screens/search_event_screen.dart';
+import '../widgets/saved_events.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routename = '/home-screen';
@@ -34,33 +41,20 @@ class _HomeScreenState extends State<HomeScreen>
   List<String> eventsStatus = ["Ongoing", "my event", "prev", "saved"];
   int eventIndex = 0;
   final scrollController = ScrollController();
-  int _selectedIndex = 0;
   late TabController _tabController;
   late PageController _pageController;
 
   @override
   void initState() {
     super.initState();
-    _tabController =
-        TabController(length: 4, vsync: this, initialIndex: _selectedIndex);
+    _tabController = TabController(length: 4, vsync: this, initialIndex: 0);
     _pageController = PageController(
-      initialPage: _selectedIndex,
+      initialPage: 0,
     );
-    // _tabController.addListener(() {
-    //   setState(() {
-    //     _selectedIndex = _tabController.index;
-    //   });
-    // });
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
@@ -89,9 +83,13 @@ class _HomeScreenState extends State<HomeScreen>
                   child: Row(
                     children: [
                       const Spacer(),
-                      SvgPicture.asset(
-                        "assets/icons/logo_icon.svg",
-                        height: 2.h,
+                      InkWell(
+                        child: SvgPicture.asset(
+                          "assets/icons/logo_icon.svg",
+                          height: 2.h,
+                        ),
+                        onTap: () => Navigator.of(context)
+                            .pushNamed(WinkScreen.routename),
                       ),
                       SizedBox(
                         width: 6.w,
@@ -116,14 +114,14 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
                 SliverToBoxAdapter(
                   child: Container(
-                    padding: EdgeInsets.all(1),
+                    padding: const EdgeInsets.all(1),
                     margin: EdgeInsets.only(top: 2.h),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       gradient: LinearGradient(
                         colors: [
                           Colors.white,
-                          Color(0XFF25AECC).withOpacity(0.1),
+                          const Color(0XFF25AECC).withOpacity(0.1),
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -137,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen>
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
-                        gradient: LinearGradient(
+                        gradient: const LinearGradient(
                           colors: [
                             Color(0XFF6C6D83),
                             Color(0XFF202143),
@@ -148,8 +146,8 @@ class _HomeScreenState extends State<HomeScreen>
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Color(0XFF000000).withOpacity(0.25),
-                            offset: Offset(0, 4),
+                            color: const Color(0XFF000000).withOpacity(0.25),
+                            offset: const Offset(0, 4),
                             blurRadius: 4,
                           )
                         ],
@@ -165,16 +163,20 @@ class _HomeScreenState extends State<HomeScreen>
                             color: Colors.white,
                           ),
                           border: InputBorder.none,
-                          suffixIcon: Icon(
+                          suffixIcon: const Icon(
                             Icons.search,
                             color: Colors.white,
                           ),
                         ),
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(SearchEvent.routename);
+                        },
                       ),
                     ),
                   ),
                 ),
-                SliverToBoxAdapter(
+                const SliverToBoxAdapter(
                   child: MembersRow(),
                 ),
                 SliverAppBar(
@@ -188,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen>
                     unselectedLabelColor: Colors.white.withOpacity(0.3),
                     indicatorColor: Colors.white,
                     controller: _tabController,
-                    tabs: [
+                    tabs: const [
                       Tab(
                         child: Text('Ongoing Events'),
                       ),
@@ -204,7 +206,7 @@ class _HomeScreenState extends State<HomeScreen>
                     ],
                     onTap: (index) {
                       _pageController.animateToPage(index,
-                          duration: Duration(milliseconds: 400),
+                          duration: const Duration(milliseconds: 400),
                           curve: Curves.linear);
                     },
                   ),
@@ -216,128 +218,22 @@ class _HomeScreenState extends State<HomeScreen>
               onPageChanged: (index) {
                 _tabController.animateTo(index);
                 _pageController.animateToPage(index,
-                    duration: Duration(milliseconds: 400),
+                    duration: const Duration(milliseconds: 400),
                     curve: Curves.linear);
               },
               itemBuilder: (context, index) {
-                if (index == 0) return allOngoingEvents(userProvider.user.id);
-                if (index == 1) return myEvents(userProvider.user.id);
-                if (index == 2) return prevEvent(userProvider.user.id);
-                return saved(userProvider.user.id);
+                if (index == 0) {
+                  return OngoingEvents(userId: SessionHelper.id);
+                }
+                if (index == 1) return MyEvents(userId: SessionHelper.id);
+                if (index == 2) return PastEvents(userId: SessionHelper.id);
+                return SavedEvents(userId: SessionHelper.id);
               },
               itemCount: 4,
             ),
           ),
         ),
       ),
-    );
-  }
-
-  Widget myEvents(String userId) {
-    return FutureBuilder(
-      future: homeServices.getMyEvents(context: context),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          showSnackBar(context, snapshot.error.toString());
-        } else if (snapshot.hasData) {
-          events = snapshot.data;
-          return ListView(
-            children: events.asMap().entries.map((event) {
-              return EventCard(
-                onSaved: (val) async {},
-                event: event.value,
-                bookMarked: event.value.savedMembers.contains(userId),
-              );
-            }).toList(),
-          );
-        } else {
-          return const Center(child: Text('No data'));
-        }
-        return const SizedBox.shrink();
-      },
-    );
-  }
-
-  Widget prevEvent(String userId) {
-    return FutureBuilder(
-      future: homeServices.getAllPastEvents(context: context),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          showSnackBar(context, snapshot.error.toString());
-        } else if (snapshot.hasData) {
-          events = snapshot.data;
-          return ListView(
-            children: events.asMap().entries.map((event) {
-              return EventCard(
-                onSaved: (val) async {},
-                event: event.value,
-                bookMarked: event.value.savedMembers.contains(userId),
-              );
-            }).toList(),
-          );
-        } else {
-          return const Center(child: Text('No data'));
-        }
-        return const SizedBox.shrink();
-      },
-    );
-  }
-
-  Widget saved(String userId) {
-    return FutureBuilder(
-      future: homeServices.getSavedEvent(context: context),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          showSnackBar(context, snapshot.error.toString());
-        } else if (snapshot.hasData) {
-          events = snapshot.data;
-          return ListView(
-            children: events.asMap().entries.map((event) {
-              return EventCard(
-                onSaved: (val) async {},
-                event: event.value,
-                bookMarked: event.value.savedMembers.contains(userId),
-              );
-            }).toList(),
-          );
-        } else {
-          return const Center(child: Text('No data'));
-        }
-        return const SizedBox.shrink();
-      },
-    );
-  }
-
-  Widget allOngoingEvents(String userId) {
-    return FutureBuilder(
-      future: homeServices.getOngoingEvents(context: context),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          showSnackBar(context, snapshot.error.toString());
-        } else if (snapshot.hasData) {
-          events = snapshot.data;
-          return ListView(
-            children: events.asMap().entries.map((event) {
-              return EventCard(
-                onSaved: (val) async {},
-                event: event.value,
-                bookMarked: event.value.savedMembers.contains(userId),
-              );
-            }).toList(),
-          );
-        } else {
-          return const Center(child: Text('No data'));
-        }
-        return const SizedBox.shrink();
-      },
     );
   }
 }

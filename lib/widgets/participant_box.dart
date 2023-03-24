@@ -7,9 +7,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
-import '../../../models/wink_model.dart';
-import '../../chat/api/stream_api.dart';
-import '../../chat/screens/channel_page.dart';
+import '../models/wink_model.dart';
+import '../features/chat/api/stream_api.dart';
+import '../features/chat/screens/channel_page.dart';
 
 enum WinkBoxStatus {
   winkById,

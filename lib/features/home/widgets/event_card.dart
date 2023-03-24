@@ -1,6 +1,8 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:avatar_stack/avatar_stack.dart';
+import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/features/events/screen/event_screen.dart';
 import 'package:buddy_go/features/home/services/home_services.dart';
 import 'package:flutter/material.dart';
@@ -14,13 +16,9 @@ import 'package:buddy_go/models/event_model.dart';
 
 class EventCard extends StatefulWidget {
   final EventModel event;
-  final bool bookMarked;
-  final Function(bool) onSaved;
   const EventCard({
     Key? key,
     required this.event,
-    required this.bookMarked,
-    required this.onSaved,
   }) : super(key: key);
 
   @override
@@ -33,8 +31,7 @@ class _EventCardState extends State<EventCard> {
 
   @override
   void initState() {
-    bookMarked = widget.bookMarked;
-    setState(() {});
+    bookMarked = widget.event.savedMembers.contains(SessionHelper.id);
     super.initState();
   }
 

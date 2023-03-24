@@ -110,6 +110,19 @@ eventRouter.post('/api/save-event', auth, async (req, res) => {
     }
 });
 
+eventRouter.get('/api/search-events/:search', auth, async (req, res) => {
+    try {
+        const search_query = req.params.search;
+        console.log(search_query.toString());
+        const events = await Events.find({ title: { $regex: new RegExp(`^${search_query}`, 'i') } });
+        console.log(events);
+        return res.json(events);
+    }
+    catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
 eventRouter.post('/api/join-event', auth, async (req, res) => {
     try {
         const { eventId, userId, imageUrl } = req.body;
@@ -136,6 +149,24 @@ eventRouter.post('/api/event-users', auth, async (req, res) => {
     }
 });
 
+
+eventRouter.post('/api/user-winks', auth, async (req, res) => {
+    try {
+        const userId = req.body.userId;
+        let user = await User.findById(userId).populate('winks');
+
+
+        const otherUserIds = user.winks.map(wink => {
+            const otherUserId = wink.winkedToId.toString() === userId ? wink.winkedById.toString() : wink.winkedToId.toString();
+            return otherUserId;
+        });
+        let users = await User.find({ _id: { $in: otherUserIds } }).populate('winks');
+        res.json(users);
+    }
+    catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
 
 eventRouter.post('/api/report-event', auth, async (req, res) => {
     try {

@@ -5,7 +5,7 @@ import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/config/utils.dart';
 import 'package:buddy_go/features/events/services/event_services.dart';
 import 'package:buddy_go/features/events/widgets/custom_modal_sheet.dart';
-import 'package:buddy_go/features/events/widgets/participant_box.dart';
+import 'package:buddy_go/widgets/participant_box.dart';
 import 'package:buddy_go/features/home/screens/home_screen.dart';
 import 'package:buddy_go/models/user_model.dart';
 import 'package:buddy_go/models/wink_model.dart';

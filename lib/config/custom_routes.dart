@@ -5,6 +5,8 @@ import 'package:buddy_go/features/Onboarding/screens/choose_avatar_screen.dart';
 import 'package:buddy_go/features/chat/screens/channel_list_page.dart';
 import 'package:buddy_go/features/events/screen/event_screen.dart';
 import 'package:buddy_go/features/home/screens/create_event_screen.dart';
+import 'package:buddy_go/features/home/screens/winks_screen.dart';
+import 'package:buddy_go/features/search/screens/search_event_screen.dart';
 import 'package:buddy_go/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -58,25 +60,35 @@ class CustomRouter {
             event: (settings.arguments as Map)["event"],
           ),
         );
+      case SearchEvent.routename:
+        return MaterialPageRoute(
+          settings: const RouteSettings(name: SearchEvent.routename),
+          builder: (_) => const SearchEvent(),
+        );
+      case WinkScreen.routename:
+        return MaterialPageRoute(
+          settings: const RouteSettings(name: WinkScreen.routename),
+          builder: (_) => const WinkScreen(),
+        );
       case ChooseAIAvatarScreen.routename:
         return MaterialPageRoute(
           settings: const RouteSettings(name: ChooseAIAvatarScreen.routename),
-          builder: (_) => ChooseAIAvatarScreen(),
+          builder: (_) => const ChooseAIAvatarScreen(),
         );
       case VerifyPhoneNumberScreen.routename:
         return MaterialPageRoute(
           settings: const RouteSettings(name: LoginScreen.routename),
-          builder: (_) => VerifyPhoneNumberScreen(),
+          builder: (_) => const VerifyPhoneNumberScreen(),
         );
       case HomeScreen.routename:
         return MaterialPageRoute(
           settings: const RouteSettings(name: HomeScreen.routename),
-          builder: (_) => HomeScreen(),
+          builder: (_) => const HomeScreen(),
         );
       case SplashScreen.routename:
         return MaterialPageRoute(
           settings: const RouteSettings(name: SplashScreen.routename),
-          builder: (_) => SplashScreen(),
+          builder: (_) => const SplashScreen(),
         );
       default:
         return _errorRoute();
