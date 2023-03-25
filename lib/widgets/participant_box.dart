@@ -1,3 +1,7 @@
+import 'dart:developer';
+import 'dart:math';
+
+import 'package:buddy_go/config/global_variables.dart';
 import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/features/events/services/event_services.dart';
 import 'package:flutter/material.dart';
@@ -129,9 +133,11 @@ class _ParticipantBoxState extends State<ParticipantBox> {
         return InkWell(
           onTap: () async {
             await eventService.updateWink(
-                context: context,
-                winkId: winkModel.id!,
-                status: WinkStatus.unwinked.index);
+              context: context,
+              winkId: winkModel.id!,
+              status: WinkStatus.unwinked.index,
+              message: winkModel.message,
+            );
             setState(() {
               status = WinkBoxStatus.unWinked;
             });
@@ -152,83 +158,119 @@ class _ParticipantBoxState extends State<ParticipantBox> {
           ),
         );
       case WinkBoxStatus.winkToId:
-        return Row(
+        return Column(
           children: [
-            InkWell(
-              onTap: () async {
-                await eventService.updateWink(
-                    context: context,
-                    winkId: winkModel.id!,
-                    status: WinkStatus.accepted.index);
-                final channel = StreamChat.of(context).client.channel(
-                      'messaging',
-                      extraData: {
-                        'members': [SessionHelper.id, widget.user.id],
-                        'u1id': SessionHelper.id,
-                        'u2id': widget.user.id,
-                      },
-                      id: StreamApi.generateChannelId(
-                        SessionHelper.id,
-                        widget.user.id,
+            if (winkModel.message.isNotEmpty) Text(winkModel.message),
+            Row(
+              children: [
+                InkWell(
+                  onTap: () async {
+                    String randomName1 =
+                        randomNames[Random().nextInt(randomNames.length)];
+                    String randomName2 =
+                        randomNames[Random().nextInt(randomNames.length)];
+
+                    await eventService.updateWink(
+                        context: context,
+                        winkId: winkModel.id!,
+                        message: winkModel.message,
+                        status: WinkStatus.accepted.index);
+                    final channel = StreamChat.of(context).client.channel(
+                          'messaging',
+                          extraData: {
+                            'members': [SessionHelper.id, widget.user.id],
+                            'u1id': SessionHelper.id,
+                            'u2id': widget.user.id,
+                            '${SessionHelper.id}_name': randomName1,
+                            '${widget.user.id}_name': randomName2,
+                          },
+                          id: StreamApi.generateChannelId(
+                            SessionHelper.id,
+                            widget.user.id,
+                          ),
+                        );
+                    await channel.watch();
+                    setState(() {
+                      status = WinkBoxStatus.accepted;
+                    });
+                  },
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: const Color(0XFFFF005C),
+                    ),
+                    child: Text(
+                      "Accept",
+                      style: GoogleFonts.poppins(
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.w300,
                       ),
-                    );
-                await channel.watch();
-                setState(() {
-                  status = WinkBoxStatus.accepted;
-                });
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: const Color(0XFFFF005C),
-                ),
-                child: Text(
-                  "Accept",
-                  style: GoogleFonts.poppins(
-                    fontSize: 10.sp,
-                    fontWeight: FontWeight.w300,
+                    ),
                   ),
                 ),
-              ),
+                InkWell(
+                  onTap: () async {
+                    await eventService.updateWink(
+                        context: context,
+                        message: winkModel.message,
+                        winkId: winkModel.id!,
+                        status: WinkStatus.unwinked.index);
+                    setState(() {
+                      status = WinkBoxStatus.unWinked;
+                    });
+                  },
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: const Color(0XFFFF005C),
+                    ),
+                    child: Text(
+                      "Reject",
+                      style: GoogleFonts.poppins(
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                  ),
+                )
+              ],
             ),
-            InkWell(
-              onTap: () async {
-                await eventService.updateWink(
-                    context: context,
-                    winkId: winkModel.id!,
-                    status: WinkStatus.unwinked.index);
-                setState(() {
-                  status = WinkBoxStatus.unWinked;
-                });
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: const Color(0XFFFF005C),
-                ),
-                child: Text(
-                  "Reject",
-                  style: GoogleFonts.poppins(
-                    fontSize: 10.sp,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
-              ),
-            )
           ],
         );
       case WinkBoxStatus.unWinked:
         return InkWell(
           onTap: () async {
-            await eventService.updateWink(
-                context: context,
-                winkId: winkModel.id!,
-                status: WinkStatus.winked.index);
-            setState(() {
-              status = WinkBoxStatus.winkById;
-            });
+            final TextEditingController _textEditingController =
+                TextEditingController(text: winkModel.message);
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text('Send Connection Message'),
+                content: TextField(
+                  controller: _textEditingController,
+                ),
+                actions: [
+                  InkWell(
+                    onTap: () async {
+                      await eventService.updateWink(
+                        context: context,
+                        winkId: winkModel.id!,
+                        message: _textEditingController.text,
+                        status: WinkStatus.winked.index,
+                      );
+                      setState(() {
+                        status = WinkBoxStatus.winkById;
+                      });
+                    },
+                    child: Text("Wink"),
+                  )
+                ],
+              ),
+            );
           },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
@@ -289,10 +331,33 @@ class _ParticipantBoxState extends State<ParticipantBox> {
       case WinkBoxStatus.none:
         return InkWell(
           onTap: () async {
-            await eventService.wink(context: context, winkToId: widget.user.id);
-            setState(() {
-              status = WinkBoxStatus.winkById;
-            });
+            final TextEditingController _textEditingController =
+                TextEditingController(text: '');
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text('Send Connection Message'),
+                content: TextField(
+                  controller: _textEditingController,
+                ),
+                actions: [
+                  InkWell(
+                    onTap: () async {
+                      await eventService.wink(
+                        context: context,
+                        winkToId: widget.user.id,
+                        message: _textEditingController.text,
+                      );
+
+                      setState(() {
+                        status = WinkBoxStatus.winkById;
+                      });
+                    },
+                    child: Text("Wink"),
+                  )
+                ],
+              ),
+            );
           },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),

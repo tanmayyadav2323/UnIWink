@@ -8,6 +8,9 @@ const winkSchema = new Schema(
             ref: "User",
             required: true,
         },
+        message: {
+            type: String,
+        },
         winkedById: {
             type: Schema.Types.ObjectId,
             ref: "User",

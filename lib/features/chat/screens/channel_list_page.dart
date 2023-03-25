@@ -1,5 +1,4 @@
 import 'package:buddy_go/config/session_helper.dart';
-import 'package:buddy_go/config/utils.dart';
 import 'package:buddy_go/features/chat/screens/channel_page.dart';
 import 'package:buddy_go/widgets/members_row.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +51,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
               style: GoogleFonts.poppins(
                   fontSize: 16.sp, fontWeight: FontWeight.w400),
             ),
-            MembersRow(),
+            const MembersRow(),
             StreamChannelListView(
               shrinkWrap: true,
               controller: _listController,
@@ -65,12 +64,15 @@ class _ChannelListPageState extends State<ChannelListPage> {
                 if (channels.isNotEmpty) {
                   return ListTile(
                     tileColor: Colors.black,
+                    title: Text(channels[index]
+                        .extraData['${member!.id}_name']
+                        .toString()),
                     leading: CircleAvatar(
                       radius: 40,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(30),
                         child: Image.network(
-                          member!.image!,
+                          member.image!,
                           fit: BoxFit.cover,
                         ),
                       ),

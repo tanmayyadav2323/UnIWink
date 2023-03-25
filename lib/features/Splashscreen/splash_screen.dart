@@ -48,7 +48,6 @@ class _SplashScreenState extends State<SplashScreen> {
           (route) => false,
         );
       } else {
-   
         await StreamApi.initUser(
           StreamChat.of(context).client,
           name: '',

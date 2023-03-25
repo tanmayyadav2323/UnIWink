@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/config/theme_colors.dart';
 import 'package:buddy_go/config/utils.dart';
+import 'package:buddy_go/features/authentication/services/auth_services.dart';
 import 'package:buddy_go/features/chat/screens/channel_list_page.dart';
 
 import 'package:buddy_go/features/home/screens/create_event_screen.dart';
@@ -83,6 +84,15 @@ class _HomeScreenState extends State<HomeScreen>
                   child: Row(
                     children: [
                       const Spacer(),
+                      InkWell(
+                        child: Icon(Icons.logout),
+                        onTap: () {
+                          AuthService().logOut(context);
+                        },
+                      ),
+                      SizedBox(
+                        width: 6.w,
+                      ),
                       InkWell(
                         child: SvgPicture.asset(
                           "assets/icons/logo_icon.svg",

@@ -165,7 +165,9 @@ class EventServices {
   }
 
   Future<void> wink(
-      {required BuildContext context, required String winkToId}) async {
+      {required BuildContext context,
+      required String winkToId,
+      required String message}) async {
     try {
       final userProvider = Provider.of<UserProvider>(context, listen: false);
       http.Response res = await http.post(
@@ -175,10 +177,11 @@ class EventServices {
           'x-auth-token': userProvider.user.token,
         },
         body: WinkModel(
-                winkedById: userProvider.user.id,
-                status: WinkStatus.winked,
-                winkedToId: winkToId)
-            .toJson(),
+          winkedById: userProvider.user.id,
+          status: WinkStatus.winked,
+          winkedToId: winkToId,
+          message: message,
+        ).toJson(),
       );
       // ignore: use_build_context_synchronously
       httpErrorHandle(
@@ -191,10 +194,12 @@ class EventServices {
     }
   }
 
-  Future<void> updateWink(
-      {required BuildContext context,
-      required String winkId,
-      required int status}) async {
+  Future<void> updateWink({
+    required BuildContext context,
+    required String winkId,
+    required int status,
+    required String message,
+  }) async {
     try {
       final userProvider = Provider.of<UserProvider>(context, listen: false);
       http.Response res = await http.post(
@@ -203,7 +208,11 @@ class EventServices {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userProvider.user.token,
         },
-        body: jsonEncode({"winkId": winkId, "status": status}),
+        body: jsonEncode({
+          "winkId": winkId,
+          "status": status,
+          "message": message,
+        }),
       );
       // ignore: use_build_context_synchronously
       httpErrorHandle(

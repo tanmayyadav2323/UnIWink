@@ -203,10 +203,11 @@ eventRouter.post('/api/update-wink', auth, async (req, res) => {
     try {
         const winkId = req.body.winkId;
         const status = req.body.status;
+        const message = req.body.message;
 
         let wink = await Wink.findById(winkId);
 
-
+        wink.message = message;
         wink.status = status;
         await wink.save();
         res.json({});
@@ -225,7 +226,8 @@ eventRouter.post('/api/wink-user', auth, async (req, res) => {
         let wink = new Wink({
             winkedById: req.body.winkedById,
             winkedToId: req.body.winkedToId,
-            status: req.body.status
+            status: req.body.status,
+            message: req.body.message
         });
 
         await wink.save();

@@ -22,7 +22,14 @@ class AuthService {
   Future<void> authenticateUserPhone(
       {required String phoneNumber, required BuildContext context}) async {
     try {
-      User user = User(id: '', phone: phoneNumber, token: '', imageUrl: '',gender: '',des: '', winks: []);
+      User user = User(
+          id: '',
+          phone: phoneNumber,
+          token: '',
+          imageUrl: '',
+          gender: '',
+          des: '',
+          winks: []);
 
       http.Response res = await http.post(
         Uri.parse('$uri/api/authenticatePhone'),
@@ -46,36 +53,32 @@ class AuthService {
 
   Future<void> verifyPhoneNumber(
       {required String otp, required BuildContext context}) async {
-    try {
-      http.Response res = await http.post(
-        Uri.parse('$uri/api/verifyPhone'),
-        body: jsonEncode({"otp": otp, "userId": userId}),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8'
-        },
-      );
-
-      httpErrorHandle(
-        response: res,
-        context: context,
-        onSuccess: () async {
-          showSnackBar(context, "Phone Number Verified!");
-          Provider.of<UserProvider>(context, listen: false).setUser(res.body);
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          await prefs
-              .setString('x-auth-token', jsonDecode(res.body)["data"]['token'])
-              .then((value) {
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              SplashScreen.routename,
-              (route) => false,
-            );
-          });
-        },
-      );
-    } catch (e) {
-      showSnackBar(context, e.toString());
-    }
+    http.Response res = await http.post(
+      Uri.parse('$uri/api/verifyPhone'),
+      body: jsonEncode({"otp": otp, "userId": userId}),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8'
+      },
+    );
+    log(res.body.toString());
+    httpErrorHandle(
+      response: res,
+      context: context,
+      onSuccess: () async {
+        showSnackBar(context, "Phone Number Verified!");
+        Provider.of<UserProvider>(context, listen: false).setUser(res.body);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs
+            .setString('x-auth-token', jsonDecode(res.body)["data"]['token'])
+            .then((value) {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            SplashScreen.routename,
+            (route) => false,
+          );
+        });
+      },
+    );
   }
 
   //get user data

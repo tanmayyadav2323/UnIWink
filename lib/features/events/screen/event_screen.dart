@@ -5,6 +5,7 @@ import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/config/utils.dart';
 import 'package:buddy_go/features/events/services/event_services.dart';
 import 'package:buddy_go/features/events/widgets/custom_modal_sheet.dart';
+import 'package:buddy_go/features/home/services/home_services.dart';
 import 'package:buddy_go/widgets/participant_box.dart';
 import 'package:buddy_go/features/home/screens/home_screen.dart';
 import 'package:buddy_go/models/user_model.dart';
@@ -30,11 +31,15 @@ class EventScreen extends StatefulWidget {
 
 class _EventScreenState extends State<EventScreen> {
   final EventServices eventServices = EventServices();
+  final HomeServices homeService = HomeServices();
+  bool saved = false;
 
   List<User> participants = [];
   List<String> memberIds = [];
+
   @override
   void initState() {
+    saved = widget.event.savedMembers.contains(SessionHelper.id);
     memberIds = widget.event.memberIds;
     super.initState();
   }
@@ -130,7 +135,7 @@ class _EventScreenState extends State<EventScreen> {
                           flex: 4,
                           child: Column(
                             children: [
-                               Row(
+                              Row(
                                 children: [
                                   Icon(
                                     Icons.location_on,
@@ -532,6 +537,9 @@ class _EventScreenState extends State<EventScreen> {
                 ),
               if (widget.event.authorId != SessionHelper.id)
                 ListTile(
+                  onTap: (){
+                    
+                  },
                   leading: Icon(
                     Icons.person,
                     color: Colors.black,
@@ -548,6 +556,17 @@ class _EventScreenState extends State<EventScreen> {
                   ),
                 ),
               ListTile(
+                onTap: () async {
+                  await homeService.saveEvent(
+                    context: context,
+                    eventId: widget.event.id!,
+                    add: !saved,
+                  );
+                  setState(() {
+                    saved = !saved;
+                  });
+                  Navigator.of(context).pop();
+                },
                 leading: Icon(
                   Icons.bookmark,
                   color: Colors.black,
@@ -555,7 +574,7 @@ class _EventScreenState extends State<EventScreen> {
                 ),
                 minLeadingWidth: 1.w,
                 title: Text(
-                  "Save",
+                  saved ? "Unsave" : "Save",
                   style: GoogleFonts.poppins(
                     fontSize: 12.sp,
                     color: Colors.black,

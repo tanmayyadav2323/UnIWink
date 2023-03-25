@@ -1,11 +1,19 @@
+import 'dart:developer';
+
 import 'package:buddy_go/models/user_model.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../config/session_helper.dart';
 
 class UserProvider extends ChangeNotifier {
-  User _user =
-      User(id: '', phone: '', token: '', imageUrl: '', gender: '', des: '', winks: []);
+  User _user = User(
+      id: '',
+      phone: '',
+      token: '',
+      imageUrl: '',
+      gender: '',
+      des: '',
+      winks: []);
 
   User get user => _user;
 

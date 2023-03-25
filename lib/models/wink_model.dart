@@ -11,26 +11,29 @@ class WinkModel {
   final String winkedById;
   final String winkedToId;
   final WinkStatus status;
+  final String message;
 
   WinkModel({
     this.id,
     required this.winkedById,
     required this.winkedToId,
     required this.status,
+    required this.message,
   });
 
   WinkModel copyWith({
     String? id,
     String? winkedById,
     String? winkedToId,
+    String? message,
     WinkStatus? status,
   }) {
     return WinkModel(
-      id: id ?? this.id,
-      winkedById: winkedById ?? this.winkedById,
-      winkedToId: winkedToId ?? this.winkedToId,
-      status: status ?? this.status,
-    );
+        id: id ?? this.id,
+        winkedById: winkedById ?? this.winkedById,
+        winkedToId: winkedToId ?? this.winkedToId,
+        status: status ?? this.status,
+        message: message ?? this.message);
   }
 
   Map<String, dynamic> toMap() {
@@ -39,6 +42,7 @@ class WinkModel {
       'winkedById': winkedById,
       'winkedToId': winkedToId,
       'status': status.index,
+      'message': message
     };
   }
 
@@ -48,27 +52,9 @@ class WinkModel {
       winkedById: map['winkedById'],
       winkedToId: map['winkedToId'],
       status: WinkStatus.values[map['status']],
+      message: map['message'] ?? '',
     );
   }
 
   String toJson() => json.encode(toMap());
-
-  factory WinkModel.fromJson(String source) => WinkModel.fromMap(json.decode(source));
-
-  @override
-  String toString() => 'WinkModel(id: $id, winkedById: $winkedById, winkedToId: $winkedToId, status: $status)';
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is WinkModel &&
-        other.id == id &&
-        other.winkedById == winkedById &&
-        other.winkedToId == winkedToId &&
-        other.status == status;
-  }
-
-  @override
-  int get hashCode => id.hashCode ^ winkedById.hashCode ^ winkedToId.hashCode ^ status.hashCode;
 }
