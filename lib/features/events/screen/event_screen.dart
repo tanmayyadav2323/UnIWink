@@ -8,7 +8,7 @@ import 'package:buddy_go/features/events/widgets/custom_modal_sheet.dart';
 import 'package:buddy_go/features/home/services/home_services.dart';
 import 'package:buddy_go/widgets/participant_box.dart';
 import 'package:buddy_go/features/home/screens/home_screen.dart';
-import 'package:buddy_go/models/user_model.dart';
+import 'package:buddy_go/models/user_model.dart' as UserModel;
 import 'package:buddy_go/models/wink_model.dart';
 import 'package:buddy_go/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +16,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'package:buddy_go/models/event_model.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class EventScreen extends StatefulWidget {
   static const routename = '/event-screen';
@@ -34,7 +35,7 @@ class _EventScreenState extends State<EventScreen> {
   final HomeServices homeService = HomeServices();
   bool saved = false;
 
-  List<User> participants = [];
+  List<UserModel.User> participants = [];
   List<String> memberIds = [];
 
   @override
@@ -135,22 +136,32 @@ class _EventScreenState extends State<EventScreen> {
                           flex: 4,
                           child: Column(
                             children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.location_on,
-                                    color: Color(0XFFFF005C),
-                                  ),
-                                  SizedBox(
-                                    width: 4,
-                                  ),
-                                  Flexible(
-                                    child: Text(
-                                      "Plot no: 2/36 vandhe marg nagar near ",
-                                      overflow: TextOverflow.ellipsis,
+                              InkWell(
+                                onTap: () async {
+                                  String googleMapsUrl = 'geo:0,0';
+                                  if (true) {
+                                    await launchURL(context, googleMapsUrl);
+                                  } else {
+                                    throw 'Could not launch Google Maps.';
+                                  }
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.location_on,
+                                      color: Color(0XFFFF005C),
                                     ),
-                                  )
-                                ],
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Flexible(
+                                      child: Text(
+                                        "Plot no: 2/36 vandhe marg nagar near ",
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                               SizedBox(
                                 height: 1.h,
@@ -537,9 +548,7 @@ class _EventScreenState extends State<EventScreen> {
                 ),
               if (widget.event.authorId != SessionHelper.id)
                 ListTile(
-                  onTap: (){
-                    
-                  },
+                  onTap: () {},
                   leading: Icon(
                     Icons.person,
                     color: Colors.black,

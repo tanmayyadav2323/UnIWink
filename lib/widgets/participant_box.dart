@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:math';
 
 import 'package:buddy_go/config/global_variables.dart';
@@ -302,6 +301,33 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                 )
                 .first;
 
+            if (channel.isEmpty) {
+              String randomName1 =
+                  randomNames[Random().nextInt(randomNames.length)];
+              String randomName2 =
+                  randomNames[Random().nextInt(randomNames.length)];
+
+              await eventService.updateWink(
+                  context: context,
+                  winkId: winkModel.id!,
+                  message: winkModel.message,
+                  status: WinkStatus.accepted.index);
+              final channel = StreamChat.of(context).client.channel(
+                    'messaging',
+                    extraData: {
+                      'members': [SessionHelper.id, widget.user.id],
+                      'u1id': SessionHelper.id,
+                      'u2id': widget.user.id,
+                      '${SessionHelper.id}_name': randomName1,
+                      '${widget.user.id}_name': randomName2,
+                    },
+                    id: StreamApi.generateChannelId(
+                      SessionHelper.id,
+                      widget.user.id,
+                    ),
+                  );
+              await channel.watch();
+            }
             Navigator.push(
               context,
               MaterialPageRoute(
