@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:avatar_stack/avatar_stack.dart';
 import 'package:buddy_go/config/session_helper.dart';
+import 'package:buddy_go/config/theme_colors.dart';
 import 'package:buddy_go/features/events/screen/event_screen.dart';
 import 'package:buddy_go/features/home/services/home_services.dart';
 import 'package:flutter/material.dart';
@@ -43,38 +44,41 @@ class _EventCardState extends State<EventCard> {
             arguments: {"event": widget.event});
       },
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 2.h),
-        padding: EdgeInsets.all(1),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-          gradient: LinearGradient(
-            colors: [
-              Color(0XFFA5A5A5),
-              Colors.black.withOpacity(0.5),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
+        padding: EdgeInsets.only(top: 2.h),
         child: Stack(
           alignment: Alignment.center,
           children: [
             Positioned(
               child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: 30.h,
+                height: 26.h,
+                margin: EdgeInsets.symmetric(vertical: 2.h),
+                padding: EdgeInsets.all(1),
                 decoration: BoxDecoration(
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(15),
-                  image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: NetworkImage(widget.event.image),
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0XFFA5A5A5),
+                      Colors.black.withOpacity(0.5),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: NetworkImage(widget.event.image),
+                    ),
                   ),
                 ),
               ),
             ),
             Positioned(
-              top: 1.5.h,
+              top: 4.h,
               right: 2.w,
               child: InkWell(
                 onTap: () async {
@@ -91,33 +95,22 @@ class _EventCardState extends State<EventCard> {
                   backgroundColor: Colors.white,
                   child: Icon(
                     Icons.bookmark_outlined,
-                    color: bookMarked ? Color(0XFF6C6C82) : Colors.green,
+                    color: bookMarked ? Color(0XFFB70450) : Color(0xff6C6C82),
                     size: 3.h,
                   ),
                 ),
               ),
             ),
             Positioned(
-              bottom: 1.h,
-              child: GlassmorphicContainer(
-                height: 15.h,
-                border: 2,
-                borderRadius: 15,
-                borderGradient: LinearGradient(colors: [
-                  Color(0XFFFFFFFF),
-                  Color(0XFFCC2525).withOpacity(0.0)
-                ]),
+              bottom: 3.h,
+              child: Container(
+                height: 14.h,
                 alignment: Alignment.center,
-                width: MediaQuery.of(context).size.width * 0.9,
-                linearGradient: LinearGradient(
-                  colors: [
-                    Color(0XFFFFFEFE).withOpacity(0.4),
-                    Color(0XFFC4C4C4).withOpacity(0.1),
-                  ],
-                ),
-                blur: 24,
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                color: backgroundColor,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+                  padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 1.h),
                   child: Column(
                     children: [
                       Row(
@@ -131,7 +124,7 @@ class _EventCardState extends State<EventCard> {
                                   Text(
                                     widget.event.title,
                                     style: GoogleFonts.poppins(
-                                      fontSize: 24,
+                                      fontSize: 12.sp,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
@@ -142,7 +135,7 @@ class _EventCardState extends State<EventCard> {
                                 "by ${widget.event.organizer}",
                                 style: GoogleFonts.poppins(
                                   fontSize: 8.sp,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w400,
                                 ),
                               )
                             ],
@@ -164,7 +157,7 @@ class _EventCardState extends State<EventCard> {
                                       .format(widget.event.endDateTime)
                                       .toString(),
                                   style: GoogleFonts.poppins(
-                                    fontSize: 10.sp,
+                                    fontSize: 8.sp,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.black,
                                     height: 1,
@@ -178,7 +171,7 @@ class _EventCardState extends State<EventCard> {
                                       .format(widget.event.endDateTime)
                                       .toString(),
                                   style: GoogleFonts.poppins(
-                                    fontSize: 10.sp,
+                                    fontSize: 8.sp,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.black,
                                     height: 1,
@@ -190,10 +183,10 @@ class _EventCardState extends State<EventCard> {
                         ],
                       ),
                       SizedBox(
-                        height: 1.h,
+                        height: 2.h,
                       ),
                       SizedBox(
-                        height: 5.h,
+                        height: 4.h,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [

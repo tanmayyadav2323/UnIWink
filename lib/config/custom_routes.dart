@@ -1,3 +1,4 @@
+import 'package:buddy_go/features/Dashboard/screns/dashboard_screen.dart';
 import 'package:buddy_go/features/authentication/screens/verify_screen.dart';
 import 'package:buddy_go/features/Home/screens/home_screen.dart';
 import 'package:buddy_go/features/Onboarding/screens/about_me_screen.dart';
@@ -10,7 +11,7 @@ import 'package:buddy_go/features/search/screens/search_event_screen.dart';
 import 'package:buddy_go/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-
+import 'package:page_transition/page_transition.dart';
 import '../features/authentication/screens/login_screen.dart';
 import '../features/Onboarding/screens/choose_ai_avatar.dart';
 import '../features/splashscreen/splash_screen.dart';
@@ -44,9 +45,11 @@ class CustomRouter {
           ),
         );
       case CreateEventScreen.routename:
-        return MaterialPageRoute(
+        return PageTransition(
+          type: PageTransitionType.bottomToTop,
+          duration: Duration(milliseconds: 500),
           settings: const RouteSettings(name: CreateEventScreen.routename),
-          builder: (_) => CreateEventScreen(),
+          child: CreateEventScreen(),
         );
       case ChannelListPage.routename:
         return MaterialPageRoute(
@@ -64,6 +67,11 @@ class CustomRouter {
         return MaterialPageRoute(
           settings: const RouteSettings(name: SearchEvent.routename),
           builder: (_) => const SearchEvent(),
+        );
+      case DashBoardScreen.routename:
+        return MaterialPageRoute(
+          settings: const RouteSettings(name: DashBoardScreen.routename),
+          builder: (_) => const DashBoardScreen(),
         );
       case WinkScreen.routename:
         return MaterialPageRoute(

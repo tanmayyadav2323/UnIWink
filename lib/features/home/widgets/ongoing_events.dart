@@ -17,7 +17,7 @@ class OngoingEvents extends StatefulWidget {
 class _OngoingEventsState extends State<OngoingEvents> {
   final HomeServices homeServices = HomeServices();
   List<EventModel> events = [];
-  
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(

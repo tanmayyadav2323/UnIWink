@@ -18,6 +18,8 @@ import 'package:sizer/sizer.dart';
 import 'package:buddy_go/models/event_model.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
+import '../../Dashboard/screns/dashboard_screen.dart';
+
 class EventScreen extends StatefulWidget {
   static const routename = '/event-screen';
   final EventModel event;
@@ -472,11 +474,11 @@ class _EventScreenState extends State<EventScreen> {
                                       .then((value) {
                                     Navigator.of(context).popUntil(
                                       ModalRoute.withName(
-                                        HomeScreen.routename,
+                                        DashBoardScreen.routename,
                                       ),
                                     );
                                     Navigator.of(context).pushReplacementNamed(
-                                        HomeScreen.routename);
+                                        DashBoardScreen.routename);
                                   });
                                 },
                               ),
@@ -527,11 +529,11 @@ class _EventScreenState extends State<EventScreen> {
                                       .then((value) {
                                     Navigator.of(context).popUntil(
                                       ModalRoute.withName(
-                                        HomeScreen.routename,
+                                        DashBoardScreen.routename,
                                       ),
                                     );
                                     Navigator.of(context).pushReplacementNamed(
-                                        HomeScreen.routename);
+                                        DashBoardScreen.routename);
                                   });
                                 },
                               ),

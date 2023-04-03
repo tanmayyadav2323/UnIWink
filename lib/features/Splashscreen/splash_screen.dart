@@ -1,4 +1,5 @@
 import 'package:buddy_go/config/session_helper.dart';
+import 'package:buddy_go/features/Dashboard/screns/dashboard_screen.dart';
 import 'package:buddy_go/features/authentication/screens/login_screen.dart';
 import 'package:buddy_go/features/authentication/services/auth_services.dart';
 import 'package:buddy_go/features/chat/api/stream_api.dart';
@@ -57,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
         ).then((value) {
           Navigator.pushNamedAndRemoveUntil(
             context,
-            HomeScreen.routename,
+            DashBoardScreen.routename,
             (route) => false,
           );
         });

@@ -46,14 +46,14 @@ class _MyAppState extends State<MyApp> {
               scaffoldBackgroundColor: backgroundColor,
               iconTheme: IconThemeData(color: Colors.white),
               colorScheme: ColorScheme.dark()),
-          // initialRoute: SplashScreen.routename,
-          // builder: (context, child) => StreamChat(
-          //   // streamChatThemeData: StreamChatThemeData(),
-          //   client: client,
-          //   child: child,
-          // ),
-          // onGenerateRoute: CustomRouter.onGenerateRoute,
-          home: PlacePickerScreen(),
+          initialRoute: SplashScreen.routename,
+          builder: (context, child) => StreamChat(
+            // streamChatThemeData: StreamChatThemeData(),
+            client: client,
+            child: child,
+          ),
+          onGenerateRoute: CustomRouter.onGenerateRoute,
+          // home: PlacePickerScreen(),
         );
       },
     );

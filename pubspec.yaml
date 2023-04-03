@@ -61,6 +61,8 @@ dependencies:
   geolocator: ^9.0.2
   geocoding: ^2.1.0
   google_places_for_flutter: ^1.0.1
+  persistent_bottom_nav_bar: ^5.0.2
+  page_transition: ^2.0.9
 
 dev_dependencies:
   flutter_test:
