@@ -2,10 +2,12 @@ import 'dart:math';
 
 import 'package:buddy_go/config/global_variables.dart';
 import 'package:buddy_go/config/session_helper.dart';
+import 'package:buddy_go/config/theme_colors.dart';
 import 'package:buddy_go/features/events/services/event_services.dart';
 import 'package:flutter/material.dart';
 
 import 'package:buddy_go/models/user_model.dart' as UserModel;
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
@@ -72,29 +74,56 @@ class _ParticipantBoxState extends State<ParticipantBox> {
       children: [
         Row(
           children: [
-            Container(
-              height: 8.h,
-              width: 8.h,
-              padding: const EdgeInsets.all(2),
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  colors: [
-                    Color(0XFFFF005C),
-                    Color(0XFFFFFFFF),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+            if (winkModel.status == WinkStatus.winked)
+              Stack(
+                children: [
+                  Container(
+                    height: 8.h,
+                    width: 8.h,
+                    padding: const EdgeInsets.all(2),
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0XFFFF005C),
+                          Color(0XFFFFFFFF),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10.w),
+                      child: Image.network(
+                        user.imageUrl,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: CircleAvatar(
+                        backgroundColor: backgroundColor,
+                        radius: 1.2.h,
+                        child: SvgPicture.asset(
+                          "assets/icons/wink_img.svg",
+                        ),
+                      ))
+                ],
+              ),
+            if (winkModel.status != WinkStatus.winked)
+              SizedBox(
+                height: 8.h,
+                width: 8.h,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10.w),
+                  child: Image.network(
+                    user.imageUrl,
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10.w),
-                child: Image.network(
-                  user.imageUrl,
-                  fit: BoxFit.contain,
-                ),
-              ),
-            ),
             SizedBox(
               width: 4.w,
             ),

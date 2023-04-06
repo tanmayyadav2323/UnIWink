@@ -63,6 +63,8 @@ dependencies:
   google_places_for_flutter: ^1.0.1
   persistent_bottom_nav_bar: ^5.0.2
   page_transition: ^2.0.9
+  table_calendar: ^3.0.8
+  image_cropper: ^3.0.2
 
 dev_dependencies:
   flutter_test:

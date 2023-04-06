@@ -7,6 +7,27 @@ const User = require("../models/user.model");
 const Wink = require("../models/wink.model");
 const Report = require("../models/report.model");
 
+eventRouter.post('/api/edit-event', auth, async (req, res) => {
+    try {
+        console.log(req.body.title);
+        let event = await Events.findById(req.body.id);
+        event.title = req.body.title;
+        event.organizer = req.body.organizer;
+        event.about = req.body.about;
+        event.image = req.body.image;
+        event.images = req.body.images;
+        event.startDateTime = req.body.startDateTime;
+        event.endDateTime = req.body.endDateTime;
+        await event.save();
+
+        res.json(event);
+    }
+    catch (e) {
+        console.log(e.message);
+        res.status(500).json({ error: e.message });
+    }
+});
+
 eventRouter.post('/api/create-event', auth, async (req, res) => {
     try {
         let event = new Events({
@@ -68,7 +89,7 @@ eventRouter.get('/api/saved-events/:userId', auth, async (req, res) => {
 eventRouter.get('/api/my-events/:userId', auth, async (req, res) => {
     try {
         const userId = req.params.userId;
-        const events = await Events.find({ memberIds: { $in: [userId] } });
+        const events = await Events.find({ authorId: userId });
         console.log(events);
         res.json(events);
     }
@@ -76,6 +97,24 @@ eventRouter.get('/api/my-events/:userId', auth, async (req, res) => {
         res.status(500).json({ error: e.message });
     }
 });
+
+eventRouter.get('/api/joined-events/:userId', auth, async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const events = await Events.find({
+            $and: [
+                { memberIds: { $in: [userId] } },
+                { authorId: { $ne: userId } }
+            ]
+        });
+        console.log(events);
+        res.json(events);
+    }
+    catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
 
 eventRouter.get('/api/past-events', auth, async (req, res) => {
     try {

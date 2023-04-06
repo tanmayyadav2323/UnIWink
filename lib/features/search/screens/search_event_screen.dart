@@ -1,9 +1,11 @@
 import 'package:buddy_go/features/search/services/search_services.dart';
 import 'package:buddy_go/models/event_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../../config/theme_colors.dart';
 import '../../Home/widgets/event_card.dart';
 
 class SearchEvent extends StatefulWidget {
@@ -27,66 +29,51 @@ class _SearchEventState extends State<SearchEvent> {
       child: Scaffold(
         body: SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 4.w),
+            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
             child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.all(1),
-                  margin: EdgeInsets.only(top: 2.h),
+                  padding: EdgeInsets.all(0.75),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(10),
                     gradient: LinearGradient(
-                      colors: [
-                        Colors.white,
-                        Color(0XFF25AECC).withOpacity(0.1),
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
+                      colors: [Colors.white, Colors.white.withOpacity(0.4)],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
                     ),
                   ),
                   child: Container(
                     height: 5.5.h,
                     width: double.infinity,
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.only(left: 4.w),
+                    padding: EdgeInsets.only(left: 2.w),
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0XFF6C6D83),
-                          Color(0XFF202143),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        transform: GradientRotation(13),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color(0XFF000000).withOpacity(0.25),
-                          offset: Offset(0, 4),
-                          blurRadius: 4,
-                        )
-                      ],
+                      borderRadius: BorderRadius.circular(10),
+                      color: backgroundColor,
                     ),
                     child: TextFormField(
+                      style: GoogleFonts.poppins(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
                       cursorColor: Colors.white,
                       decoration: InputDecoration(
-                        hintText: "Search for an event",
+                        hintText: "Search for an Event",
                         hintStyle: GoogleFonts.poppins(
                           fontSize: 12.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white.withOpacity(0.6),
                         ),
                         border: InputBorder.none,
-                        suffixIcon: Icon(
-                          Icons.search,
-                          color: Colors.white,
+                        suffixIcon: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 1.75.h),
+                          child: SvgPicture.asset(
+                            "assets/icons/outlined_search.svg",
+                          ),
                         ),
                       ),
                       onChanged: (String val) async {
-                        events =
-                            await searchService.searchEvents(context: context,search: val);
+                        events = await searchService.searchEvents(
+                            context: context, search: val);
                         setState(() {});
                       },
                     ),

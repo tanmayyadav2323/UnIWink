@@ -18,28 +18,35 @@ class WinkScreen extends StatefulWidget {
 
 class _WinkScreenState extends State<WinkScreen> {
   final homeServices = HomeServices();
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            Text(
-              "Winks",
-              style: GoogleFonts.poppins(
-                fontSize: 24.sp,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 4.w),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 2.h,
               ),
-            ),
-            winkMemberContainer(context),
-          ],
+              Text(
+                "Winks",
+                style: GoogleFonts.poppins(
+                  fontSize: 24.sp,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              SizedBox(
+                height: 4.h,
+              ),
+              winkMemberContainer(context),
+            ],
+          ),
         ),
       ),
     );
   }
-
-
-  
 
   FutureBuilder<List<User>> winkMemberContainer(BuildContext context) {
     return FutureBuilder(

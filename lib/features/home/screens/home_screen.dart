@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
+import 'package:buddy_go/features/home/widgets/joined_events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -137,6 +138,7 @@ class _HomeScreenState extends State<HomeScreen>
                     child: Row(
                       children: [
                         Expanded(
+                          flex: 3,
                           child: InkWell(
                             onTap: () {
                               Navigator.of(context)
@@ -151,12 +153,12 @@ class _HomeScreenState extends State<HomeScreen>
                                     Colors.white,
                                     Colors.white.withOpacity(0.4)
                                   ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
                                 ),
                               ),
                               child: Container(
-                                  height: 5.5.h,
+                                  height: 5.h,
                                   width: double.infinity,
                                   padding: EdgeInsets.all(1.h),
                                   decoration: BoxDecoration(
@@ -171,8 +173,8 @@ class _HomeScreenState extends State<HomeScreen>
                                         "Search for an Event",
                                         style: GoogleFonts.poppins(
                                           fontSize: 12.sp,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.white.withOpacity(0.4),
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.white.withOpacity(0.6),
                                         ),
                                       ),
                                       SvgPicture.asset(
@@ -184,19 +186,21 @@ class _HomeScreenState extends State<HomeScreen>
                             ),
                           ),
                         ),
-                        SizedBox(
-                          width: 6.w,
-                        ),
-                        SvgPicture.asset(
-                          "assets/icons/outlined_profile.svg",
-                          height: 3.h,
-                        ),
-                        SizedBox(
-                          width: 5.w,
-                        ),
-                        SvgPicture.asset(
-                          "assets/icons/outlined_msg.svg",
-                          height: 3.h,
+                        Expanded(
+                          child: Row(
+                            children: [
+                              Spacer(),
+                              SvgPicture.asset(
+                                "assets/icons/outlined_profile.svg",
+                                height: 2.75.h,
+                              ),
+                              Spacer(),
+                              SvgPicture.asset(
+                                "assets/icons/outlined_msg.svg",
+                                height: 3.h,
+                              )
+                            ],
+                          ),
                         )
                       ],
                     ),
@@ -220,10 +224,9 @@ class _HomeScreenState extends State<HomeScreen>
                     indicatorColor: Colors.transparent,
                     padding: null,
                     isScrollable: true,
-                    indicatorSize: TabBarIndicatorSize.tab,
-
-                    labelPadding: EdgeInsets.symmetric(
-                        horizontal: 2.w), // remove padding between labels
+                    indicatorSize: TabBarIndicatorSize.label,
+                    overlayColor: MaterialStatePropertyAll(Colors.transparent),
+                    labelPadding: EdgeInsets.symmetric(horizontal: 2.w),
                     controller: _tabController,
                     tabs: [
                       EventTab(
@@ -273,23 +276,31 @@ class _HomeScreenState extends State<HomeScreen>
               itemBuilder: (context, index) {
                 if (index == 0) {
                   return Container(
-                    child: OngoingEvents(userId: SessionHelper.id),
                     padding: EdgeInsets.only(top: 1.h),
+                    child: OngoingEvents(userId: SessionHelper.id),
                   );
                 }
-                if (index == 1)
+                if (index == 1) {
                   return Container(
+                    padding: EdgeInsets.only(top: 1.h),
                     child: MyEvents(userId: SessionHelper.id),
-                    padding: EdgeInsets.only(top: 1.h),
                   );
-                if (index == 2)
+                }
+                if (index == 2) {
                   return Container(
-                    child: PastEvents(userId: SessionHelper.id),
                     padding: EdgeInsets.only(top: 1.h),
+                    child: JoinedEvents(userId: SessionHelper.id),
                   );
+                }
+                if (index == 3) {
+                  return Container(
+                    padding: EdgeInsets.only(top: 1.h),
+                    child: PastEvents(userId: SessionHelper.id),
+                  );
+                }
                 return Container(
-                  child: SavedEvents(userId: SessionHelper.id),
                   padding: EdgeInsets.only(top: 1.h),
+                  child: SavedEvents(userId: SessionHelper.id),
                 );
               },
               itemCount: 5,
@@ -330,30 +341,32 @@ class _EventTabState extends State<EventTab> {
     return Container(
       margin: EdgeInsets.all(0),
       height: 11.h,
-      padding: EdgeInsets.all(1),
+      padding: EdgeInsets.symmetric(vertical: 1, horizontal: 1),
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(10),
         gradient: widget.tabController.index != widget.index
             ? LinearGradient(
                 colors: [Colors.white, Colors.white.withOpacity(0.4)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
               )
             : null,
       ),
-      child: Container(
-        margin: EdgeInsets.all(0),
-        decoration: BoxDecoration(
-          color: widget.tabController.index == widget.index
-              ? Color(0xffB70450).withOpacity(0.8)
-              : backgroundColor,
-          borderRadius: BorderRadius.circular(10),
+      child: InkWell(
+        child: Container(
+          margin: EdgeInsets.all(0),
+          decoration: BoxDecoration(
+            color: widget.tabController.index == widget.index
+                ? Color(0xffB70450).withOpacity(0.8)
+                : backgroundColor,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          alignment: Alignment.center,
+          width: 24.w,
+          height: 10.h,
+          child: Text(widget.text),
         ),
-        alignment: Alignment.center,
-        width: 24.w,
-        height: 10.h,
-        child: Text(widget.text),
       ),
     );
   }

@@ -15,6 +15,74 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class HomeServices {
+  Future<void> editEvent({
+    required String? id,
+    required BuildContext context,
+    required String title,
+    required String about,
+    required DateTime startDate,
+    required DateTime endDate,
+    required String organizer,
+    required XFile profileImage,
+    required List<XFile> images,
+  }) async {
+    try {
+      final cloudinary = CloudinaryPublic('dskknaiy3', 'i4y0ahjg');
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      String pfImage = "";
+      List<String> eventImages = [];
+
+      CloudinaryResponse pfRes = await cloudinary.uploadFile(
+        CloudinaryFile.fromFile(profileImage.path, folder: "UnIWink"),
+      );
+
+      pfImage = pfRes.secureUrl;
+
+      for (var image in images) {
+        CloudinaryResponse imgRes = await cloudinary.uploadFile(
+          CloudinaryFile.fromFile(image.path, folder: "UnIWink"),
+        );
+        eventImages.add(imgRes.secureUrl);
+      }
+
+      EventModel event = EventModel(
+        id: id,
+        title: title,
+        authorId: userProvider.user.id,
+        memberIds: [],
+        creationDate: DateTime.now(),
+        about: about,
+        memberImageUrls: [userProvider.user.imageUrl],
+        organizer: organizer,
+        savedMembers: [],
+        image: pfImage,
+        images: eventImages,
+        rating: 0,
+        startDateTime: startDate,
+        endDateTime: endDate,
+      );
+
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/edit-event'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': userProvider.user.token,
+        },
+        body: event.toJson(),
+      );
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          print("success");
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
   Future<void> createEvent({
     required BuildContext context,
     required String title,
@@ -37,12 +105,12 @@ class HomeServices {
 
       pfImage = pfRes.secureUrl;
 
-      images.map((image) async {
+      for (var image in images) {
         CloudinaryResponse imgRes = await cloudinary.uploadFile(
           CloudinaryFile.fromFile(image.path, folder: "UnIWink"),
         );
         eventImages.add(imgRes.secureUrl);
-      });
+      }
 
       EventModel event = EventModel(
         title: title,
@@ -72,7 +140,6 @@ class HomeServices {
         response: res,
         context: context,
         onSuccess: () {
-          Navigator.of(context).pop();
           print("success");
         },
       );
@@ -163,6 +230,42 @@ class HomeServices {
       final userProvider = Provider.of<UserProvider>(context, listen: false);
       http.Response res = await http.get(
         Uri.parse('$uri/api/past-events'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': userProvider.user.token,
+        },
+      );
+      // ignore: use_build_context_synchronously
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          print(res.body);
+          for (int i = 0; i < jsonDecode(res.body).length; i++) {
+            events.add(EventModel.fromJson(jsonEncode(
+              jsonDecode(
+                res.body,
+              )[i],
+            )));
+          }
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+
+    return events;
+  }
+
+  Future<List<EventModel>> getJoinedEvents({
+    required BuildContext context,
+  }) async {
+    List<EventModel> events = [];
+
+    try {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      http.Response res = await http.get(
+        Uri.parse('$uri/api/joined-events/${userProvider.user.id}'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userProvider.user.token,

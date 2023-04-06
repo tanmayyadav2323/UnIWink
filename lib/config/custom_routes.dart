@@ -8,6 +8,7 @@ import 'package:buddy_go/features/events/screen/event_screen.dart';
 import 'package:buddy_go/features/home/screens/create_event_screen.dart';
 import 'package:buddy_go/features/home/screens/winks_screen.dart';
 import 'package:buddy_go/features/search/screens/search_event_screen.dart';
+import 'package:buddy_go/models/event_model.dart';
 import 'package:buddy_go/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -49,7 +50,11 @@ class CustomRouter {
           type: PageTransitionType.bottomToTop,
           duration: Duration(milliseconds: 500),
           settings: const RouteSettings(name: CreateEventScreen.routename),
-          child: CreateEventScreen(),
+          child: CreateEventScreen(
+            eventModel: settings.arguments == null
+                ? null
+                : settings.arguments as EventModel,
+          ),
         );
       case ChannelListPage.routename:
         return MaterialPageRoute(

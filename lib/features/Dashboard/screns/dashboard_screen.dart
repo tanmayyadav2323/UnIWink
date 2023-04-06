@@ -73,7 +73,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       ),
       floatingActionButton: GestureDetector(
         onTap: () {
-          Navigator.of(context).pushNamed(CreateEventScreen.routename);
+          Navigator.of(context)
+              .pushNamed(CreateEventScreen.routename, arguments: null);
         },
         child: Container(
           color: backgroundColor,

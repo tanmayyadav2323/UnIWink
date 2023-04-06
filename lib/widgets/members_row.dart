@@ -75,7 +75,7 @@ class _MembersRowState extends State<MembersRow>
               Row(
                 children: [
                   AnimatedContainer(
-                    duration: Duration(milliseconds: 1000),
+                    duration: Duration(milliseconds: 500),
                     width: channels.isEmpty
                         ? MediaQuery.of(context).size.width * 0.9
                         : 0,
@@ -94,7 +94,7 @@ class _MembersRowState extends State<MembersRow>
                     ),
                   ),
                   AnimatedContainer(
-                    duration: Duration(milliseconds: 1000),
+                    duration: Duration(milliseconds: 500),
                     width: channels.isNotEmpty
                         ? MediaQuery.of(context).size.width * 0.9
                         : 0,
@@ -120,7 +120,7 @@ class _MembersRowState extends State<MembersRow>
                             child: Stack(
                               children: [
                                 CircleAvatar(
-                                  radius: 40,
+                                  radius: 4.5.h,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(30),
                                     child: Image.network(
@@ -130,13 +130,17 @@ class _MembersRowState extends State<MembersRow>
                                   ),
                                 ),
                                 Positioned(
-                                  bottom: 2,
-                                  right: 15,
+                                  bottom: 0.5.h,
+                                  right: 2.5.w,
                                   child: CircleAvatar(
-                                    radius: 5,
-                                    backgroundColor: members[index]!.online
-                                        ? Colors.green
-                                        : Colors.red,
+                                    backgroundColor: Color(0xff0D0E34),
+                                    radius: 0.75.h,
+                                    child: CircleAvatar(
+                                      radius: 0.50.h,
+                                      backgroundColor: members[index]!.online
+                                          ? Color(0xff00AE31)
+                                          : Color(0xffAE0000),
+                                    ),
                                   ),
                                 )
                               ],
@@ -147,7 +151,7 @@ class _MembersRowState extends State<MembersRow>
                 ],
               ),
               SizedBox(
-                height: 5.h,
+                height: 4.h,
               ),
             ],
           );

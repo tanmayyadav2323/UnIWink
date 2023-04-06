@@ -17,10 +17,11 @@ class MyEvents extends StatefulWidget {
 class _MyEventsState extends State<MyEvents> {
   final HomeServices homeServices = HomeServices();
   List<EventModel> events = [];
-  
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
+      color: Colors.white,
       onRefresh: () async {
         final newEvents = await homeServices.getMyEvents(context: context);
         setState(() {
@@ -30,21 +31,43 @@ class _MyEventsState extends State<MyEvents> {
       child: FutureBuilder(
         future: homeServices.getMyEvents(context: context),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
+          if (snapshot.hasError) {
             showSnackBar(context, snapshot.error.toString());
-          } else if (snapshot.hasData) {
-            events = snapshot.data;
-            return ListView(
-              children: events.asMap().entries.map((event) {
-                return EventCard(
-                  event: event.value,
-                );
-              }).toList(),
-            );
           } else {
-            return const Center(child: Text('No data'));
+            if (snapshot.hasData) events = snapshot.data;
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  AnimatedContainer(
+                    height: snapshot.hasData == false
+                        ? MediaQuery.of(context).size.height * 0.2
+                        : 0,
+                    width: double.infinity,
+                    duration: Duration(
+                      milliseconds: 400,
+                    ),
+                    // child: Center(
+                    //   child: CircularProgressIndicator(),
+                    // ),
+                  ),
+                  if (snapshot.hasData)
+                    AnimatedContainer(
+                      duration: Duration(
+                        milliseconds: 400,
+                      ),
+                      child: ListView(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        children: events.asMap().entries.map((event) {
+                          return EventCard(
+                            event: event.value,
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                ],
+              ),
+            );
           }
           return const SizedBox.shrink();
         },

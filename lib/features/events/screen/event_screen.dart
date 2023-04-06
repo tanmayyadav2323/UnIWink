@@ -1,17 +1,17 @@
-import 'dart:developer';
 import 'dart:ui';
 
 import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/config/utils.dart';
 import 'package:buddy_go/features/events/services/event_services.dart';
 import 'package:buddy_go/features/events/widgets/custom_modal_sheet.dart';
+import 'package:buddy_go/features/home/screens/create_event_screen.dart';
 import 'package:buddy_go/features/home/services/home_services.dart';
 import 'package:buddy_go/widgets/participant_box.dart';
-import 'package:buddy_go/features/home/screens/home_screen.dart';
 import 'package:buddy_go/models/user_model.dart' as UserModel;
-import 'package:buddy_go/models/wink_model.dart';
 import 'package:buddy_go/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
@@ -39,11 +39,18 @@ class _EventScreenState extends State<EventScreen> {
 
   List<UserModel.User> participants = [];
   List<String> memberIds = [];
+  List eventImages = [];
 
   @override
   void initState() {
     saved = widget.event.savedMembers.contains(SessionHelper.id);
     memberIds = widget.event.memberIds;
+    for (int i = 0; i < widget.event.images!.length; i++) {
+      eventImages.add(Image.network(
+        widget.event.images![i],
+        fit: BoxFit.cover,
+      ));
+    }
     super.initState();
   }
 
@@ -57,18 +64,9 @@ class _EventScreenState extends State<EventScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 40.h,
-                width: MediaQuery.of(context).size.width,
                 child: Stack(
                   children: [
-                    SizedBox(
-                      height: 40.h,
-                      width: MediaQuery.of(context).size.width,
-                      child: Image.network(
-                        widget.event.image,
-                        fit: BoxFit.fill,
-                      ),
-                    ),
+                    ImageCarousel(imageUrls: eventImages),
                     Positioned(
                       top: 1.h,
                       left: 2.w,
@@ -166,7 +164,7 @@ class _EventScreenState extends State<EventScreen> {
                                 ),
                               ),
                               SizedBox(
-                                height: 1.h,
+                                height: 2.h,
                               ),
                               Row(
                                 children: [
@@ -178,100 +176,110 @@ class _EventScreenState extends State<EventScreen> {
                                   const SizedBox(
                                     width: 4,
                                   ),
-                                  Text(
-                                    DateFormat("hh:mm a")
-                                        .format(widget.event.startDateTime)
-                                        .toString(),
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 10.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white,
-                                      height: 1,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 2.w,
-                                  ),
                                   Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      SizedBox(
-                                        width: 2.w,
-                                        child: const Divider(
+                                      Text(
+                                        DateFormat("dd MMMM, yyyy hh:mm a")
+                                            .format(widget.event.startDateTime)
+                                            .toString(),
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 10.sp,
+                                          fontWeight: FontWeight.w500,
                                           color: Colors.white,
-                                          thickness: 1,
+                                          height: 1,
                                         ),
                                       ),
+                                      // SizedBox(
+                                      //   width: 2.w,
+                                      // ),
+                                      // Column(
+                                      //   children: [
+                                      //     SizedBox(
+                                      //       width: 2.w,
+                                      //       child: const Divider(
+                                      //         color: Colors.white,
+                                      //         thickness: 1,
+                                      //       ),
+                                      //     ),
+                                      //   ],
+                                      // ),
+                                      // SizedBox(
+                                      //   width: 2.w,
+                                      // ),
+                                      SizedBox(
+                                        height: 1.h,
+                                      ),
+                                      Text(
+                                        DateFormat("dd MMMM, yyyy hh:mm a")
+                                            .format(widget.event.endDateTime)
+                                            .toString(),
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 10.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.white,
+                                          height: 1,
+                                        ),
+                                      )
                                     ],
-                                  ),
-                                  SizedBox(
-                                    width: 2.w,
-                                  ),
-                                  Text(
-                                    DateFormat("hh:mm a")
-                                        .format(widget.event.endDateTime)
-                                        .toString(),
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 10.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white,
-                                      height: 1,
-                                    ),
                                   )
                                 ],
                               ),
                             ],
                           ),
                         ),
-                        Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: const Color(0XFFFF005C),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 2.5.w,
-                                  vertical: 1.h,
-                                ),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      DateFormat("MMM")
-                                          .format(widget.event.endDateTime)
-                                          .toString(),
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 10.sp,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.white,
-                                        height: 1,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 0.5.h,
-                                    ),
-                                    Text(
-                                      DateFormat("dd")
-                                          .format(widget.event.endDateTime)
-                                          .toString(),
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 10.sp,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.white,
-                                        height: 1,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        )
+                        // Expanded(
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.end,
+                        //     children: [
+                        //       Container(
+                        //         decoration: BoxDecoration(
+                        //           color: const Color(0XFFFF005C),
+                        //           borderRadius: BorderRadius.circular(10),
+                        //         ),
+                        //         padding: EdgeInsets.symmetric(
+                        //           horizontal: 2.5.w,
+                        //           vertical: 1.h,
+                        //         ),
+                        //         child: Column(
+                        //           children: [
+                        //             Text(
+                        //               DateFormat("MMM")
+                        //                   .format(widget.event.endDateTime)
+                        //                   .toString(),
+                        //               style: GoogleFonts.poppins(
+                        //                 fontSize: 10.sp,
+                        //                 fontWeight: FontWeight.w500,
+                        //                 color: Colors.white,
+                        //                 height: 1,
+                        //               ),
+                        //             ),
+                        //             SizedBox(
+                        //               height: 0.5.h,
+                        //             ),
+                        //             Text(
+                        //               DateFormat("dd")
+                        //                   .format(widget.event.endDateTime)
+                        //                   .toString(),
+                        //               style: GoogleFonts.poppins(
+                        //                 fontSize: 10.sp,
+                        //                 fontWeight: FontWeight.w500,
+                        //                 color: Colors.white,
+                        //                 height: 1,
+                        //               ),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       )
+                        //     ],
+                        //   ),
+                        // )
                       ],
                     ),
                     SizedBox(
-                      height: 2.h,
+                      height: 4.h,
                     ),
                     Container(
                       width: double.infinity,
@@ -282,10 +290,47 @@ class _EventScreenState extends State<EventScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce rutrum tristique sem, non sagittis sem sollicitudin nec. Vestibulum accumsan eros ac nibh dictum mollis. Phasellus pellentesque ac lacus lobortis lobortis. Nulla et orci diam",
+                        widget.event.about,
                         style: GoogleFonts.poppins(
-                          fontSize: 8.sp,
-                          fontWeight: FontWeight.w200,
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w300,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 4.h,
+                    ),
+                    Container(
+                      height: 5.h,
+                      width: 30.w,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color(0XFFFF005C),
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(20),
+                          onTap: () {},
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Color(0XFFFF005C),
+                            ),
+                            alignment: Alignment.center,
+                            height: 6.5.h,
+                            width: double.infinity,
+                            child: Text(
+                              "Discuss",
+                              style: GoogleFonts.poppins(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -299,7 +344,37 @@ class _EventScreenState extends State<EventScreen> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    participantsContainer()
+                    participantsContainer(),
+                    SizedBox(
+                      height: 2.h,
+                    ),
+                    Text(
+                      "Rate Event",
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 1.h,
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 5.h,
+                      child: RatingBar.builder(
+                        itemBuilder: (context, index) => Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        itemSize: 5.h,
+                        itemCount: 5,
+                        unratedColor: Color(0xffB70450),
+                        onRatingUpdate: (double value) {},
+                      ),
+                    ),
+                    SizedBox(
+                      height: 4.h,
+                    ),
                   ],
                 ),
               ),
@@ -495,59 +570,26 @@ class _EventScreenState extends State<EventScreen> {
                 ),
               if (widget.event.authorId == SessionHelper.id)
                 ListTile(
-                  leading: Icon(
-                    Icons.delete,
-                    color: Colors.black,
-                    size: 3.h,
-                  ),
-                  minLeadingWidth: 1.w,
-                  title: Text(
-                    "Delete Event",
-                    style: GoogleFonts.poppins(
-                      fontSize: 12.sp,
-                      color: Colors.red,
-                      fontWeight: FontWeight.w500,
+                    leading: Icon(
+                      Icons.edit,
+                      color: Colors.black,
+                      size: 3.h,
                     ),
-                  ),
-                  onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text("Are you sure to delete event ?"),
-                            content: Text(
-                                "All the data will be deleted and you will no longer be able to recover it"),
-                            actions: [
-                              CustomButton(
-                                buttonText: "Yes",
-                                onPressed: () async {
-                                  await eventServices
-                                      .deleteEvent(
-                                    context: context,
-                                    eventId: widget.event.id!,
-                                  )
-                                      .then((value) {
-                                    Navigator.of(context).popUntil(
-                                      ModalRoute.withName(
-                                        DashBoardScreen.routename,
-                                      ),
-                                    );
-                                    Navigator.of(context).pushReplacementNamed(
-                                        DashBoardScreen.routename);
-                                  });
-                                },
-                              ),
-                              CustomButton(
-                                buttonText: "No",
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              )
-                            ],
-                          );
-                        });
-                  },
-                ),
+                    minLeadingWidth: 1.w,
+                    title: Text(
+                      "Edit Event",
+                      style: GoogleFonts.poppins(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.of(context)
+                          .pushNamed(CreateEventScreen.routename,
+                              arguments: widget.event)
+                          .then((value) {});
+                    }),
               if (widget.event.authorId != SessionHelper.id)
                 ListTile(
                   onTap: () {},
@@ -613,6 +655,61 @@ class _EventScreenState extends State<EventScreen> {
                     ),
                   ),
                 ),
+              if (widget.event.authorId == SessionHelper.id)
+                ListTile(
+                  leading: Icon(
+                    Icons.delete,
+                    color: Colors.black,
+                    size: 3.h,
+                  ),
+                  minLeadingWidth: 1.w,
+                  title: Text(
+                    "Delete Event",
+                    style: GoogleFonts.poppins(
+                      fontSize: 12.sp,
+                      color: Colors.red,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text("Are you sure to delete event ?"),
+                            content: Text(
+                                "All the data will be deleted and you will no longer be able to recover it"),
+                            actions: [
+                              CustomButton(
+                                buttonText: "Yes",
+                                onPressed: () async {
+                                  await eventServices
+                                      .deleteEvent(
+                                    context: context,
+                                    eventId: widget.event.id!,
+                                  )
+                                      .then((value) {
+                                    Navigator.of(context).popUntil(
+                                      ModalRoute.withName(
+                                        DashBoardScreen.routename,
+                                      ),
+                                    );
+                                    Navigator.of(context).pushReplacementNamed(
+                                        DashBoardScreen.routename);
+                                  });
+                                },
+                              ),
+                              CustomButton(
+                                buttonText: "No",
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              )
+                            ],
+                          );
+                        });
+                  },
+                ),
             ],
           ),
         );
@@ -649,6 +746,36 @@ class _EventScreenState extends State<EventScreen> {
           eventId: widget.event.id!,
         );
       },
+    );
+  }
+}
+
+class ImageCarousel extends StatefulWidget {
+  final List<dynamic> imageUrls;
+
+  ImageCarousel({required this.imageUrls});
+
+  @override
+  _ImageCarouselState createState() => _ImageCarouselState();
+}
+
+class _ImageCarouselState extends State<ImageCarousel> {
+  @override
+  Widget build(BuildContext context) {
+    return FlutterCarousel.builder(
+      itemCount: widget.imageUrls.length,
+      itemBuilder: (BuildContext context, int index, _) {
+        return AspectRatio(
+          aspectRatio: 4 / 3,
+          child: widget.imageUrls[index],
+        );
+      },
+      options: CarouselOptions(
+        viewportFraction: 1,
+        aspectRatio: 4 / 3,
+        autoPlay: true,
+        onPageChanged: (int index, CarouselPageChangedReason reason) {},
+      ),
     );
   }
 }

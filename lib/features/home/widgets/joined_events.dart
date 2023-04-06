@@ -6,15 +6,15 @@ import 'package:flutter/material.dart';
 import '../../authentication/services/auth_services.dart';
 import 'event_card.dart';
 
-class OngoingEvents extends StatefulWidget {
+class JoinedEvents extends StatefulWidget {
   final String userId;
-  const OngoingEvents({super.key, required this.userId});
+  const JoinedEvents({super.key, required this.userId});
 
   @override
-  State<OngoingEvents> createState() => _OngoingEventsState();
+  State<JoinedEvents> createState() => _JoinedEventsState();
 }
 
-class _OngoingEventsState extends State<OngoingEvents> {
+class _JoinedEventsState extends State<JoinedEvents> {
   final HomeServices homeServices = HomeServices();
   List<EventModel> events = [];
 
@@ -23,13 +23,13 @@ class _OngoingEventsState extends State<OngoingEvents> {
     return RefreshIndicator(
       color: Colors.white,
       onRefresh: () async {
-        final newEvents = await homeServices.getOngoingEvents(context: context);
+        final newEvents = await homeServices.getJoinedEvents(context: context);
         setState(() {
           events = newEvents;
         });
       },
       child: FutureBuilder(
-        future: homeServices.getOngoingEvents(context: context),
+        future: homeServices.getJoinedEvents(context: context),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasError) {
             showSnackBar(context, snapshot.error.toString());

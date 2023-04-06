@@ -29,9 +29,11 @@ class EventCard extends StatefulWidget {
 class _EventCardState extends State<EventCard> {
   bool bookMarked = false;
   final HomeServices homeService = HomeServices();
-
+  bool displayStartDateTime = false;
   @override
   void initState() {
+    displayStartDateTime =
+        widget.event.startDateTime.isAfter(DateTime.now()) ? true : false;
     bookMarked = widget.event.savedMembers.contains(SessionHelper.id);
     super.initState();
   }
@@ -44,41 +46,43 @@ class _EventCardState extends State<EventCard> {
             arguments: {"event": widget.event});
       },
       child: Container(
-        padding: EdgeInsets.only(top: 2.h),
+        margin: EdgeInsets.only(top: 3.h),
         child: Stack(
           alignment: Alignment.center,
           children: [
             Positioned(
-              child: Container(
-                height: 26.h,
-                margin: EdgeInsets.symmetric(vertical: 2.h),
-                padding: EdgeInsets.all(1),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15),
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0XFFA5A5A5),
-                      Colors.black.withOpacity(0.5),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
+              child: AspectRatio(
+                aspectRatio: 4 / 3,
                 child: Container(
-                  width: MediaQuery.of(context).size.width,
+                  margin: EdgeInsets.symmetric(vertical: 1.h),
+                  padding: EdgeInsets.all(1),
                   decoration: BoxDecoration(
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(15),
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: NetworkImage(widget.event.image),
+                    gradient: LinearGradient(
+                      colors: [
+                        Color(0XFFA5A5A5),
+                        Colors.black.withOpacity(0.5),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                  ),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      image: DecorationImage(
+                        fit: BoxFit.fill,
+                        image: NetworkImage(widget.event.image),
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
             Positioned(
-              top: 4.h,
+              top: 2.h,
               right: 2.w,
               child: InkWell(
                 onTap: () async {
@@ -104,7 +108,7 @@ class _EventCardState extends State<EventCard> {
             Positioned(
               bottom: 3.h,
               child: Container(
-                height: 14.h,
+                height: 15.h,
                 alignment: Alignment.center,
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.symmetric(horizontal: 8.w),
@@ -113,96 +117,105 @@ class _EventCardState extends State<EventCard> {
                   padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 1.h),
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    widget.event.title,
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  Icon(Icons.location_on)
-                                ],
-                              ),
-                              Text(
-                                "by ${widget.event.organizer}",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 8.sp,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              )
-                            ],
-                          ),
-                          Spacer(),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 2.5.w,
-                              vertical: 1.h,
-                            ),
-                            child: Column(
+                      Expanded(
+                        flex: 3,
+                        child: Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text(
-                                  DateFormat("MMM")
-                                      .format(widget.event.endDateTime)
-                                      .toString(),
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 8.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
-                                    height: 1,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 0.5.h,
+                                Row(
+                                  children: [
+                                    Text(
+                                      widget.event.title,
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    Icon(Icons.location_on)
+                                  ],
                                 ),
                                 Text(
-                                  DateFormat("dd")
-                                      .format(widget.event.endDateTime)
-                                      .toString(),
+                                  "by ${widget.event.organizer}",
                                   style: GoogleFonts.poppins(
                                     fontSize: 8.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
-                                    height: 1,
+                                    color: Colors.white.withOpacity(0.8),
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                ),
+                                )
                               ],
                             ),
-                          )
-                        ],
+                            const Spacer(),
+                            Container(
+                              height: 10.w,
+                              width: 10.w,
+                              decoration: BoxDecoration(
+                                color: displayStartDateTime
+                                    ? Color(0xffB70450)
+                                    : Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    DateFormat("MMM")
+                                        .format(displayStartDateTime
+                                            ? widget.event.startDateTime
+                                            : widget.event.endDateTime)
+                                        .toString(),
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 8.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: displayStartDateTime
+                                          ? Colors.white
+                                          : Colors.black,
+                                      height: 1,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 0.5.h,
+                                  ),
+                                  Text(
+                                    DateFormat("dd")
+                                        .format(displayStartDateTime
+                                            ? widget.event.startDateTime
+                                            : widget.event.endDateTime)
+                                        .toString(),
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 8.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: displayStartDateTime
+                                          ? Colors.white
+                                          : Colors.black,
+                                      height: 1,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                      SizedBox(
-                        height: 2.h,
-                      ),
-                      SizedBox(
-                        height: 4.h,
+                      Expanded(
+                        flex: 3,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Expanded(
                               flex: 4,
                               child: AvatarStack(
-                                borderColor: Colors.white,
+                                borderColor: Color(0xff43333E),
                                 height: 4.h,
                                 avatars: [
                                   for (var n = 0;
-                                      n <
-                                          widget.event.memberImageUrls.length +
-                                              30;
+                                      n < widget.event.memberImageUrls.length;
                                       n++)
                                     NetworkImage(
-                                      widget.event.memberImageUrls[0],
+                                      widget.event.memberImageUrls[n],
                                     ),
                                 ],
                               ),
@@ -227,7 +240,7 @@ class _EventCardState extends State<EventCard> {
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: RatingBarIndicator(
-                                      rating: 4,
+                                      rating: widget.event.rating,
                                       itemBuilder: (context, index) => Icon(
                                         Icons.star,
                                         color: Colors.amber,
