@@ -1,3 +1,5 @@
+import 'package:buddy_go/features/Profile/screens/profile_event_screen.dart';
+import 'package:buddy_go/features/Profile/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
@@ -83,14 +85,6 @@ class _MembersRowState extends State<MembersRow>
                     height: 5.h,
                     child: SizedBox(
                       width: 50.w,
-                      child: Text(
-                        "No Winks  🙁",
-                        style: GoogleFonts.poppins(
-                          fontSize: 16.sp,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.fade,
-                      ),
                     ),
                   ),
                   AnimatedContainer(
@@ -109,12 +103,8 @@ class _MembersRowState extends State<MembersRow>
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (_) => StreamChannel(
-                                    key: ValueKey(channels[index].cid),
-                                    channel: channels[index],
-                                    child: const ChannelPage(),
-                                  ),
-                                ),
+                                    builder: (_) =>
+                                        ProfileScreen(id: members[index]!.id)),
                               );
                             },
                             child: Stack(

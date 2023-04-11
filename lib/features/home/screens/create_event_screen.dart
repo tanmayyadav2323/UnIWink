@@ -36,12 +36,21 @@ class CreateEventScreen extends StatefulWidget {
   State<CreateEventScreen> createState() => _CreateEventScreenState();
 }
 
-class _CreateEventScreenState extends State<CreateEventScreen> {
+class _CreateEventScreenState extends State<CreateEventScreen>
+    with SingleTickerProviderStateMixin {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _aboutController = TextEditingController();
   final TextEditingController _orgController = TextEditingController();
 
   final ImagePicker _picker = ImagePicker();
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   XFile? coverImage;
   List<XFile>? eventImage;
@@ -52,6 +61,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
   @override
   void initState() {
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    _animation =
+        Tween<double>(begin: 0, end: 0.5).animate(_animationController);
     if (widget.eventModel != null) {
       final event = widget.eventModel!;
       _titleController.text = event.title;
@@ -161,6 +176,29 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 children: [
                   SizedBox(
                     height: 2.h,
+                  ),
+                  Row(
+                    children: [
+                      Spacer(),
+                      InkWell(
+                        onTap: () {
+                          _animationController.forward().then((value) {
+                            Navigator.pop(context);
+                          });
+                        },
+                        child: RotationTransition(
+                          turns: _animation,
+                          child: Icon(
+                            Icons.keyboard_arrow_up_outlined,
+                            size: 30.sp,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  SizedBox(
+                    height: 1.h,
                   ),
                   Align(
                     alignment: Alignment.center,

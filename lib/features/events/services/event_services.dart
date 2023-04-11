@@ -132,6 +132,69 @@ class EventServices {
     }
   }
 
+  Future<void> rateEvent(
+      {required BuildContext context,
+      required String eventId,
+      required double rateValue}) async {
+    try {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/rate-event'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': userProvider.user.token,
+        },
+        body: jsonEncode({
+          "eventId": eventId,
+          "userId": userProvider.user.id,
+          "rateValue": rateValue,
+        }),
+      );
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {},
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  Future<double> getRating({
+    required BuildContext context,
+    required String eventId,
+  }) async {
+    double ans = 0;
+    try {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/get-event-rating'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': userProvider.user.token,
+        },
+        body: jsonEncode({
+          "eventId": eventId,
+          "userId": userProvider.user.id,
+        }),
+      );
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          if (jsonDecode(res.body) == null) {
+          } else {
+            ans = double.parse(jsonDecode(res.body)['rate'].toString());
+          }
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+
+    return ans;
+  }
+
   Future<List<User>> getMembers(
       {required BuildContext context, required List<String> members}) async {
     List<User> users = [];

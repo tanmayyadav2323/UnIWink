@@ -152,9 +152,7 @@ class _EventCardState extends State<EventCard> {
                               height: 10.w,
                               width: 10.w,
                               decoration: BoxDecoration(
-                                color: displayStartDateTime
-                                    ? Color(0xffB70450)
-                                    : Colors.white,
+                                color: Colors.white,
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Column(
@@ -170,9 +168,7 @@ class _EventCardState extends State<EventCard> {
                                     style: GoogleFonts.poppins(
                                       fontSize: 8.sp,
                                       fontWeight: FontWeight.w500,
-                                      color: displayStartDateTime
-                                          ? Colors.white
-                                          : Colors.black,
+                                      color: Colors.black,
                                       height: 1,
                                     ),
                                   ),
@@ -188,9 +184,7 @@ class _EventCardState extends State<EventCard> {
                                     style: GoogleFonts.poppins(
                                       fontSize: 8.sp,
                                       fontWeight: FontWeight.w500,
-                                      color: displayStartDateTime
-                                          ? Colors.white
-                                          : Colors.black,
+                                      color: Colors.black,
                                       height: 1,
                                     ),
                                   ),

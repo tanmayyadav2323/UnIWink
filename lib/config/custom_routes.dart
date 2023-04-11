@@ -1,4 +1,7 @@
 import 'package:buddy_go/features/Dashboard/screns/dashboard_screen.dart';
+import 'package:buddy_go/features/Profile/screens/buddy_wink_screen.dart';
+import 'package:buddy_go/features/Profile/screens/profile_event_screen.dart';
+import 'package:buddy_go/features/Profile/screens/profile_screen.dart';
 import 'package:buddy_go/features/authentication/screens/verify_screen.dart';
 import 'package:buddy_go/features/Home/screens/home_screen.dart';
 import 'package:buddy_go/features/Onboarding/screens/about_me_screen.dart';
@@ -10,6 +13,7 @@ import 'package:buddy_go/features/home/screens/winks_screen.dart';
 import 'package:buddy_go/features/search/screens/search_event_screen.dart';
 import 'package:buddy_go/models/event_model.dart';
 import 'package:buddy_go/models/user_model.dart';
+import 'package:buddy_go/widgets/participant_box.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:page_transition/page_transition.dart';
@@ -37,6 +41,13 @@ class CustomRouter {
           settings: const RouteSettings(name: ChooseAvatarScreen.routename),
           builder: (_) => ChooseAvatarScreen(),
         );
+      case ProfileScreen.routename:
+        return MaterialPageRoute(
+          settings: const RouteSettings(name: ProfileScreen.routename),
+          builder: (_) => ProfileScreen(
+            id: settings.arguments as String,
+          ),
+        );
       case AboutMeScreen.routename:
         return MaterialPageRoute(
           settings: const RouteSettings(name: AboutMeScreen.routename),
@@ -56,6 +67,15 @@ class CustomRouter {
                 : settings.arguments as EventModel,
           ),
         );
+      case BuddyWinkScreen.routename:
+        return PageTransition(
+          type: PageTransitionType.leftToRight,
+          duration: Duration(milliseconds: 500),
+          settings: const RouteSettings(name: BuddyWinkScreen.routename),
+          child: BuddyWinkScreen(
+            users: settings.arguments as List<User>,
+          ),
+        );
       case ChannelListPage.routename:
         return MaterialPageRoute(
           settings: const RouteSettings(name: ChannelListPage.routename),
@@ -66,6 +86,15 @@ class CustomRouter {
           settings: const RouteSettings(name: EventScreen.routename),
           builder: (_) => EventScreen(
             event: (settings.arguments as Map)["event"],
+          ),
+        );
+      case ProfileEventScreen.routename:
+        return PageTransition(
+          type: PageTransitionType.leftToRight,
+          duration: Duration(milliseconds: 500),
+          settings: const RouteSettings(name: BuddyWinkScreen.routename),
+          child: ProfileEventScreen(
+            eventModels: settings.arguments as List<EventModel>,
           ),
         );
       case SearchEvent.routename:

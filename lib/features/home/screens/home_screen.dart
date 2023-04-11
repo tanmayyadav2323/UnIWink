@@ -1,31 +1,24 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:developer';
 
+import 'package:buddy_go/features/Profile/screens/profile_screen.dart';
 import 'package:buddy_go/features/home/widgets/joined_events.dart';
+import 'package:buddy_go/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/config/theme_colors.dart';
-import 'package:buddy_go/config/utils.dart';
-import 'package:buddy_go/features/authentication/services/auth_services.dart';
-import 'package:buddy_go/features/chat/screens/channel_list_page.dart';
-import 'package:buddy_go/features/home/screens/create_event_screen.dart';
-import 'package:buddy_go/features/home/screens/winks_screen.dart';
 import 'package:buddy_go/features/home/services/home_services.dart';
-import 'package:buddy_go/features/home/widgets/event_card.dart';
 import 'package:buddy_go/features/home/widgets/my_events.dart';
 import 'package:buddy_go/features/home/widgets/ongoing_events.dart';
 import 'package:buddy_go/features/home/widgets/past_events.dart';
 import 'package:buddy_go/models/event_model.dart';
 import 'package:buddy_go/widgets/members_row.dart';
 
-import '../../../providers/user_provider.dart';
-import '../../background/bg_screen.dart';
+import '../../chat/screens/channel_list_page.dart';
 import '../../search/screens/search_event_screen.dart';
 import '../widgets/saved_events.dart';
 
@@ -53,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
     _tabController = TabController(
-      length: 5,
+      length: 6,
       vsync: this,
       initialIndex: 0,
     );
@@ -190,14 +183,28 @@ class _HomeScreenState extends State<HomeScreen>
                           child: Row(
                             children: [
                               Spacer(),
-                              SvgPicture.asset(
-                                "assets/icons/outlined_profile.svg",
-                                height: 2.75.h,
+                              InkWell(
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(
+                                    ProfileScreen.routename,
+                                    arguments: SessionHelper.id,
+                                  );
+                                },
+                                child: SvgPicture.asset(
+                                  "assets/icons/outlined_profile.svg",
+                                  height: 2.75.h,
+                                ),
                               ),
                               Spacer(),
-                              SvgPicture.asset(
-                                "assets/icons/outlined_msg.svg",
-                                height: 3.h,
+                              InkWell(
+                                onTap: () {
+                                  Navigator.of(context)
+                                      .pushNamed(ChannelListPage.routename);
+                                },
+                                child: SvgPicture.asset(
+                                  "assets/icons/outlined_msg.svg",
+                                  height: 3.h,
+                                ),
                               )
                             ],
                           ),
@@ -235,20 +242,24 @@ class _HomeScreenState extends State<HomeScreen>
                           index: 0),
                       EventTab(
                           tabController: _tabController,
-                          text: "Created",
+                          text: "Upcoming",
                           index: 1),
                       EventTab(
                           tabController: _tabController,
-                          text: "Joined",
+                          text: "Created",
                           index: 2),
                       EventTab(
                           tabController: _tabController,
-                          text: "Past",
+                          text: "Joined",
                           index: 3),
                       EventTab(
                           tabController: _tabController,
-                          text: "Saved",
+                          text: "Past",
                           index: 4),
+                      EventTab(
+                          tabController: _tabController,
+                          text: "Saved",
+                          index: 5),
                     ],
                     onTap: (index) {
                       print(index.toString());
@@ -289,10 +300,16 @@ class _HomeScreenState extends State<HomeScreen>
                 if (index == 2) {
                   return Container(
                     padding: EdgeInsets.only(top: 1.h),
-                    child: JoinedEvents(userId: SessionHelper.id),
+                    child: MyEvents(userId: SessionHelper.id),
                   );
                 }
                 if (index == 3) {
+                  return Container(
+                    padding: EdgeInsets.only(top: 1.h),
+                    child: JoinedEvents(userId: SessionHelper.id),
+                  );
+                }
+                if (index == 4) {
                   return Container(
                     padding: EdgeInsets.only(top: 1.h),
                     child: PastEvents(userId: SessionHelper.id),
@@ -303,7 +320,7 @@ class _HomeScreenState extends State<HomeScreen>
                   child: SavedEvents(userId: SessionHelper.id),
                 );
               },
-              itemCount: 5,
+              itemCount: 6,
             ),
           ),
         ),

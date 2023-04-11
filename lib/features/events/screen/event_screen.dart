@@ -358,20 +358,7 @@ class _EventScreenState extends State<EventScreen> {
                     SizedBox(
                       height: 1.h,
                     ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: 5.h,
-                      child: RatingBar.builder(
-                        itemBuilder: (context, index) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
-                        itemSize: 5.h,
-                        itemCount: 5,
-                        unratedColor: Color(0xffB70450),
-                        onRatingUpdate: (double value) {},
-                      ),
-                    ),
+                    eventRateContainer(),
                     SizedBox(
                       height: 4.h,
                     ),
@@ -382,6 +369,44 @@ class _EventScreenState extends State<EventScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget eventRateContainer() {
+    return FutureBuilder(
+      future:
+          eventServices.getRating(context: context, eventId: widget.event.id!),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return LinearProgressIndicator();
+        } else if (snapshot.hasError) {
+          showSnackBar(context, snapshot.error.toString());
+        } else if (snapshot.hasData) {
+          return SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: 5.h,
+            child: RatingBar.builder(
+              itemBuilder: (context, index) => Icon(
+                Icons.star,
+                color: Colors.amber,
+              ),
+              itemSize: 5.h,
+              initialRating: snapshot.data,
+              itemCount: 5,
+              unratedColor: Color(0xffB70450),
+              onRatingUpdate: (double value) {
+                eventServices.rateEvent(
+                    context: context,
+                    eventId: widget.event.id!,
+                    rateValue: value);
+              },
+            ),
+          );
+        } else {
+          return const Center(child: Text('No data'));
+        }
+        return const SizedBox.shrink();
+      },
     );
   }
 

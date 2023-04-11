@@ -6,6 +6,18 @@ const UserEvents = require("../models/user.events");
 const User = require("../models/user.model");
 const Wink = require("../models/wink.model");
 const Report = require("../models/report.model");
+const Rate = require('../models/rate.model');
+
+eventRouter.post('/api/user-event', auth, async (req, res) => {
+    try {
+        const events = await Events.find({ memberIds: { $in: [req.body.userId] } });
+        res.json(events);
+    }
+    catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
 
 eventRouter.post('/api/edit-event', auth, async (req, res) => {
     try {
@@ -59,15 +71,77 @@ eventRouter.post('/api/create-event', auth, async (req, res) => {
 });
 
 
-eventRouter.get('/api/all-events', auth, async (req, res) => {
+eventRouter.get('/api/ongoing-events', auth, async (req, res) => {
     try {
         const today = new Date();
-        const events = await Events.find({ endDateTime: { $gt: today } }).sort({ endDateTime: 1 });
+        const events = await Events.find({ startDateTime: { $lte: today }, endDateTime: { $gt: today } }).sort({ endDateTime: 1 });
+        console.log(events);
+        res.json(events);
+    }
+    catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+
+eventRouter.get('/api/upcoming-events', auth, async (req, res) => {
+    try {
+        const today = new Date();
+        const events = await Events.find({ startDateTime: { $gt: today } }).sort({ endDateTime: 1 });
         console.log(events);
         res.json(events);
     }
     catch (e) {
 
+        res.status(500).json({ error: e.message });
+    }
+});
+
+
+
+eventRouter.post('/api/rate-event', auth, async (req, res) => {
+    try {
+        const userId = req.body.userId;
+        const rateValue = req.body.rateValue;
+        const eventId = req.body.eventId;
+
+        let rating = await Rate.findOne({ eventId, userId });
+
+        if (rating) {
+            rating.rate = rateValue;
+        } else {
+
+            rating = new Rate({
+                eventId: eventId,
+                userId: userId,
+                rate: rateValue
+            });
+        }
+        await rating.save();
+
+        res.json({});
+    }
+    catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+
+eventRouter.post('/api/get-event-rating', auth, async (req, res) => {
+    try {
+        const userId = req.body.userId;
+        const eventId = req.body.eventId;
+
+        const rate = await Rate.findOne({ eventId, userId });
+
+        if (rate) {
+            res.json(rate);
+        }
+        else {
+            res.json({ rate: 0 });
+        }
+    }
+    catch (e) {
         res.status(500).json({ error: e.message });
     }
 });

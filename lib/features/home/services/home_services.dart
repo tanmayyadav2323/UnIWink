@@ -156,7 +156,47 @@ class HomeServices {
     try {
       final userProvider = Provider.of<UserProvider>(context, listen: false);
       http.Response res = await http.get(
-        Uri.parse('$uri/api/all-events'),
+        Uri.parse('$uri/api/ongoing-events'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': userProvider.user.token,
+        },
+      );
+      // ignore: use_build_context_synchronously
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          print(res.body);
+          try {
+            for (int i = 0; i < jsonDecode(res.body).length; i++) {
+              events.add(EventModel.fromJson(jsonEncode(
+                jsonDecode(
+                  res.body,
+                )[i],
+              )));
+            }
+          } catch (e) {
+            showSnackBar(context, e.toString());
+          }
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+
+    return events;
+  }
+
+  Future<List<EventModel>> upComingEvents({
+    required BuildContext context,
+  }) async {
+    List<EventModel> events = [];
+
+    try {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      http.Response res = await http.get(
+        Uri.parse('$uri/api/ongoing-events'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userProvider.user.token,
