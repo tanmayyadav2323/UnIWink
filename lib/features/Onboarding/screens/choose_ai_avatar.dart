@@ -1,18 +1,28 @@
-import 'package:buddy_go/features/background/bg_screen.dart';
-import 'package:buddy_go/widgets/custom_button.dart';
-import 'package:buddy_go/config/theme_colors.dart';
-import 'package:buddy_go/features/onboarding/screens/about_me_screen.dart';
-import 'package:buddy_go/providers/user_provider.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:buddy_go/config/session_helper.dart';
+import 'package:buddy_go/features/Profile/screens/profile_screen.dart';
+import 'package:buddy_go/features/home/services/home_services.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import 'package:buddy_go/config/theme_colors.dart';
+import 'package:buddy_go/features/background/bg_screen.dart';
+import 'package:buddy_go/features/onboarding/screens/about_me_screen.dart';
+import 'package:buddy_go/providers/user_provider.dart';
+import 'package:buddy_go/widgets/custom_button.dart';
+
 class ChooseAIAvatarScreen extends StatefulWidget {
   static const routename = '/choose-ai-avatar';
 
-  const ChooseAIAvatarScreen({super.key});
+  final bool editMode;
+
+  const ChooseAIAvatarScreen({
+    Key? key,
+    this.editMode = false,
+  }) : super(key: key);
 
   @override
   State<ChooseAIAvatarScreen> createState() => _ChooseAIAvatarScreenState();
@@ -23,6 +33,9 @@ class _ChooseAIAvatarScreenState extends State<ChooseAIAvatarScreen>
   late TabController _tabController;
   late GlobalKey _appBarKey;
   late double _appBarHight;
+  late bool edit;
+
+  bool loading = false;
 
   //images male
   List<String> imageMale = [
@@ -66,6 +79,7 @@ class _ChooseAIAvatarScreenState extends State<ChooseAIAvatarScreen>
 
   @override
   void initState() {
+    edit = widget.editMode;
     _appBarKey = GlobalKey();
     _tabController = TabController(
       length: 2,
@@ -281,10 +295,17 @@ class _ChooseAIAvatarScreenState extends State<ChooseAIAvatarScreen>
                       SizedBox(
                         height: 2.5.h,
                       ),
-                      CustomButton(
-                        buttonText: "Set Avatar",
-                        onPressed: saveImage,
-                      ),
+                      if (edit == false)
+                        CustomButton(
+                          buttonText: "Set Avatar",
+                          onPressed: saveImage,
+                        ),
+                      if (edit)
+                        CustomButton(
+                          loading: loading,
+                          buttonText: "Edit Avatar",
+                          onPressed: editImage,
+                        ),
                     ],
                   ),
                 ),
@@ -307,6 +328,44 @@ class _ChooseAIAvatarScreenState extends State<ChooseAIAvatarScreen>
         ),
       ),
     );
+  }
+
+  void editImage() {
+    loading = true;
+    setState(() {});
+    final user = Provider.of<UserProvider>(context, listen: false).user;
+
+    if (indexMale >= 0) {
+      HomeServices()
+          .updateUser(
+        context: context,
+        user: user,
+        imagePath: "assets/images/ai_bimg/${imageMale[indexMale]}.png",
+      )
+          .then((value) {
+        Navigator.of(context).popAndPushNamed(ProfileScreen.routename,
+            arguments: SessionHelper.id);
+      });
+    } else if (indexFemale >= 0) {
+      HomeServices()
+          .updateUser(
+        context: context,
+        user: user,
+        imagePath: "assets/images/ai_bimg/${imageFemale[indexFemale]}.png",
+      )
+          .then((value) {
+        Navigator.of(context).popAndPushNamed(ProfileScreen.routename,
+            arguments: SessionHelper.id);
+      });
+    } else {
+      Fluttertoast.showToast(
+        msg: "Please select an avatar",
+        gravity: ToastGravity.TOP,
+        fontSize: 16.sp,
+      );
+    }
+    loading = false;
+    setState(() {});
   }
 
   void saveImage() {

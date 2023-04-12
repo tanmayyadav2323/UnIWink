@@ -119,7 +119,9 @@ class CustomRouter {
       case ChooseAIAvatarScreen.routename:
         return MaterialPageRoute(
           settings: const RouteSettings(name: ChooseAIAvatarScreen.routename),
-          builder: (_) => const ChooseAIAvatarScreen(),
+          builder: (_) => ChooseAIAvatarScreen(
+            editMode: (settings.arguments ?? false) as bool,
+          ),
         );
       case VerifyPhoneNumberScreen.routename:
         return MaterialPageRoute(

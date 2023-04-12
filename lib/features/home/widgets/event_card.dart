@@ -105,12 +105,12 @@ class _EventCardState extends State<EventCard> {
                 ),
               ),
             ),
-            Positioned(
+            Positioned.fill(
               bottom: 3.h,
+              top: null,
               child: Container(
-                height: 15.h,
+                constraints: BoxConstraints(minHeight: 16.h, maxHeight: 16.h),
                 alignment: Alignment.center,
-                width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.symmetric(horizontal: 8.w),
                 color: backgroundColor,
                 child: Padding(
@@ -118,84 +118,98 @@ class _EventCardState extends State<EventCard> {
                   child: Column(
                     children: [
                       Expanded(
-                        flex: 3,
                         child: Row(
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      widget.event.title,
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                    Icon(Icons.location_on)
-                                  ],
-                                ),
-                                Text(
-                                  "by ${widget.event.organizer}",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 8.sp,
-                                    color: Colors.white.withOpacity(0.8),
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                )
-                              ],
-                            ),
-                            const Spacer(),
-                            Container(
-                              height: 10.w,
-                              width: 10.w,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
+                            Expanded(
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    DateFormat("MMM")
-                                        .format(displayStartDateTime
-                                            ? widget.event.startDateTime
-                                            : widget.event.endDateTime)
-                                        .toString(),
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 8.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black,
-                                      height: 1,
+                                  Expanded(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          widget.event.title,
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 0.5.h,
+                                    height: 1,
                                   ),
-                                  Text(
-                                    DateFormat("dd")
-                                        .format(displayStartDateTime
-                                            ? widget.event.startDateTime
-                                            : widget.event.endDateTime)
-                                        .toString(),
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 8.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black,
-                                      height: 1,
+                                  Expanded(
+                                    child: Text(
+                                      "by ${widget.event.organizer}",
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 8.sp,
+                                        color: Colors.white.withOpacity(0.8),
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
-                                  ),
+                                  )
                                 ],
                               ),
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  width: 10.w,
+                                  height: 10.w,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        DateFormat("MMM")
+                                            .format(displayStartDateTime
+                                                ? widget.event.startDateTime
+                                                : widget.event.endDateTime)
+                                            .toString(),
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 8.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black,
+                                          height: 1,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 0.5.h,
+                                      ),
+                                      Text(
+                                        DateFormat("dd")
+                                            .format(displayStartDateTime
+                                                ? widget.event.startDateTime
+                                                : widget.event.endDateTime)
+                                            .toString(),
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 8.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black,
+                                          height: 1,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             )
                           ],
                         ),
                       ),
                       Expanded(
-                        flex: 3,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [

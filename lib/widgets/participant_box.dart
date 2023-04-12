@@ -4,6 +4,7 @@ import 'package:buddy_go/config/global_variables.dart';
 import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/config/theme_colors.dart';
 import 'package:buddy_go/features/events/services/event_services.dart';
+import 'package:buddy_go/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
 import 'package:buddy_go/models/user_model.dart' as UserModel;
@@ -314,35 +315,39 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                 TextEditingController(text: winkModel.message);
             showDialog(
               context: context,
-              builder: (context) => AlertDialog(
-                title: Text('Send Connection Message'),
-                content: TextField(
-                  controller: _textEditingController,
-                ),
-                actions: [
-                  InkWell(
-                    onTap: () async {
-                      await eventService.updateWink(
-                        context: context,
-                        winkId: winkModel.id!,
-                        message: _textEditingController.text,
-                        status: WinkStatus.winked.index,
-                      );
-                      setState(() {
-                        status = WinkBoxStatus.winkById;
-                      });
-                    },
-                    child: Text(
-                      "Wink",
-                      style: GoogleFonts.poppins(
-                        color: Color(0xffB70450),
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.w300,
+              barrierColor: backgroundColor,
+              builder: (context) {
+                return AlertDialog(
+                  backgroundColor: backgroundColor,
+                  title: Text('Send Connection Message'),
+                  content: TextField(
+                    controller: _textEditingController,
+                  ),
+                  actions: [
+                    InkWell(
+                      onTap: () async {
+                        await eventService.updateWink(
+                          context: context,
+                          winkId: winkModel.id!,
+                          message: _textEditingController.text,
+                          status: WinkStatus.winked.index,
+                        );
+                        setState(() {
+                          status = WinkBoxStatus.winkById;
+                        });
+                      },
+                      child: Text(
+                        "Wink",
+                        style: GoogleFonts.poppins(
+                          color: Color(0xffB70450),
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w300,
+                        ),
                       ),
-                    ),
-                  )
-                ],
-              ),
+                    )
+                  ],
+                );
+              },
             );
           },
           child: Container(
@@ -434,45 +439,112 @@ class _ParticipantBoxState extends State<ParticipantBox> {
       case WinkBoxStatus.none:
         return InkWell(
           onTap: () async {
+            bool loading = false;
             final TextEditingController _textEditingController =
                 TextEditingController(text: '');
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: Text('Send Connection Message'),
-                content: TextField(
-                  controller: _textEditingController,
+                backgroundColor: backgroundColor,
+                content: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Connection Message ',
+                        style: GoogleFonts.poppins(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            height: 1.1),
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      Text(
+                        'Enter a message to introduce yourself:',
+                        style:
+                            GoogleFonts.poppins(fontSize: 12.sp, height: 1.3),
+                      ),
+                      SizedBox(height: 4.h),
+                      TextFormField(
+                        controller: _textEditingController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText:
+                              'Hi, I saw your profile and would like to connect...',
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      CustomButton(
+                          loading: loading,
+                          buttonText: "Send",
+                          onPressed: () async {
+                            loading = true;
+                            await eventService
+                                .wink(
+                              context: context,
+                              winkToId: widget.user.id,
+                              message: _textEditingController.text,
+                            )
+                                .then((value) {
+                              setState(() {
+                                status = WinkBoxStatus.winkById;
+                                loading = false;
+                              });
+                              Navigator.of(context).pop();
+                            });
+                          })
+                    ],
+                  ),
                 ),
-                actions: [
-                  InkWell(
-                    onTap: () async {
-                      await eventService.wink(
-                        context: context,
-                        winkToId: widget.user.id,
-                        message: _textEditingController.text,
-                      );
-
-                      setState(() {
-                        status = WinkBoxStatus.winkById;
-                      });
-                    },
-                    child: Text("Wink"),
-                  )
-                ],
               ),
             );
+
+            // showDialog(
+            //   context: context,
+            //   builder: (context) => AlertDialog(
+            //     title: Text('Send Connection Message'),
+            //     content: TextField(
+            //       controller: _textEditingController,
+            //     ),
+            //     actions: [
+            //       InkWell(
+            //         onTap: () async {
+            //           await eventService.wink(
+            //             context: context,
+            //             winkToId: widget.user.id,
+            //             message: _textEditingController.text,
+            //           );
+
+            //           setState(() {
+            //             status = WinkBoxStatus.winkById;
+            //           });
+            //         },
+            //         child: Text("Wink"),
+            //       )
+            //     ],
+            //   ),
+            // );
           },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              color: const Color(0XFFFF005C),
+              border: Border.all(
+                color: Color(0xffB70450),
+              ),
             ),
             child: Text(
               "Wink",
               style: GoogleFonts.poppins(
                 fontSize: 10.sp,
                 fontWeight: FontWeight.w300,
+                color: Color(0xffB70450),
               ),
             ),
           ),

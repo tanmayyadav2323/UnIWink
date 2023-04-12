@@ -4,6 +4,7 @@ import 'package:buddy_go/config/theme_colors.dart';
 import 'package:buddy_go/features/Profile/screens/profile_screen.dart';
 import 'package:buddy_go/features/home/screens/create_event_screen.dart';
 import 'package:buddy_go/features/maps/place_scren.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -15,11 +16,20 @@ import 'providers/user_provider.dart';
 
 Future main() async {
   // await dotenv.load(fileName: ".env");
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider<UserProvider>(
-      create: (context) => UserProvider(),
-    )
-  ], child: const MyApp()));
+  runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider<UserProvider>(
+          create: (context) => UserProvider(),
+        )
+      ],
+      child: DevicePreview(
+          enabled: true,
+          tools: [
+            ...DevicePreview.defaultTools,
+          ],
+          builder: (context) {
+            return const MyApp();
+          })));
 }
 
 class MyApp extends StatefulWidget {

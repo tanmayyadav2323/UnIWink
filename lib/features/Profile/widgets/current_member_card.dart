@@ -1,8 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:buddy_go/features/home/services/home_services.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../../config/theme_colors.dart';
 import '../../../models/user_model.dart' as UserModel;
 import '../../../widgets/custom_button.dart';
 import '../../Authentication/services/auth_services.dart';
@@ -48,9 +50,80 @@ class _CurrentMemberCardState extends State<CurrentMemberCard> {
                     SizedBox(
                       width: 3.w,
                     ),
-                    Icon(
-                      Icons.mode_edit_outline_outlined,
-                      size: 2.5.h,
+                    GestureDetector(
+                      child: Icon(
+                        Icons.mode_edit_outline_outlined,
+                        size: 2.5.h,
+                      ),
+                      onTap: () {
+                        final _descriptionController = TextEditingController(
+                          text: user.des,
+                        );
+                        bool loading = false;
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            backgroundColor: backgroundColor,
+                            content: SingleChildScrollView(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Edit Description',
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w600,
+                                        height: 1.1),
+                                  ),
+                                  SizedBox(
+                                    height: 2.h,
+                                  ),
+                                  Text(
+                                    'Enter a description about yourself:',
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 12.sp, height: 1.3),
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  TextFormField(
+                                    controller: _descriptionController,
+                                    maxLines: null,
+                                    maxLength: 500,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      hintText:
+                                          'Write a few sentences about yourself...',
+                                      hintStyle: TextStyle(color: Colors.grey),
+                                    ),
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  SizedBox(
+                                    height: 2.h,
+                                  ),
+                                  CustomButton(
+                                    loading: loading,
+                                    buttonText: "Save",
+                                    onPressed: () async {
+                                      loading = true;
+                                      user = user.copyWith(
+                                          des: _descriptionController.text);
+                                      HomeServices()
+                                          .updateUser(
+                                              context: context, user: user)
+                                          .then((value) {
+                                        setState(() {});
+                                        Navigator.of(context).pop();
+                                      });
+
+                                      loading = false;
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -77,27 +150,40 @@ class _CurrentMemberCardState extends State<CurrentMemberCard> {
         buildTile("Log Out", () {
           showDialog(
             context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text(
-                  "Are you sure ?",
-                  style: GoogleFonts.poppins(fontSize: 16.sp),
-                ),
-                actions: [
-                  CustomButton(
-                      buttonText: "Yes",
-                      onPressed: () {
-                        AuthService().logOut(context);
-                        setState(() {});
-                      }),
-                  CustomButton(
-                      buttonText: "No",
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      })
+            builder: (context) => AlertDialog(
+              title: Text(
+                'Log Out',
+                style: GoogleFonts.poppins(
+                    fontSize: 16.sp, fontWeight: FontWeight.w600, height: 1.1),
+              ),
+              backgroundColor: backgroundColor,
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Are you sure you want to logout?',
+                    style: GoogleFonts.poppins(fontSize: 12.sp, height: 1.3),
+                  ),
+                  SizedBox(height: 2.h),
+                  Column(
+                    children: [
+                      CustomButton(
+                        buttonText: "Log Out",
+                        onPressed: () async {
+                          AuthService().logOut(context);
+                        },
+                      ),
+                      CustomButton(
+                        buttonText: "Cancel",
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
                 ],
-              );
-            },
+              ),
+            ),
           );
         }, red: true),
         SizedBox(

@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:buddy_go/config/assest_to_file.dart';
 import 'package:buddy_go/config/global_variables.dart';
 import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/models/user_model.dart';
@@ -473,6 +475,47 @@ class HomeServices {
             )));
           }
         },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+
+    return events;
+  }
+
+  Future<List<EventModel>> updateUser(
+      {required BuildContext context,
+      required User user,
+      String? imagePath}) async {
+    List<EventModel> events = [];
+
+    try {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+      if (imagePath != null) {
+        File imageFile = await getImageFileFromAssets(imagePath);
+
+        final cloudinary = CloudinaryPublic('dskknaiy3', 'i4y0ahjg');
+        CloudinaryResponse cloudinaryResponse = await cloudinary.uploadFile(
+          CloudinaryFile.fromFile(imageFile.path, folder: "UnIWink"),
+        );
+
+        user = user.copyWith(imageUrl: cloudinaryResponse.secureUrl);
+      }
+
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/update-user'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': userProvider.user.token,
+        },
+        body: user.toJson(),
+      );
+      // ignore: use_build_context_synchronously
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {},
       );
     } catch (e) {
       showSnackBar(context, e.toString());

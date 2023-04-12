@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:buddy_go/features/Onboarding/screens/choose_ai_avatar.dart';
+import 'package:buddy_go/features/Onboarding/screens/choose_avatar_screen.dart';
 import 'package:buddy_go/features/Profile/widgets/current_member_card.dart';
 import 'package:buddy_go/features/Profile/widgets/other_member_card.dart';
 import 'package:flutter/material.dart';
@@ -101,22 +103,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(
                         height: 4.h,
                       ),
-                      Container(
-                        height: 15.h,
-                        padding: EdgeInsets.all(2),
-                        child: ClipRRect(
-                          child: Image.network(
-                            user.imageUrl,
-                            fit: BoxFit.fill,
+                      GestureDetector(
+                        onTap: () {
+                          if (widget.id == SessionHelper.id) {
+                            Navigator.of(context).pushNamed(
+                                ChooseAIAvatarScreen.routename,
+                                arguments: true);
+                          }
+                        },
+                        child: Container(
+                          height: 15.h,
+                          padding: EdgeInsets.all(2),
+                          child: ClipRRect(
+                            child: Image.network(
+                              user.imageUrl,
+                              fit: BoxFit.fill,
+                            ),
+                            borderRadius: BorderRadius.circular(15.h),
                           ),
-                          borderRadius: BorderRadius.circular(15.h),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: LinearGradient(colors: [
+                                Color(0xffD2E1E8),
+                                Color(0xff2E4766)
+                              ])),
                         ),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: LinearGradient(colors: [
-                              Color(0xffD2E1E8),
-                              Color(0xff2E4766)
-                            ])),
                       ),
                       SizedBox(
                         height: 2.h,
