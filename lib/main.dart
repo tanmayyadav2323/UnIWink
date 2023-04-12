@@ -1,8 +1,11 @@
+import 'dart:ui';
+
 import 'package:buddy_go/config/theme_colors.dart';
 import 'package:buddy_go/features/Profile/screens/profile_screen.dart';
 import 'package:buddy_go/features/home/screens/create_event_screen.dart';
 import 'package:buddy_go/features/maps/place_scren.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
@@ -58,7 +61,68 @@ class _MyAppState extends State<MyApp> {
           builder: (context, child) => ScrollConfiguration(
             behavior: MyBehavior(),
             child: StreamChat(
-              // streamChatThemeData: StreamChatThemeData(),
+              streamChatThemeData: StreamChatThemeData(
+                colorTheme: StreamColorTheme.dark(),
+                brightness: Brightness.dark,
+                messageListViewTheme: StreamMessageListViewThemeData(
+                  backgroundColor: backgroundColor,
+                ),
+                messageInputTheme: StreamMessageInputThemeData(
+                  inputBackgroundColor: backgroundColor,
+                  actionButtonColor: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  inputTextStyle: GoogleFonts.poppins(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  idleBorderGradient: LinearGradient(colors: [
+                    Colors.white.withOpacity(0.5),
+                    Colors.white.withOpacity(0.5)
+                  ]),
+                  activeBorderGradient: LinearGradient(colors: [
+                    Colors.white.withOpacity(0.5),
+                    Colors.white.withOpacity(0.5)
+                  ]),
+                  sendButtonColor: Colors.blue,
+                  sendButtonIdleColor: Colors.white.withOpacity(0.5),
+                  actionButtonIdleColor: Colors.white.withOpacity(0.5),
+                  inputDecoration: InputDecoration(
+                    fillColor: backgroundColor,
+                    focusColor: backgroundColor,
+                    hintText: "Type Message...",
+                    hintStyle: GoogleFonts.poppins(
+                      fontSize: 10.sp,
+                      color: Colors.white.withOpacity(0.5),
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white, width: 2),
+                      borderRadius: BorderRadius.horizontal(
+                        right: Radius.circular(10),
+                        left: Radius.circular(10),
+                      ),
+                    ),
+                  ),
+                ),
+                channelHeaderTheme: StreamChannelHeaderThemeData(),
+                textTheme: StreamTextTheme.dark(
+                  body: GoogleFonts.poppins(
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                ownMessageTheme: StreamMessageThemeData(
+                  messageBackgroundColor: Color(0xff272A70),
+                  avatarTheme: StreamAvatarThemeData(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                otherMessageTheme: StreamMessageThemeData(
+                  messageBackgroundColor: Color(0xffB70450),
+                  avatarTheme: StreamAvatarThemeData(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+              ),
               client: client,
               child: child,
             ),

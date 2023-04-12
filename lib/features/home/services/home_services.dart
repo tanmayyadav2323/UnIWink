@@ -13,6 +13,9 @@ import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart' as sc;
+
+import '../../chat/api/stream_api.dart' as streamApi;
 
 class HomeServices {
   Future<void> editEvent({
@@ -136,11 +139,34 @@ class HomeServices {
         body: event.toJson(),
       );
 
+      // ignore: use_build_context_synchronously
       httpErrorHandle(
         response: res,
         context: context,
-        onSuccess: () {
-          print("success");
+        onSuccess: () async {
+          final event = EventModel.fromJson(jsonEncode(jsonDecode(
+            res.body,
+          )));
+
+          final channel = sc.StreamChat.of(context).client.channel(
+                'messaging',
+                extraData: {
+                  'members': [SessionHelper.id],
+                  "channel_type": "group",
+                  'name': event.title,
+                  "admin": SessionHelper.id,
+                  "image": event.image,
+                  'permissions': {
+                    'read': ['user:*'],
+                    'write': ['user:*'],
+                    'addMembers': ['user:*'],
+                    'manageMembers': [SessionHelper.id],
+                  },
+                },
+                id: event.id,
+              );
+          channel.addMembers([SessionHelper.id]);
+          await channel.watch();
         },
       );
     } catch (e) {
@@ -196,7 +222,7 @@ class HomeServices {
     try {
       final userProvider = Provider.of<UserProvider>(context, listen: false);
       http.Response res = await http.get(
-        Uri.parse('$uri/api/ongoing-events'),
+        Uri.parse('$uri/api/upcoming-events'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userProvider.user.token,

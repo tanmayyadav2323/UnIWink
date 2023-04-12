@@ -77,7 +77,10 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
               .pushNamed(CreateEventScreen.routename, arguments: null);
         },
         child: Container(
-          color: backgroundColor,
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: backgroundColor,
+              border: Border.all(color: Colors.white)),
           child: SvgPicture.asset("assets/icons/outlined_add.svg", height: 5.h),
         ),
       ),

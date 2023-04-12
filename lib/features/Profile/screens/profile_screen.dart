@@ -73,14 +73,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
-                        height: 2.h,
+                        height: 1.h,
                       ),
-                      Text(
-                        "PROFILE",
-                        style: GoogleFonts.poppins(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Icon(
+                              Icons.arrow_back_ios,
+                              size: 3.h,
+                            ),
+                          ),
+                          Spacer(),
+                          Text(
+                            "Profile ",
+                            style: GoogleFonts.poppins(
+                                fontSize: 20.sp, color: Colors.white),
+                          ),
+                          Spacer(),
+                          SizedBox(
+                            width: 3.h,
+                          )
+                        ],
                       ),
                       SizedBox(
                         height: 4.h,

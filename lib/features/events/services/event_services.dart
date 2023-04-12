@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/models/event_model.dart';
 import 'package:buddy_go/models/user_model.dart';
 import 'package:buddy_go/models/wink_model.dart';
-import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:stream_chat_flutter/stream_chat_flutter.dart' as sc;
 
 import '../../../config/error_handling.dart';
 import '../../../config/global_variables.dart';
@@ -32,11 +32,16 @@ class EventServices {
           "imageUrl": userProvider.user.imageUrl,
         }),
       );
+      // ignore: use_build_context_synchronously
       httpErrorHandle(
         response: res,
         context: context,
-        onSuccess: () {
-          print("event joined successfully");
+        onSuccess: () async {
+          final client = sc.StreamChat.of(context).client;
+
+          final channel = client.channel('messaging', id: event.id);
+          channel.addMembers([SessionHelper.id]);
+          await channel.watch();
         },
       );
     } catch (e) {

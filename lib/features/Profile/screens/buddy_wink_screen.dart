@@ -25,30 +25,31 @@ class _BuddyWinkScreenState extends State<BuddyWinkScreen> {
         body: SafeArea(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 4.w),
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            children: [
-              SizedBox(
-                height: 4.h,
-              ),
-              Text(
-                "Memebers",
-                style: GoogleFonts.poppins(
-                  fontSize: 24.sp,
+        child: SingleChildScrollView(
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 1.h,
                 ),
-              ),
-              SizedBox(
-                height: 4.h,
-              ),
-              Column(
-                children: widget.users.map((participant) {
-                  return ParticipantBox(
-                    user: participant,
-                  );
-                }).toList(),
-              ),
-            ],
+                Text(
+                  "Members",
+                  style:
+                      GoogleFonts.poppins(fontSize: 20.sp, color: Colors.white),
+                ),
+                SizedBox(
+                  height: 4.h,
+                ),
+                Column(
+                  children: widget.users.map((participant) {
+                    return ParticipantBox(
+                      user: participant,
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
           ),
         ),
       ),

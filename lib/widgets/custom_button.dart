@@ -27,7 +27,7 @@ class _CustomButtonState extends State<CustomButton> {
       margin: EdgeInsets.only(left: 8.w, right: 8.w, top: 3.h, bottom: 3.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
-        color: Color(0XFFFF005C),
+        color: Color(0XFFB70450),
       ),
       child: Material(
         color: Colors.transparent,
@@ -37,7 +37,7 @@ class _CustomButtonState extends State<CustomButton> {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
-              color: Color(0XFFFF005C),
+              color: Color(0XFFB70450),
             ),
             alignment: Alignment.center,
             height: 6.5.h,

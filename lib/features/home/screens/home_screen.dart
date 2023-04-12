@@ -2,6 +2,7 @@
 
 import 'package:buddy_go/features/Profile/screens/profile_screen.dart';
 import 'package:buddy_go/features/home/widgets/joined_events.dart';
+import 'package:buddy_go/features/home/widgets/upcoming_event.dart';
 import 'package:buddy_go/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -294,7 +295,7 @@ class _HomeScreenState extends State<HomeScreen>
                 if (index == 1) {
                   return Container(
                     padding: EdgeInsets.only(top: 1.h),
-                    child: MyEvents(userId: SessionHelper.id),
+                    child: UpcomingEvent(userId: SessionHelper.id),
                   );
                 }
                 if (index == 2) {

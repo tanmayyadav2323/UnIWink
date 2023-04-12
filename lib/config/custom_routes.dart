@@ -42,9 +42,11 @@ class CustomRouter {
           builder: (_) => ChooseAvatarScreen(),
         );
       case ProfileScreen.routename:
-        return MaterialPageRoute(
+        return PageTransition(
+          type: PageTransitionType.rightToLeft,
+          duration: Duration(milliseconds: 500),
           settings: const RouteSettings(name: ProfileScreen.routename),
-          builder: (_) => ProfileScreen(
+          child: ProfileScreen(
             id: settings.arguments as String,
           ),
         );
@@ -77,9 +79,11 @@ class CustomRouter {
           ),
         );
       case ChannelListPage.routename:
-        return MaterialPageRoute(
+        return PageTransition(
+          type: PageTransitionType.rightToLeft,
+          duration: Duration(milliseconds: 500),
           settings: const RouteSettings(name: ChannelListPage.routename),
-          builder: (_) => ChannelListPage(),
+          child: ChannelListPage(),
         );
       case EventScreen.routename:
         return MaterialPageRoute(

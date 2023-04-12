@@ -45,10 +45,10 @@ class _MembersRowState extends State<MembersRow>
           .queryChannels(
             state: true,
             watch: true,
-            filter: Filter.in_(
-              'members',
-              [SessionHelper.id],
-            ),
+            filter: Filter.and([
+              Filter.in_('members', [SessionHelper.id]),
+              Filter.notExists('channel_type'),
+            ]),
           )
           .first,
       builder: (context, snapshot) {
@@ -59,7 +59,10 @@ class _MembersRowState extends State<MembersRow>
           List<User?> members = [];
           if (snapshot.hasData) {
             channels = snapshot.data!;
-
+            if (channels.isEmpty)
+              return SizedBox(
+                height: 3.h,
+              );
             for (final channel in channels) {
               final otherMembers = channel.state!.members
                   .where((m) => m.userId != SessionHelper.id)
@@ -147,7 +150,9 @@ class _MembersRowState extends State<MembersRow>
           );
         }
 
-        return SizedBox.shrink();
+        return SizedBox(
+          height: 3.h,
+        );
       },
     );
   }

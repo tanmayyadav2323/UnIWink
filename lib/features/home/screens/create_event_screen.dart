@@ -179,7 +179,6 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                   ),
                   Row(
                     children: [
-                      Spacer(),
                       InkWell(
                         onTap: () {
                           _animationController.forward().then((value) {
@@ -194,19 +193,24 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                           ),
                         ),
                       ),
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            widget.eventModel == null
+                                ? "Add Event"
+                                : "Edit Event",
+                            style: GoogleFonts.poppins(
+                                fontSize: 20.sp, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 30.sp,
+                      )
                     ],
                   ),
 
-                  SizedBox(
-                    height: 1.h,
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      widget.eventModel == null ? "Add Event" : "Edit Event",
-                      style: TextStyle(fontSize: 20.sp, color: Colors.white),
-                    ),
-                  ),
                   SizedBox(
                     height: 4.h,
                   ),

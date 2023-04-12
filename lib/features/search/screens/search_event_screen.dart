@@ -30,63 +30,65 @@ class _SearchEventState extends State<SearchEvent> {
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(0.75),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    gradient: LinearGradient(
-                      colors: [Colors.white, Colors.white.withOpacity(0.4)],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ),
-                  ),
-                  child: Container(
-                    height: 5.5.h,
-                    width: double.infinity,
-                    padding: EdgeInsets.only(left: 2.w),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(0.75),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: backgroundColor,
-                    ),
-                    child: TextFormField(
-                      style: GoogleFonts.poppins(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w500,
+                      gradient: LinearGradient(
+                        colors: [Colors.white, Colors.white.withOpacity(0.4)],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
                       ),
-                      cursorColor: Colors.white,
-                      decoration: InputDecoration(
-                        hintText: "Search for an Event",
-                        hintStyle: GoogleFonts.poppins(
+                    ),
+                    child: Container(
+                      height: 5.5.h,
+                      width: double.infinity,
+                      padding: EdgeInsets.only(left: 2.w),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: backgroundColor,
+                      ),
+                      child: TextFormField(
+                        style: GoogleFonts.poppins(
                           fontSize: 12.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white.withOpacity(0.6),
+                          fontWeight: FontWeight.w500,
                         ),
-                        border: InputBorder.none,
-                        suffixIcon: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 1.75.h),
-                          child: SvgPicture.asset(
-                            "assets/icons/outlined_search.svg",
+                        cursorColor: Colors.white,
+                        decoration: InputDecoration(
+                          hintText: "Search for an Event",
+                          hintStyle: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white.withOpacity(0.6),
+                          ),
+                          border: InputBorder.none,
+                          suffixIcon: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 1.75.h),
+                            child: SvgPicture.asset(
+                              "assets/icons/outlined_search.svg",
+                            ),
                           ),
                         ),
+                        onChanged: (String val) async {
+                          events = await searchService.searchEvents(
+                              context: context, search: val);
+                          setState(() {});
+                        },
                       ),
-                      onChanged: (String val) async {
-                        events = await searchService.searchEvents(
-                            context: context, search: val);
-                        setState(() {});
-                      },
                     ),
                   ),
-                ),
-                Column(
-                  children: events.asMap().entries.map((event) {
-                    return EventCard(
-                      event: event.value,
-                    );
-                  }).toList(),
-                ),
-              ],
+                  Column(
+                    children: events.asMap().entries.map((event) {
+                      return EventCard(
+                        event: event.value,
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

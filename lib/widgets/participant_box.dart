@@ -26,9 +26,11 @@ enum WinkBoxStatus {
 
 class ParticipantBox extends StatefulWidget {
   final UserModel.User user;
+  final bool dividerOff;
   const ParticipantBox({
     Key? key,
     required this.user,
+    this.dividerOff = false,
   }) : super(key: key);
 
   @override
@@ -45,11 +47,11 @@ class _ParticipantBoxState extends State<ParticipantBox> {
   void initState() {
     user = widget.user;
     List<dynamic> winks = user.winks;
-
+    winkModel = WinkModel.empty();
     for (int i = 0; i < winks.length; i++) {
+      winkModel = WinkModel.fromMap(winks[i]);
       if (winks[i]['winkedToId'] == SessionHelper.id ||
           winks[i]['winkedById'] == SessionHelper.id) {
-        winkModel = WinkModel.fromMap(winks[i]);
         if (winkModel.status == WinkStatus.winked) {
           if (winks[i]['winkedById'] == SessionHelper.id) {
             status = WinkBoxStatus.winkById;
@@ -74,23 +76,25 @@ class _ParticipantBoxState extends State<ParticipantBox> {
       children: [
         Row(
           children: [
-            if (winkModel.status == WinkStatus.winked)
+            if (status == WinkBoxStatus.winkToId)
               Stack(
                 children: [
                   Container(
                     height: 8.h,
                     width: 8.h,
                     padding: const EdgeInsets.all(2),
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0XFFFF005C),
-                          Color(0XFFFFFFFF),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
+                      gradient: (user.id != SessionHelper.id)
+                          ? LinearGradient(
+                              colors: [
+                                Color(0XFFFF005C),
+                                Color(0XFFFFFFFF),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            )
+                          : null,
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10.w),
@@ -100,19 +104,20 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                       ),
                     ),
                   ),
-                  Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: CircleAvatar(
-                        backgroundColor: backgroundColor,
-                        radius: 1.2.h,
-                        child: SvgPicture.asset(
-                          "assets/icons/wink_img.svg",
-                        ),
-                      ))
+                  if (user.id != SessionHelper.id)
+                    Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: CircleAvatar(
+                          backgroundColor: backgroundColor,
+                          radius: 1.2.h,
+                          child: SvgPicture.asset(
+                            "assets/icons/wink_img.svg",
+                          ),
+                        ))
                 ],
               ),
-            if (winkModel.status != WinkStatus.winked)
+            if (status != WinkBoxStatus.winkToId)
               SizedBox(
                 height: 8.h,
                 width: 8.h,
@@ -147,10 +152,11 @@ class _ParticipantBoxState extends State<ParticipantBox> {
         SizedBox(
           height: 1.h,
         ),
-        const Divider(
-          color: Colors.white,
-          thickness: 0.2,
-        )
+        if (widget.dividerOff == false)
+          Divider(
+            color: Colors.white,
+            thickness: 0.2,
+          )
       ],
     );
   }
@@ -174,7 +180,7 @@ class _ParticipantBoxState extends State<ParticipantBox> {
             padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              color: const Color(0XFFFF005C),
+              color: const Color(0XFFB70450),
             ),
             child: Text(
               "Winked",
@@ -188,9 +194,42 @@ class _ParticipantBoxState extends State<ParticipantBox> {
       case WinkBoxStatus.winkToId:
         return Column(
           children: [
-            if (winkModel.message.isNotEmpty) Text(winkModel.message),
+            if (winkModel.message.isNotEmpty)
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Message : ",
+                        style: GoogleFonts.poppins(
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 2.w,
+                      ),
+                      Expanded(
+                        child: Text(
+                          winkModel.message,
+                          style: GoogleFonts.poppins(
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.w300,
+                            fontStyle: FontStyle.italic,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 10,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
             Row(
               children: [
+                Spacer(),
                 InkWell(
                   onTap: () async {
                     String randomName1 =
@@ -223,20 +262,21 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                     });
                   },
                   child: Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
+                    padding: EdgeInsets.all(0.5.h),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: const Color(0XFFFF005C),
+                      color: Colors.transparent,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Color(0xffB70450)),
                     ),
-                    child: Text(
-                      "Accept",
-                      style: GoogleFonts.poppins(
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.w300,
-                      ),
+                    child: Icon(
+                      Icons.check,
+                      color: Color(0xffB70450),
+                      size: 3.h,
                     ),
                   ),
+                ),
+                SizedBox(
+                  width: 4.w,
                 ),
                 InkWell(
                   onTap: () async {
@@ -250,18 +290,16 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                     });
                   },
                   child: Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
+                    padding: EdgeInsets.all(0.5.h),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: const Color(0XFFFF005C),
+                      color: Colors.transparent,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white),
                     ),
-                    child: Text(
-                      "Reject",
-                      style: GoogleFonts.poppins(
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.w300,
-                      ),
+                    child: Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 3.h,
                     ),
                   ),
                 )
@@ -294,7 +332,14 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                         status = WinkBoxStatus.winkById;
                       });
                     },
-                    child: Text("Wink"),
+                    child: Text(
+                      "Wink",
+                      style: GoogleFonts.poppins(
+                        color: Color(0xffB70450),
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
                   )
                 ],
               ),
@@ -304,13 +349,16 @@ class _ParticipantBoxState extends State<ParticipantBox> {
             padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              color: const Color(0XFFFF005C),
+              border: Border.all(
+                color: Color(0xffB70450),
+              ),
             ),
             child: Text(
               "Wink",
               style: GoogleFonts.poppins(
                 fontSize: 10.sp,
                 fontWeight: FontWeight.w300,
+                color: Color(0xffB70450),
               ),
             ),
           ),
@@ -372,7 +420,7 @@ class _ParticipantBoxState extends State<ParticipantBox> {
             padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              color: const Color(0XFFFF005C),
+              color: const Color(0XFFB70450),
             ),
             child: Text(
               "Chat",

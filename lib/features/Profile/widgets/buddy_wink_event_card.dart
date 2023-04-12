@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:developer';
+
 import 'package:buddy_go/models/event_model.dart';
 import 'package:flutter/material.dart';
 
@@ -34,6 +36,7 @@ class _BuddyWinkEventCardState extends State<BuddyWinkEventCard> {
   @override
   void initState() {
     user = widget.user;
+    getUserEvents();
     super.initState();
   }
 
@@ -68,8 +71,8 @@ class _BuddyWinkEventCardState extends State<BuddyWinkEventCard> {
               }
             }
           }
-
           return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               buildContainer(buddyUsers.length, "Buddies", () {
                 Navigator.of(context).pushNamed(BuddyWinkScreen.routename,
@@ -94,28 +97,27 @@ class _BuddyWinkEventCardState extends State<BuddyWinkEventCard> {
   }
 
   buildContainer(int val, String colname, Function() onTap) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: onTap,
-        child: Column(
-          children: [
-            Text(
-              val.toString(),
-              style: GoogleFonts.poppins(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.w600,
-                fontStyle: FontStyle.italic,
-              ),
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            val.toString(),
+            style: GoogleFonts.poppins(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.w600,
+              fontStyle: FontStyle.italic,
             ),
-            Text(
-              colname,
-              style: GoogleFonts.poppins(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w300,
-              ),
+          ),
+          Text(
+            colname,
+            style: GoogleFonts.poppins(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w300,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

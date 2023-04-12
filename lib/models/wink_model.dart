@@ -21,6 +21,14 @@ class WinkModel {
     required this.message,
   });
 
+  static WinkModel empty() {
+    return WinkModel(
+        winkedById: '',
+        winkedToId: '',
+        status: WinkStatus.unwinked,
+        message: '');
+  }
+
   WinkModel copyWith({
     String? id,
     String? winkedById,

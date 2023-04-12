@@ -28,14 +28,12 @@ class _WinkScreenState extends State<WinkScreen> {
           child: Column(
             children: [
               SizedBox(
-                height: 2.h,
+                height: 1.h,
               ),
               Text(
                 "Winks",
-                style: GoogleFonts.poppins(
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w400,
-                ),
+                style:
+                    GoogleFonts.poppins(fontSize: 20.sp, color: Colors.white),
               ),
               SizedBox(
                 height: 4.h,

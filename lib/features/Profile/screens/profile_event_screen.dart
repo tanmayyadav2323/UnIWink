@@ -26,28 +26,26 @@ class _ProfileEventScreenState extends State<ProfileEventScreen> {
         body: SafeArea(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 4.w),
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            children: [
-              SizedBox(
-                height: 4.h,
-              ),
-              Text(
-                "Events",
-                style: GoogleFonts.poppins(
-                  fontSize: 24.sp,
+        child: SingleChildScrollView(
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 1.h,
                 ),
-              ),
-              SizedBox(
-                height: 4.h,
-              ),
-              Column(
-                children: widget.eventModels.map((event) {
-                  return EventCard(event: event);
-                }).toList(),
-              ),
-            ],
+                Text(
+                  "Events",
+                  style:
+                      GoogleFonts.poppins(fontSize: 20.sp, color: Colors.white),
+                ),
+                Column(
+                  children: widget.eventModels.map((event) {
+                    return EventCard(event: event);
+                  }).toList(),
+                ),
+              ],
+            ),
           ),
         ),
       ),

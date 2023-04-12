@@ -65,6 +65,7 @@ dependencies:
   page_transition: ^2.0.9
   table_calendar: ^3.0.8
   image_cropper: ^3.0.2
+  timeago: ^3.3.0
 
 dev_dependencies:
   flutter_test:

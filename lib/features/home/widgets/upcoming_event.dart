@@ -6,15 +6,15 @@ import 'package:flutter/material.dart';
 import '../../authentication/services/auth_services.dart';
 import 'event_card.dart';
 
-class OngoingEvents extends StatefulWidget {
+class UpcomingEvent extends StatefulWidget {
   final String userId;
-  const OngoingEvents({super.key, required this.userId});
+  const UpcomingEvent({super.key, required this.userId});
 
   @override
-  State<OngoingEvents> createState() => _OngoingEventsState();
+  State<UpcomingEvent> createState() => _UpcomingEventState();
 }
 
-class _OngoingEventsState extends State<OngoingEvents> {
+class _UpcomingEventState extends State<UpcomingEvent> {
   final HomeServices homeServices = HomeServices();
   List<EventModel> events = [];
 
@@ -29,7 +29,7 @@ class _OngoingEventsState extends State<OngoingEvents> {
         });
       },
       child: FutureBuilder(
-        future: homeServices.getOngoingEvents(context: context),
+        future: homeServices.upComingEvents(context: context),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasError) {
             showSnackBar(context, snapshot.error.toString());

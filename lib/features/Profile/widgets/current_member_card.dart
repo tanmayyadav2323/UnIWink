@@ -74,7 +74,6 @@ class _CurrentMemberCardState extends State<CurrentMemberCard> {
         ),
         buildTile("Privacy Policy", () {}),
         buildTile("Terms of Condition", () {}),
-        buildTile("Block List", () {}),
         buildTile("Log Out", () {
           showDialog(
             context: context,

@@ -124,7 +124,10 @@ class _OtherMemberCardState extends State<OtherMemberCard> {
                             builder: (_) => StreamChannel(
                               key: ValueKey(channel!.cid),
                               channel: channel,
-                              child: const ChannelPage(),
+                              child: ChannelPage(
+                                name: channel.extraData["${user.id}_name"]
+                                    .toString(),
+                              ),
                             ),
                           ),
                         );

@@ -110,7 +110,6 @@ eventRouter.post('/api/rate-event', auth, async (req, res) => {
         if (rating) {
             rating.rate = rateValue;
         } else {
-
             rating = new Rate({
                 eventId: eventId,
                 userId: userId,
@@ -118,7 +117,13 @@ eventRouter.post('/api/rate-event', auth, async (req, res) => {
             });
         }
         await rating.save();
-
+        let allRating = await Rate.find({ eventId });
+        let sum = 0;
+        allRating.forEach(rate => sum += rate.rate);
+        let avgRating = sum / allRating.length;
+        let event = await Events.findById(eventId);
+        event.rating = avgRating;
+        event.save();
         res.json({});
     }
     catch (e) {
