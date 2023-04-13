@@ -315,7 +315,6 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                 TextEditingController(text: winkModel.message);
             showDialog(
               context: context,
-              barrierColor: backgroundColor,
               builder: (context) {
                 return AlertDialog(
                   backgroundColor: backgroundColor,
@@ -480,25 +479,34 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                       SizedBox(
                         height: 2.h,
                       ),
-                      CustomButton(
-                          loading: loading,
-                          buttonText: "Send",
-                          onPressed: () async {
-                            loading = true;
-                            await eventService
-                                .wink(
-                              context: context,
-                              winkToId: widget.user.id,
-                              message: _textEditingController.text,
-                            )
-                                .then((value) {
+                      StatefulBuilder(
+                        builder: (BuildContext context, StateSetter setState) {
+                          return CustomButton(
+                            loading: loading,
+                            buttonText: "Send",
+                            onPressed: () async {
                               setState(() {
-                                status = WinkBoxStatus.winkById;
-                                loading = false;
+                                loading = true;
                               });
+
+                              await eventService
+                                  .wink(
+                                context: context,
+                                winkToId: widget.user.id,
+                                message: _textEditingController.text,
+                              )
+                                  .then((value) {
+                                setState(() {
+                                  status = WinkBoxStatus.winkById;
+                                  loading = false;
+                                });
+                              });
+
                               Navigator.of(context).pop();
-                            });
-                          })
+                            },
+                          );
+                        },
+                      )
                     ],
                   ),
                 ),

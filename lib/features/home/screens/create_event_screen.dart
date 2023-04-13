@@ -167,6 +167,7 @@ class _CreateEventScreenState extends State<CreateEventScreen>
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 4.w),

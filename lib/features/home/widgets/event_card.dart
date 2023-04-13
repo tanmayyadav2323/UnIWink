@@ -8,7 +8,6 @@ import 'package:buddy_go/features/events/screen/event_screen.dart';
 import 'package:buddy_go/features/home/services/home_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:glassmorphism/glassmorphism.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';

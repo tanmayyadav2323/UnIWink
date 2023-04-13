@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:buddy_go/features/Profile/screens/profile_screen.dart';
+import 'package:buddy_go/features/background/bg_screen.dart';
 import 'package:buddy_go/features/home/widgets/joined_events.dart';
 import 'package:buddy_go/features/home/widgets/upcoming_event.dart';
 import 'package:buddy_go/providers/user_provider.dart';
@@ -18,6 +19,7 @@ import 'package:buddy_go/features/home/widgets/ongoing_events.dart';
 import 'package:buddy_go/features/home/widgets/past_events.dart';
 import 'package:buddy_go/models/event_model.dart';
 import 'package:buddy_go/widgets/members_row.dart';
+import 'package:timeago/timeago.dart';
 
 import '../../chat/screens/channel_list_page.dart';
 import '../../search/screens/search_event_screen.dart';
@@ -60,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       // floatingActionButton: FloatingActionButton(
       //   child: const Icon(Icons.add),
       //   onPressed: () {
@@ -71,257 +74,264 @@ class _HomeScreenState extends State<HomeScreen>
       //   },
       // ),
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 4.w),
-          child: NestedScrollView(
-            floatHeaderSlivers: true,
-            controller: scrollController,
-            headerSliverBuilder: (context, value) {
-              return [
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 2.h,
-                  ),
-                ),
-                // SliverToBoxAdapter(
-                //   child: Row(
-                //     children: [
-                //       const Spacer(),
-                //       InkWell(
-                //         child: Icon(Icons.logout),
-                //         onTap: () {
-                //           AuthService().logOut(context);
-                //         },
-                //       ),
-                //       SizedBox(
-                //         width: 6.w,
-                //       ),
-                //       InkWell(
-                //         child: SvgPicture.asset(
-                //           "assets/icons/logo_icon.svg",
-                //           height: 2.h,
-                //         ),
-                //         onTap: () => Navigator.of(context)
-                //             .pushNamed(WinkScreen.routename),
-                //       ),
-                //       SizedBox(
-                //         width: 6.w,
-                //       ),
-                //       SvgPicture.asset(
-                //         "assets/icons/profile_icon.svg",
-                //         height: 2.5.h,
-                //       ),
-                //       SizedBox(
-                //         width: 6.w,
-                //       ),
-                //       InkWell(
-                //         onTap: () => Navigator.of(context)
-                //             .pushNamed(ChannelListPage.routename),
-                //         child: SvgPicture.asset(
-                //           "assets/icons/message_icon.svg",
-                //           height: 2.5.h,
-                //         ),
-                //       )
-                //     ],
-                //   ),
-                // ),
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 5.5.h,
-                    width: double.infinity,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.of(context)
-                                  .pushNamed(SearchEvent.routename);
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(0.75),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Colors.white,
-                                    Colors.white.withOpacity(0.4)
-                                  ],
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                ),
-                              ),
-                              child: Container(
-                                  height: 5.h,
-                                  width: double.infinity,
-                                  padding: EdgeInsets.all(1.h),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: backgroundColor,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Search for an Event",
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.white.withOpacity(0.6),
-                                        ),
-                                      ),
-                                      SvgPicture.asset(
-                                        "assets/icons/outlined_search.svg",
-                                        height: 2.h,
-                                      )
-                                    ],
-                                  )),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Row(
-                            children: [
-                              Spacer(),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.of(context).pushNamed(
-                                    ProfileScreen.routename,
-                                    arguments: SessionHelper.id,
-                                  );
-                                },
-                                child: SvgPicture.asset(
-                                  "assets/icons/outlined_profile.svg",
-                                  height: 2.75.h,
-                                ),
-                              ),
-                              Spacer(),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.of(context)
-                                      .pushNamed(ChannelListPage.routename);
-                                },
-                                child: SvgPicture.asset(
-                                  "assets/icons/outlined_msg.svg",
-                                  height: 3.h,
-                                ),
-                              )
-                            ],
-                          ),
-                        )
-                      ],
+        child: BgScreen(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 4.w),
+            child: NestedScrollView(
+              floatHeaderSlivers: true,
+              controller: scrollController,
+              headerSliverBuilder: (context, value) {
+                return [
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 2.h,
                     ),
                   ),
-                ),
-                const SliverToBoxAdapter(
-                  child: MembersRow(),
-                ),
-                SliverAppBar(
-                  backgroundColor: backgroundColor,
-                  leading: null,
-                  leadingWidth: 0,
-                  pinned: true,
-                  toolbarHeight: 4.h,
-                  floating: true,
-                  flexibleSpace: TabBar(
-                    indicatorWeight: 1,
-                    indicatorPadding: EdgeInsets.zero,
-                    indicator: null,
-                    unselectedLabelColor: Colors.white,
-                    indicatorColor: Colors.transparent,
-                    padding: null,
-                    isScrollable: true,
-                    indicatorSize: TabBarIndicatorSize.label,
-                    overlayColor: MaterialStatePropertyAll(Colors.transparent),
-                    labelPadding: EdgeInsets.symmetric(horizontal: 2.w),
-                    controller: _tabController,
-                    tabs: [
-                      EventTab(
-                          tabController: _tabController,
-                          text: "Ongoing",
-                          index: 0),
-                      EventTab(
-                          tabController: _tabController,
-                          text: "Upcoming",
-                          index: 1),
-                      EventTab(
-                          tabController: _tabController,
-                          text: "Created",
-                          index: 2),
-                      EventTab(
-                          tabController: _tabController,
-                          text: "Joined",
-                          index: 3),
-                      EventTab(
-                          tabController: _tabController,
-                          text: "Past",
-                          index: 4),
-                      EventTab(
-                          tabController: _tabController,
-                          text: "Saved",
-                          index: 5),
-                    ],
-                    onTap: (index) {
-                      print(index.toString());
-
-                      _pageController.jumpToPage(
-                        index,
-                        // duration: Duration(milliseconds: 400),
-                        // curve: Curves.linear,
-                      );
-                      prevIndex = index;
-                    },
+                  // SliverToBoxAdapter(
+                  //   child: Row(
+                  //     children: [
+                  //       const Spacer(),
+                  //       InkWell(
+                  //         child: Icon(Icons.logout),
+                  //         onTap: () {
+                  //           AuthService().logOut(context);
+                  //         },
+                  //       ),
+                  //       SizedBox(
+                  //         width: 6.w,
+                  //       ),
+                  //       InkWell(
+                  //         child: SvgPicture.asset(
+                  //           "assets/icons/logo_icon.svg",
+                  //           height: 2.h,
+                  //         ),
+                  //         onTap: () => Navigator.of(context)
+                  //             .pushNamed(WinkScreen.routename),
+                  //       ),
+                  //       SizedBox(
+                  //         width: 6.w,
+                  //       ),
+                  //       SvgPicture.asset(
+                  //         "assets/icons/profile_icon.svg",
+                  //         height: 2.5.h,
+                  //       ),
+                  //       SizedBox(
+                  //         width: 6.w,
+                  //       ),
+                  //       InkWell(
+                  //         onTap: () => Navigator.of(context)
+                  //             .pushNamed(ChannelListPage.routename),
+                  //         child: SvgPicture.asset(
+                  //           "assets/icons/message_icon.svg",
+                  //           height: 2.5.h,
+                  //         ),
+                  //       )
+                  //     ],
+                  //   ),
+                  // ),
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 5.5.h,
+                      width: double.infinity,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.of(context)
+                                    .pushNamed(SearchEvent.routename);
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(0.75),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.white,
+                                      Colors.white.withOpacity(0.4)
+                                    ],
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                  ),
+                                ),
+                                child: Container(
+                                    height: 5.h,
+                                    width: double.infinity,
+                                    padding: EdgeInsets.all(1.h),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: backgroundColor,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Search for an Event",
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w400,
+                                            color:
+                                                Colors.white.withOpacity(0.6),
+                                          ),
+                                        ),
+                                        SvgPicture.asset(
+                                          "assets/icons/outlined_search.svg",
+                                          height: 2.h,
+                                        )
+                                      ],
+                                    )),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Spacer(),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).pushNamed(
+                                      ProfileScreen.routename,
+                                      arguments: SessionHelper.id,
+                                    );
+                                  },
+                                  child: SvgPicture.asset(
+                                    "assets/icons/outlined_profile.svg",
+                                    height: 2.75.h,
+                                  ),
+                                ),
+                                Spacer(),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .pushNamed(ChannelListPage.routename);
+                                  },
+                                  child: SvgPicture.asset(
+                                    "assets/icons/outlined_msg.svg",
+                                    height: 3.h,
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ];
-            },
-            body: PageView.builder(
-              controller: _pageController,
-              onPageChanged: (index) {
-                _tabController.animateTo(
-                  index,
-                  duration: Duration(milliseconds: 400),
-                  curve: Curves.linear,
-                );
+                  const SliverToBoxAdapter(
+                    child: MembersRow(),
+                  ),
+                  SliverAppBar(
+                    shadowColor: backgroundColor,
+                    foregroundColor: backgroundColor,
+                    surfaceTintColor: backgroundColor,
+                    backgroundColor: Colors.transparent,
+                    leading: null,
+                    leadingWidth: 0,
+                    pinned: true,
+                    toolbarHeight: 4.h,
+                    floating: true,
+                    flexibleSpace: TabBar(
+                      indicatorPadding: EdgeInsets.zero,
+                      indicator: BoxDecoration(color: Colors.transparent),
+                      unselectedLabelColor: Colors.white,
+                      indicatorColor: Colors.transparent,
+                      padding: null,
+                      isScrollable: true,
+                      dividerColor: Colors.transparent,
+                      indicatorSize: TabBarIndicatorSize.label,
+                      overlayColor:
+                          MaterialStatePropertyAll(Colors.transparent),
+                      labelPadding: EdgeInsets.symmetric(horizontal: 2.w),
+                      controller: _tabController,
+                      tabs: [
+                        EventTab(
+                            tabController: _tabController,
+                            text: "Ongoing",
+                            index: 0),
+                        EventTab(
+                            tabController: _tabController,
+                            text: "Upcoming",
+                            index: 1),
+                        EventTab(
+                            tabController: _tabController,
+                            text: "Created",
+                            index: 2),
+                        EventTab(
+                            tabController: _tabController,
+                            text: "Joined",
+                            index: 3),
+                        EventTab(
+                            tabController: _tabController,
+                            text: "Past",
+                            index: 4),
+                        EventTab(
+                            tabController: _tabController,
+                            text: "Saved",
+                            index: 5),
+                      ],
+                      onTap: (index) {
+                        print(index.toString());
+
+                        _pageController.jumpToPage(
+                          index,
+                          // duration: Duration(milliseconds: 400),
+                          // curve: Curves.linear,
+                        );
+                        prevIndex = index;
+                      },
+                    ),
+                  ),
+                ];
               },
-              itemBuilder: (context, index) {
-                if (index == 0) {
+              body: PageView.builder(
+                controller: _pageController,
+                onPageChanged: (index) {
+                  _tabController.animateTo(
+                    index,
+                    duration: Duration(milliseconds: 400),
+                    curve: Curves.linear,
+                  );
+                },
+                itemBuilder: (context, index) {
+                  if (index == 0) {
+                    return Container(
+                      padding: EdgeInsets.only(top: 1.h),
+                      child: OngoingEvents(userId: SessionHelper.id),
+                    );
+                  }
+                  if (index == 1) {
+                    return Container(
+                      padding: EdgeInsets.only(top: 1.h),
+                      child: UpcomingEvent(userId: SessionHelper.id),
+                    );
+                  }
+                  if (index == 2) {
+                    return Container(
+                      padding: EdgeInsets.only(top: 1.h),
+                      child: MyEvents(userId: SessionHelper.id),
+                    );
+                  }
+                  if (index == 3) {
+                    return Container(
+                      padding: EdgeInsets.only(top: 1.h),
+                      child: JoinedEvents(userId: SessionHelper.id),
+                    );
+                  }
+                  if (index == 4) {
+                    return Container(
+                      padding: EdgeInsets.only(top: 1.h),
+                      child: PastEvents(userId: SessionHelper.id),
+                    );
+                  }
                   return Container(
                     padding: EdgeInsets.only(top: 1.h),
-                    child: OngoingEvents(userId: SessionHelper.id),
+                    child: SavedEvents(userId: SessionHelper.id),
                   );
-                }
-                if (index == 1) {
-                  return Container(
-                    padding: EdgeInsets.only(top: 1.h),
-                    child: UpcomingEvent(userId: SessionHelper.id),
-                  );
-                }
-                if (index == 2) {
-                  return Container(
-                    padding: EdgeInsets.only(top: 1.h),
-                    child: MyEvents(userId: SessionHelper.id),
-                  );
-                }
-                if (index == 3) {
-                  return Container(
-                    padding: EdgeInsets.only(top: 1.h),
-                    child: JoinedEvents(userId: SessionHelper.id),
-                  );
-                }
-                if (index == 4) {
-                  return Container(
-                    padding: EdgeInsets.only(top: 1.h),
-                    child: PastEvents(userId: SessionHelper.id),
-                  );
-                }
-                return Container(
-                  padding: EdgeInsets.only(top: 1.h),
-                  child: SavedEvents(userId: SessionHelper.id),
-                );
-              },
-              itemCount: 6,
+                },
+                itemCount: 6,
+              ),
             ),
           ),
         ),

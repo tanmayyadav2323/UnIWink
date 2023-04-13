@@ -44,13 +44,10 @@ class _OtherMemberCardState extends State<OtherMemberCard> {
             .queryChannels(
               state: true,
               watch: true,
-              filter: Filter.in_(
-                'members',
-                [
-                  SessionHelper.id,
-                  user.id,
-                ],
-              ),
+              filter: Filter.and([
+                Filter.in_('members', [SessionHelper.id]),
+                Filter.notExists('channel_type'),
+              ]),
             )
             .first,
         builder: (context, snapshot) {

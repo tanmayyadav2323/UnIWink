@@ -1,4 +1,3 @@
-import 'package:buddy_go/features/Authentication/screens/dummy_verify_screen.dart';
 import 'package:buddy_go/features/Dashboard/screns/dashboard_screen.dart';
 import 'package:buddy_go/features/Profile/screens/buddy_wink_screen.dart';
 import 'package:buddy_go/features/Profile/screens/profile_event_screen.dart';
@@ -11,6 +10,7 @@ import 'package:buddy_go/features/chat/screens/channel_list_page.dart';
 import 'package:buddy_go/features/events/screen/event_screen.dart';
 import 'package:buddy_go/features/home/screens/create_event_screen.dart';
 import 'package:buddy_go/features/home/screens/winks_screen.dart';
+import 'package:buddy_go/features/maps/map_screen.dart';
 import 'package:buddy_go/features/search/screens/search_event_screen.dart';
 import 'package:buddy_go/models/event_model.dart';
 import 'package:buddy_go/models/user_model.dart';
@@ -124,6 +124,7 @@ class CustomRouter {
             editMode: (settings.arguments ?? false) as bool,
           ),
         );
+
       case VerifyPhoneNumberScreen.routename:
         return MaterialPageRoute(
           settings: const RouteSettings(name: LoginScreen.routename),
@@ -137,6 +138,11 @@ class CustomRouter {
           settings: const RouteSettings(name: HomeScreen.routename),
           builder: (_) => const HomeScreen(),
         );
+      // case SearchPage.routename:
+      //   return MaterialPageRoute(
+      //     settings: const RouteSettings(name: SearchPage.routename),
+      //     builder: (_) =>  SearchPage(),
+      //   );
       case SplashScreen.routename:
         return MaterialPageRoute(
           settings: const RouteSettings(name: SplashScreen.routename),

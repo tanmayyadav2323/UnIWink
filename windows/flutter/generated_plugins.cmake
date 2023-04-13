@@ -7,7 +7,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   dart_vlc
   desktop_drop
   file_selector_windows
-  geolocator_windows
+  permission_handler_windows
   thumblr_windows
   url_launcher_windows
 )
