@@ -65,6 +65,9 @@ dependencies:
   intl_phone_field: ^3.1.0
   flutter_osm_plugin: ^0.42.0
   pointer_interceptor: ^0.9.3+4
+  flutter_map: ^3.1.0
+  latlong2: ^0.8.1
+  geocoding: ^2.1.0
   # mapbox_gl: ^0.16.0
   # location: ^4.4.0
 

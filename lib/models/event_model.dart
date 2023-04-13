@@ -11,6 +11,8 @@ class EventModel {
   final List<String> memberImageUrls;
   final List<String> savedMembers;
   final String organizer;
+  // final String latitude;
+  // final String longitude;
   final List<String>? images;
   final double rating;
   final DateTime startDateTime;
@@ -25,6 +27,8 @@ class EventModel {
     required this.creationDate,
     required this.about,
     required this.image,
+    // required this.latitude,
+    // required this.longitude,
     required this.memberImageUrls,
     required this.savedMembers,
     required this.organizer,

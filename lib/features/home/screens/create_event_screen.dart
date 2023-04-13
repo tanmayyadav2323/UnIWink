@@ -1,6 +1,9 @@
+import 'dart:developer';
 import 'dart:io';
-
+import 'package:geocoding/geocoding.dart';
+import 'package:buddy_go/features/maps/map_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,7 +15,8 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:table_calendar/table_calendar.dart';
-
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:buddy_go/config/theme_colors.dart';
 import 'package:buddy_go/features/Dashboard/screns/dashboard_screen.dart';
 import 'package:buddy_go/features/home/services/home_services.dart';
@@ -38,6 +42,7 @@ class CreateEventScreen extends StatefulWidget {
 
 class _CreateEventScreenState extends State<CreateEventScreen>
     with SingleTickerProviderStateMixin {
+  GeoPoint? geoPoint;
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _aboutController = TextEditingController();
   final TextEditingController _orgController = TextEditingController();
@@ -441,6 +446,60 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                   SizedBox(
                     height: 4.h,
                   ),
+                  GestureDetector(
+                    onTap: () async {
+                      GeoPoint p = await Navigator.of(context)
+                          .pushNamed(MapScreen.routename) as GeoPoint;
+                      geoPoint = p;
+                      getLocation(geoPoint!);
+                      setState(() {});
+                    },
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Pick-up Location',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.location_pin,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                              SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  geoPoint == null
+                                      ? '123 ABC colony'
+                                      : locationName,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 4.h,
+                  ),
                   Row(
                     children: [
                       Text(
@@ -572,6 +631,37 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                   //     ),
                   //   ),
                   // ),
+
+                  // SizedBox(
+                  //   height: 20.h,
+                  //   width: 20.h,
+                  //   child: FlutterMap(
+                  //     options: MapOptions(
+                  //       center: LatLng(51.509364, -0.128928),
+                  //     ),
+                  //     children: [
+                  //       TileLayer(
+                  //         urlTemplate:
+                  //             'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  //         userAgentPackageName: 'com.example.app',
+                  //       ),
+                  //       MarkerLayer(
+                  //         markers: [
+                  //           Marker(
+                  //             width: 30.0,
+                  //             height: 30.0,
+                  //             point: LatLng(51.509364, -0.128928),
+                  //             builder: (ctx) => Icon(
+                  //               Icons.location_on,
+                  //               color: Colors.red,
+                  //               size: 30,
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       )
+                  //     ],
+                  //   ),
+                  // ),
                   SizedBox(
                     height: 4.h,
                   ),
@@ -655,6 +745,15 @@ class _CreateEventScreenState extends State<CreateEventScreen>
         ),
       ),
     );
+  }
+
+  String locationName = "";
+  getLocation(GeoPoint geoPoint) async {
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(geoPoint.latitude, geoPoint.longitude);
+
+    locationName = placemarks[0].name!;
+    setState(() {});
   }
 }
 

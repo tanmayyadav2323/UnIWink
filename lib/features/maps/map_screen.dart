@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:sizer/sizer.dart';
 
 class MapScreen extends StatefulWidget {
   static const routename = 'search-page';
@@ -43,62 +46,51 @@ class _MapScreenState extends State<MapScreen> {
         ),
         child: Column(
           children: [
-            Row(
-              children: [
-                TextButton(
-                  style: TextButton.styleFrom(),
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: Icon(
-                    Icons.arrow_back_ios,
-                  ),
-                ),
-                Expanded(
-                  child: TextField(
-                    controller: textEditingController,
-                    onEditingComplete: () async {
-                      FocusScope.of(context).requestFocus(new FocusNode());
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 4.w),
+              child: TextFormField(
+                controller: textEditingController,
+                onEditingComplete: () async {
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                },
+                decoration: InputDecoration(
+                  suffix: ValueListenableBuilder<TextEditingValue>(
+                    valueListenable: textEditingController,
+                    builder: (ctx, text, child) {
+                      if (text.text.isNotEmpty) {
+                        return child!;
+                      }
+                      return SizedBox.shrink();
                     },
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.search,
+                    child: InkWell(
+                      focusNode: FocusNode(),
+                      onTap: () {
+                        textEditingController.clear();
+                        controller.setSearchableText("");
+                        FocusScope.of(context).requestFocus(new FocusNode());
+                      },
+                      child: Icon(
+                        Icons.close,
+                        size: 2.5.h,
                         color: Colors.black,
-                      ),
-                      suffix: ValueListenableBuilder<TextEditingValue>(
-                        valueListenable: textEditingController,
-                        builder: (ctx, text, child) {
-                          if (text.text.isNotEmpty) {
-                            return child!;
-                          }
-                          return SizedBox.shrink();
-                        },
-                        child: InkWell(
-                          focusNode: FocusNode(),
-                          onTap: () {
-                            textEditingController.clear();
-                            controller.setSearchableText("");
-                            FocusScope.of(context)
-                                .requestFocus(new FocusNode());
-                          },
-                          child: Icon(
-                            Icons.close,
-                            size: 16,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      focusColor: Colors.black,
-                      filled: true,
-                      hintText: "search",
-                      border: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      fillColor: Colors.grey[300],
-                      errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
                       ),
                     ),
                   ),
+                  filled: true,
+                  fillColor: Colors.black54,
+                  hintText: "search",
+                  hintStyle: GoogleFonts.poppins(
+                      fontSize: 12.sp, fontWeight: FontWeight.w500),
+                  border: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+
+                  // style: GoogleFonts.poppins(
+                  //   fontSize: 16.sp,
+                  //   fontWeight: FontWeight.w500,
+                  //   color: Colors.white,
+                  // ),
                 ),
-              ],
+              ),
             ),
             SizedBox(
               height: 8,
@@ -111,17 +103,20 @@ class _MapScreenState extends State<MapScreen> {
         bottom: 12,
         right: 8,
         child: FloatingActionButton(
+          backgroundColor: Colors.black,
           onPressed: () async {
             GeoPoint p = await controller.selectAdvancedPositionPicker();
-            
+
             Navigator.pop(context, p);
           },
-          child: Icon(Icons.arrow_forward),
+          child: Icon(
+            Icons.arrow_forward,
+            color: Colors.white,
+          ),
         ),
       ),
       pickerConfig: CustomPickerLocationConfig(
         initZoom: 19,
-
       ),
     );
   }

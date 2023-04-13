@@ -138,11 +138,11 @@ class CustomRouter {
           settings: const RouteSettings(name: HomeScreen.routename),
           builder: (_) => const HomeScreen(),
         );
-      // case SearchPage.routename:
-      //   return MaterialPageRoute(
-      //     settings: const RouteSettings(name: SearchPage.routename),
-      //     builder: (_) =>  SearchPage(),
-      //   );
+      case MapScreen.routename:
+        return MaterialPageRoute(
+          settings: const RouteSettings(name: MapScreen.routename),
+          builder: (_) =>  MapScreen(),
+        );
       case SplashScreen.routename:
         return MaterialPageRoute(
           settings: const RouteSettings(name: SplashScreen.routename),
