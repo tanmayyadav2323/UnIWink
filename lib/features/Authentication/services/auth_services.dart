@@ -19,7 +19,7 @@ import '../../../config/utils.dart';
 String userId = "";
 
 class AuthService {
-  Future<void> authenticateUserPhone(
+  Future<String> authenticateUserPhone(
       {required String phoneNumber, required BuildContext context}) async {
     try {
       User user = User(
@@ -49,13 +49,15 @@ class AuthService {
     } catch (e) {
       showSnackBar(context, e.toString());
     }
+
+    return userId;
   }
 
   Future<void> verifyPhoneNumber(
-      {required String otp, required BuildContext context}) async {
+      {required String otp, required BuildContext context,required String uId}) async {
     http.Response res = await http.post(
       Uri.parse('$uri/api/verifyPhone'),
-      body: jsonEncode({"otp": otp, "userId": userId}),
+      body: jsonEncode({"otp": otp, "userId": uId}),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8'
       },

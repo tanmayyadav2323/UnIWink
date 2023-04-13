@@ -1,36 +1,23 @@
-import 'dart:math';
+import 'package:buddy_go/config/theme_colors.dart';
+import 'package:buddy_go/config/utils.dart';
+import 'package:buddy_go/features/Authentication/services/auth_services.dart';
 import 'package:buddy_go/features/background/bg_screen.dart';
 import 'package:buddy_go/widgets/custom_button.dart';
-import 'package:buddy_go/config/utils.dart';
-import 'package:buddy_go/features/authentication/screens/verify_screen.dart';
-import 'package:buddy_go/features/authentication/services/auth_services.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
-import 'package:sms_autofill/sms_autofill.dart';
 
-class LoginScreen extends StatefulWidget {
-  static const routename = '/login-screen';
-  const LoginScreen({super.key});
+import '../../authentication/screens/verify_screen.dart';
+
+class DummyScreen extends StatefulWidget {
+  const DummyScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<DummyScreen> createState() => _DummyScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  @override
-  void initState() {
-    super.initState();
-
-    SmsAutoFill().getAppSignature.then((signature) {
-      setState(() {
-        print("Signature:${signature}");
-      });
-    });
-  }
-
-  final AuthService _authService = AuthService();
+class _DummyScreenState extends State<DummyScreen> {
   @override
   Widget build(BuildContext context) {
     final phoneNumberController = TextEditingController();
@@ -107,15 +94,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         "Phone number must be of 10 digits",
                       );
                     } else {
-                      String userId = await _authService.authenticateUserPhone(
+                      AuthService().authenticateUserPhone(
                         phoneNumber: phoneNumberController.text,
                         context: context,
                       );
-
-                      Navigator.of(context).pushNamed(
-                        VerifyPhoneNumberScreen.routename,
-                        arguments: [userId, phoneNumberController.text],
-                      );
+                      Navigator.of(context)
+                          .pushNamed(VerifyPhoneNumberScreen.routename);
                     }
                   },
                 ),

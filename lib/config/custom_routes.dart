@@ -1,3 +1,4 @@
+import 'package:buddy_go/features/Authentication/screens/dummy_verify_screen.dart';
 import 'package:buddy_go/features/Dashboard/screns/dashboard_screen.dart';
 import 'package:buddy_go/features/Profile/screens/buddy_wink_screen.dart';
 import 'package:buddy_go/features/Profile/screens/profile_event_screen.dart';
@@ -126,7 +127,10 @@ class CustomRouter {
       case VerifyPhoneNumberScreen.routename:
         return MaterialPageRoute(
           settings: const RouteSettings(name: LoginScreen.routename),
-          builder: (_) => const VerifyPhoneNumberScreen(),
+          builder: (_) => VerifyPhoneNumberScreen(
+            phoneNumber: (settings.arguments! as List<String>)[1],
+            userId: (settings.arguments! as List<String>)[0],
+          ),
         );
       case HomeScreen.routename:
         return MaterialPageRoute(
