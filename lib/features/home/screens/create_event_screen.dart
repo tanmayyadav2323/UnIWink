@@ -66,6 +66,12 @@ class _CreateEventScreenState extends State<CreateEventScreen>
 
   @override
   void initState() {
+    if (widget.eventModel != null) {
+      geoPoint = GeoPoint(
+          latitude: double.parse(widget.eventModel!.latitude),
+          longitude: double.parse(widget.eventModel!.longitude));
+      getLocation(geoPoint!);
+    }
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 500),
       vsync: this,
@@ -116,6 +122,7 @@ class _CreateEventScreenState extends State<CreateEventScreen>
         eventImage == null ||
         eventImage!.isEmpty ||
         _startDay == null ||
+        geoPoint == null ||
         _endDay == null) {
       return true;
     }
@@ -632,36 +639,6 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                   //   ),
                   // ),
 
-                  // SizedBox(
-                  //   height: 20.h,
-                  //   width: 20.h,
-                  //   child: FlutterMap(
-                  //     options: MapOptions(
-                  //       center: LatLng(51.509364, -0.128928),
-                  //     ),
-                  //     children: [
-                  //       TileLayer(
-                  //         urlTemplate:
-                  //             'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  //         userAgentPackageName: 'com.example.app',
-                  //       ),
-                  //       MarkerLayer(
-                  //         markers: [
-                  //           Marker(
-                  //             width: 30.0,
-                  //             height: 30.0,
-                  //             point: LatLng(51.509364, -0.128928),
-                  //             builder: (ctx) => Icon(
-                  //               Icons.location_on,
-                  //               color: Colors.red,
-                  //               size: 30,
-                  //             ),
-                  //           ),
-                  //         ],
-                  //       )
-                  //     ],
-                  //   ),
-                  // ),
                   SizedBox(
                     height: 4.h,
                   ),
@@ -697,6 +674,8 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                           if (widget.eventModel == null) {
                             await HomeServices()
                                 .createEvent(
+                              latitude: geoPoint!.latitude.toString(),
+                              longitude: geoPoint!.longitude.toString(),
                               organizer: _orgController.text,
                               context: context,
                               title: _titleController.text,
@@ -714,6 +693,8 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                                 .editEvent(
                               id: widget.eventModel!.id,
                               organizer: _orgController.text,
+                              latitude: geoPoint!.latitude.toString(),
+                              longitude: geoPoint!.longitude.toString(),
                               context: context,
                               title: _titleController.text,
                               about: _aboutController.text,

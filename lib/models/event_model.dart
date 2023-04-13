@@ -11,13 +11,12 @@ class EventModel {
   final List<String> memberImageUrls;
   final List<String> savedMembers;
   final String organizer;
-  // final String latitude;
-  // final String longitude;
+  final String latitude;
+  final String longitude;
   final List<String>? images;
   final double rating;
   final DateTime startDateTime;
   final DateTime endDateTime;
-
 
   EventModel({
     this.id,
@@ -27,8 +26,8 @@ class EventModel {
     required this.creationDate,
     required this.about,
     required this.image,
-    // required this.latitude,
-    // required this.longitude,
+    required this.latitude,
+    required this.longitude,
     required this.memberImageUrls,
     required this.savedMembers,
     required this.organizer,
@@ -37,10 +36,6 @@ class EventModel {
     required this.startDateTime,
     required this.endDateTime,
   });
-
-
-
-
 
   Map<String, dynamic> toMap() {
     return {
@@ -55,6 +50,8 @@ class EventModel {
       'savedMembers': savedMembers,
       'organizer': organizer,
       'images': images,
+      "latitude": latitude,
+      "longitude": longitude,
       'rating': rating,
       'startDateTime': startDateTime.millisecondsSinceEpoch,
       'endDateTime': endDateTime.millisecondsSinceEpoch,
@@ -70,6 +67,8 @@ class EventModel {
       creationDate: DateTime.parse(map['creationDate']),
       about: map['about'] ?? '',
       image: map['image'] ?? '',
+      latitude: map["latitude"] ?? '',
+      longitude: map["longitude"] ?? '',
       memberImageUrls: List<String>.from(map['memberImageUrls']),
       savedMembers: List<String>.from(map['savedMembers']),
       organizer: map['organizer'] ?? '',
@@ -82,7 +81,8 @@ class EventModel {
 
   String toJson() => json.encode(toMap());
 
-  factory EventModel.fromJson(String source) => EventModel.fromMap(json.decode(source));
+  factory EventModel.fromJson(String source) =>
+      EventModel.fromMap(json.decode(source));
 
   EventModel copyWith({
     String? id,
@@ -92,6 +92,8 @@ class EventModel {
     DateTime? creationDate,
     String? about,
     String? image,
+    String? latitude,
+    String? longitude,
     List<String>? memberImageUrls,
     List<String>? savedMembers,
     String? organizer,
@@ -105,6 +107,8 @@ class EventModel {
       title: title ?? this.title,
       authorId: authorId ?? this.authorId,
       memberIds: memberIds ?? this.memberIds,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
       creationDate: creationDate ?? this.creationDate,
       about: about ?? this.about,
       image: image ?? this.image,

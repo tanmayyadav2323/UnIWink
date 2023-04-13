@@ -21,6 +21,8 @@ const eventSchema = new Schema(
         creationDate: Date,
         about: String,
         image: String,
+        latitude: String,
+        longitude: String,
         images: [String],
         rating: Number,
         startDateTime: Date,

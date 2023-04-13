@@ -15,9 +15,11 @@ import 'package:buddy_go/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:sizer/sizer.dart';
 import 'package:buddy_go/models/event_model.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
@@ -50,12 +52,16 @@ class _EventScreenState extends State<EventScreen> {
   final myWidgetKey = GlobalKey();
   bool participant_box = true;
   Channel? channel;
+  double? latitude;
+  double? longitude;
 
   bool joinedEvent = false;
 
   @override
   void initState() {
     getChannel();
+    latitude = double.parse(widget.event.latitude);
+    longitude = double.parse(widget.event.longitude);
     saved = widget.event.savedMembers.contains(SessionHelper.id);
 
     memberIds = widget.event.memberIds;
@@ -164,150 +170,99 @@ class _EventScreenState extends State<EventScreen> {
                     ),
                     Row(
                       children: [
-                        Expanded(
-                          flex: 4,
-                          child: Column(
-                            children: [
-                              InkWell(
-                                onTap: () async {
-                                  String googleMapsUrl = 'geo:0,0';
-                                  if (true) {
-                                    await launchURL(context, googleMapsUrl);
-                                  } else {
-                                    throw 'Could not launch Google Maps.';
-                                  }
-                                },
-                                child: Row(
+                        const Icon(Icons.watch_later_outlined,
+                            color: Color(0XFFFF005C)),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              DateFormat("dd MMMM, yyyy hh:mm a")
+                                  .format(widget.event.startDateTime)
+                                  .toString(),
+                              style: GoogleFonts.poppins(
+                                fontSize: 10.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                                height: 1,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 1.h,
+                            ),
+                            Text(
+                              DateFormat("dd MMMM, yyyy hh:mm a")
+                                  .format(widget.event.endDateTime)
+                                  .toString(),
+                              style: GoogleFonts.poppins(
+                                fontSize: 10.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                                height: 1,
+                              ),
+                            )
+                          ],
+                        ),
+                        Spacer(),
+                        InkWell(
+                          onTap: () async {
+                            String googleMapsUrl = 'geo:$latitude,$longitude';
+                            if (true) {
+                              await launchURL(context, googleMapsUrl);
+                            } else {
+                              throw 'Could not launch Google Maps.';
+                            }
+                          },
+                          child: IgnorePointer(
+                            ignoring: true,
+                            child: Container(
+                              height: 12.h,
+                              width: 12.h,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: Color(0xffB70450),
+                                  width: 2,
+                                ),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: FlutterMap(
+                                  options: MapOptions(
+                                    center: LatLng(latitude!, longitude!),
+                                  ),
                                   children: [
-                                    Icon(
-                                      Icons.location_on,
-                                      color: Color(0XFFFF005C),
+                                    TileLayer(
+                                      urlTemplate:
+                                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                      userAgentPackageName: 'com.example.app',
                                     ),
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                    Flexible(
-                                      child: Text(
-                                        "Plot no: 2/36 vandhe marg nagar near ",
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
+                                    MarkerLayer(
+                                      markers: [
+                                        Marker(
+                                          width: 30.0,
+                                          height: 30.0,
+                                          point: LatLng(latitude!, longitude!),
+                                          builder: (ctx) => Icon(
+                                            Icons.location_on,
+                                            color: Colors.red,
+                                            size: 30,
+                                          ),
+                                        ),
+                                      ],
                                     )
                                   ],
                                 ),
                               ),
-                              SizedBox(
-                                height: 2.h,
-                              ),
-                              Row(
-                                children: [
-                                  const Icon(Icons.watch_later_outlined,
-                                      color: Color(0XFFFF005C)),
-                                  const SizedBox(
-                                    width: 4,
-                                  ),
-                                  const SizedBox(
-                                    width: 4,
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        DateFormat("dd MMMM, yyyy hh:mm a")
-                                            .format(widget.event.startDateTime)
-                                            .toString(),
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 10.sp,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.white,
-                                          height: 1,
-                                        ),
-                                      ),
-                                      // SizedBox(
-                                      //   width: 2.w,
-                                      // ),
-                                      // Column(
-                                      //   children: [
-                                      //     SizedBox(
-                                      //       width: 2.w,
-                                      //       child: const Divider(
-                                      //         color: Colors.white,
-                                      //         thickness: 1,
-                                      //       ),
-                                      //     ),
-                                      //   ],
-                                      // ),
-                                      // SizedBox(
-                                      //   width: 2.w,
-                                      // ),
-                                      SizedBox(
-                                        height: 1.h,
-                                      ),
-                                      Text(
-                                        DateFormat("dd MMMM, yyyy hh:mm a")
-                                            .format(widget.event.endDateTime)
-                                            .toString(),
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 10.sp,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.white,
-                                          height: 1,
-                                        ),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                        // Expanded(
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.end,
-                        //     children: [
-                        //       Container(
-                        //         decoration: BoxDecoration(
-                        //           color: const Color(0XFFFF005C),
-                        //           borderRadius: BorderRadius.circular(10),
-                        //         ),
-                        //         padding: EdgeInsets.symmetric(
-                        //           horizontal: 2.5.w,
-                        //           vertical: 1.h,
-                        //         ),
-                        //         child: Column(
-                        //           children: [
-                        //             Text(
-                        //               DateFormat("MMM")
-                        //                   .format(widget.event.endDateTime)
-                        //                   .toString(),
-                        //               style: GoogleFonts.poppins(
-                        //                 fontSize: 10.sp,
-                        //                 fontWeight: FontWeight.w500,
-                        //                 color: Colors.white,
-                        //                 height: 1,
-                        //               ),
-                        //             ),
-                        //             SizedBox(
-                        //               height: 0.5.h,
-                        //             ),
-                        //             Text(
-                        //               DateFormat("dd")
-                        //                   .format(widget.event.endDateTime)
-                        //                   .toString(),
-                        //               style: GoogleFonts.poppins(
-                        //                 fontSize: 10.sp,
-                        //                 fontWeight: FontWeight.w500,
-                        //                 color: Colors.white,
-                        //                 height: 1,
-                        //               ),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       )
-                        //     ],
-                        //   ),
-                        // )
                       ],
                     ),
                     SizedBox(

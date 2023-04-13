@@ -27,6 +27,8 @@ eventRouter.post('/api/edit-event', auth, async (req, res) => {
         event.organizer = req.body.organizer;
         event.about = req.body.about;
         event.image = req.body.image;
+        event.latitude = req.body.latitude;
+        event.longitude = req.body.longitude;
         event.images = req.body.images;
         event.startDateTime = req.body.startDateTime;
         event.endDateTime = req.body.endDateTime;
@@ -48,6 +50,8 @@ eventRouter.post('/api/create-event', auth, async (req, res) => {
             authorId: req.body.authorId,
             memberIds: [],
             organizer: req.body.organizer,
+            latitude: req.body.latitude,
+            longitude: req.body.longitude,
             savedMembers: [],
             memberImageUrls: [],
             creationDate: req.body.creationDate,
