@@ -5,6 +5,7 @@ import 'package:buddy_go/config/utils.dart';
 import 'package:buddy_go/features/authentication/screens/verify_screen.dart';
 import 'package:buddy_go/features/authentication/services/auth_services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:sizer/sizer.dart';
@@ -46,17 +47,32 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: 8.h,
+                  height: MediaQuery.of(context).size.height * 0.25,
                 ),
-                Text(
-                  "Phone Number",
-                  style: GoogleFonts.poppins(
-                    fontSize: 24.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "UnIw",
+                      style: GoogleFonts.poppins(
+                          fontSize: 32.sp, letterSpacing: 6),
+                    ),
+                    SizedBox(
+                      width: 2.w,
+                    ),
+                    SvgPicture.asset("assets/icons/logo.svg", height: 6.h),
+                    SizedBox(
+                      width: 2.w,
+                    ),
+                    Text(
+                      "nk",
+                      style: GoogleFonts.poppins(
+                          fontSize: 32.sp, letterSpacing: 6),
+                    ),
+                  ],
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.3,
+                  height: MediaQuery.of(context).size.height * 0.1,
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 4.w),

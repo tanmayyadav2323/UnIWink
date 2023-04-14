@@ -19,7 +19,7 @@ class _ChooseAvatarScreenState extends State<ChooseAvatarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BgScreen(
-        child: Container(
+        child: SizedBox(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           child: Padding(

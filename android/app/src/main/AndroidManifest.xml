@@ -2,7 +2,7 @@
     package="com.example.buddy_go">
 
    <application
-        android:label="buddy_go"
+        android:label="UniWink"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
