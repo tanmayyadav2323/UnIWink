@@ -44,7 +44,10 @@ class _CustomButtonState extends State<CustomButton> {
             width: double.infinity,
             child: widget.loading
                 ? Center(
-                    child: CircularProgressIndicator(),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CircularProgressIndicator(),
+                    ),
                   )
                 : Text(
                     widget.buttonText,

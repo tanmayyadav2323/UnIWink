@@ -1,4 +1,3 @@
-
 import 'package:buddy_go/config/theme_colors.dart';
 
 import 'package:device_preview/device_preview.dart';
@@ -55,6 +54,9 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           title: 'UniWink',
           theme: ThemeData(
+            progressIndicatorTheme: ProgressIndicatorThemeData(
+              color: Colors.white,
+            ),
             textSelectionTheme:
                 TextSelectionThemeData(cursorColor: Colors.white),
             scrollbarTheme: ScrollbarThemeData(

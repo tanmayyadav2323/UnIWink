@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
@@ -45,7 +47,7 @@ class _OtherMemberCardState extends State<OtherMemberCard> {
               state: true,
               watch: true,
               filter: Filter.and([
-                Filter.in_('members', [SessionHelper.id]),
+                Filter.in_('members', [user.id]),
                 Filter.notExists('channel_type'),
               ]),
             )
@@ -58,13 +60,12 @@ class _OtherMemberCardState extends State<OtherMemberCard> {
             //   child: CircularProgressIndicator(),
             // );
             return SizedBox.shrink();
-          } else {
+          } else if (snapshot.data != null) {
             Channel? channel;
-            if (snapshot.data != null) {
-              channel = snapshot.data![0];
-              _nameController.text =
-                  channel.extraData["${user.id}_name"].toString();
-            }
+            channel = snapshot.data![0];
+            _nameController.text =
+                channel.extraData["${user.id}_name"].toString();
+            log("hey hello ${channel.cid}");
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -171,6 +172,7 @@ class _OtherMemberCardState extends State<OtherMemberCard> {
               ],
             );
           }
+
           return Text("no data");
         },
       ),

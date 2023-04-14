@@ -189,7 +189,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
                                   filter: Filter.and([
                                     Filter.in_('members', [SessionHelper.id]),
                                     Filter.notExists('channel_type'),
-                                    Filter.exists('favorite'),
+                                    Filter.exists('${SessionHelper.id}_fav'),
                                     Filter.equal('${SessionHelper.id}_fav', "1")
                                   ]),
                                   sort: const [SortOption('last_message_at')],
@@ -255,7 +255,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
   Widget _channelTileBuilder(BuildContext context, List<Channel> channels,
       int index, StreamChannelListTile defaultChannelTile) {
     final channel = channels[index];
-    var lastMessage = null;
+    var lastMessage = null; 
     final member = channels[index]
         .state!
         .members
@@ -334,36 +334,40 @@ class _ChannelListPageState extends State<ChannelListPage> {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
-      trailing: Column(
-        children: [
-          InkWell(
-            child: favorite == "0"
-                ? Icon(Icons.favorite_outline)
-                : Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                  ),
-            onTap: () async {
-              if (favorite == "0") {
-                favorite = "1";
-              } else {
-                favorite = "0";
-              }
-              await channel
-                  .updatePartial(set: {'${SessionHelper.id}_fav': favorite});
-              setState(() {});
-            },
-          ),
-          Spacer(),
-          channel.lastMessageAt != null
-              ? Text(
-                  getTime(channel.lastMessageAt!),
-                  style: GoogleFonts.poppins(
-                      fontSize: 7.sp, fontWeight: FontWeight.w300),
-                )
-              : SizedBox.shrink(),
-          Spacer()
-        ],
+      trailing: SizedBox(
+        width: 25.w,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            InkWell(
+              child: favorite == "0"
+                  ? Icon(Icons.favorite_outline)
+                  : Icon(
+                      Icons.favorite,
+                      color: Colors.red,
+                    ),
+              onTap: () async {
+                if (favorite == "0") {
+                  favorite = "1";
+                } else {
+                  favorite = "0";
+                }
+                await channel
+                    .updatePartial(set: {'${SessionHelper.id}_fav': favorite});
+                setState(() {});
+              },
+            ),
+            Spacer(),
+            channel.lastMessageAt != null
+                ? Text(
+                    getTime(channel.lastMessageAt!),
+                    style: GoogleFonts.poppins(
+                        fontSize: 7.sp, fontWeight: FontWeight.w300),
+                  )
+                : SizedBox.shrink(),
+            Spacer()
+          ],
+        ),
       ),
     );
   }

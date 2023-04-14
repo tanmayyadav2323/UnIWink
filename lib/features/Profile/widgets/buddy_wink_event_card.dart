@@ -11,6 +11,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../models/user_model.dart' as UserModel;
+import '../../../widgets/big_load_animations.dart';
 import '../screens/profile_event_screen.dart';
 import '../services/profile_services.dart';
 
@@ -51,7 +52,7 @@ class _BuddyWinkEventCardState extends State<BuddyWinkEventCard> {
       future: homeServices.winkMembers(context: context),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return const BigLoadAnimations();
         } else if (snapshot.hasError) {
           showSnackBar(context, snapshot.error.toString());
         } else if (snapshot.hasData) {

@@ -345,23 +345,38 @@ eventRouter.post('/api/wink-user', auth, async (req, res) => {
         const toUser = await User.findById(req.body.winkedToId);
         const byUser = await User.findById(req.body.winkedById);
 
-        let wink = new Wink({
+        // Check if a wink already exists for the two users
+        let wink = await Wink.findOne({
             winkedById: req.body.winkedById,
-            winkedToId: req.body.winkedToId,
-            status: req.body.status,
-            message: req.body.message
+            winkedToId: req.body.winkedToId
         });
 
-        await wink.save();
-        toUser.winks.push(wink._id);
-        byUser.winks.push(wink._id);
-        await toUser.save();
-        await byUser.save();
-    }
-    catch (e) {
+        if (wink) {
+            // If wink exists, update the message and status fields
+            wink.message = req.body.message;
+            wink.status = req.body.status;
+            await wink.save();
+        } else {
+            // If wink doesn't exist, create a new one
+            wink = new Wink({
+                winkedById: req.body.winkedById,
+                winkedToId: req.body.winkedToId,
+                status: req.body.status,
+                message: req.body.message
+            });
+
+            await wink.save();
+            toUser.winks.push(wink._id);
+            byUser.winks.push(wink._id);
+            await toUser.save();
+            await byUser.save();
+        }
+        res.json({});
+    } catch (e) {
         res.status(500).json({ error: e.message });
     }
 });
+
 
 eventRouter.post('/api/leave-event', auth, async (req, res) => {
     try {

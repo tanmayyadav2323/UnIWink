@@ -1,21 +1,20 @@
 import 'dart:math';
-
 import 'package:buddy_go/config/global_variables.dart';
 import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/config/theme_colors.dart';
+import 'package:buddy_go/features/Profile/screens/profile_screen.dart';
 import 'package:buddy_go/features/events/services/event_services.dart';
 import 'package:buddy_go/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
-
 import 'package:buddy_go/models/user_model.dart' as UserModel;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
-
 import '../models/wink_model.dart';
 import '../features/chat/api/stream_api.dart';
 import '../features/chat/screens/channel_page.dart';
+
 
 enum WinkBoxStatus {
   winkById,
@@ -78,55 +77,73 @@ class _ParticipantBoxState extends State<ParticipantBox> {
         Row(
           children: [
             if (status == WinkBoxStatus.winkToId)
-              Stack(
-                children: [
-                  Container(
-                    height: 8.h,
-                    width: 8.h,
-                    padding: const EdgeInsets.all(2),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: (user.id != SessionHelper.id)
-                          ? LinearGradient(
-                              colors: [
-                                Color(0XFFFF005C),
-                                Color(0XFFFFFFFF),
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            )
-                          : null,
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10.w),
-                      child: Image.network(
-                        user.imageUrl,
-                        fit: BoxFit.contain,
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => ProfileScreen(id: user.id)),
+                  );
+                },
+                child: Stack(
+                  children: [
+                    Container(
+                      height: 8.h,
+                      width: 8.h,
+                      padding: const EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: (user.id != SessionHelper.id)
+                            ? LinearGradient(
+                                colors: [
+                                  Color(0XFFFF005C),
+                                  Color(0XFFFFFFFF),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              )
+                            : null,
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10.w),
+                        child: Image.network(
+                          user.imageUrl,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
-                  ),
-                  if (user.id != SessionHelper.id)
-                    Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: CircleAvatar(
-                          backgroundColor: backgroundColor,
-                          radius: 1.2.h,
-                          child: SvgPicture.asset(
-                            "assets/icons/wink_img.svg",
-                          ),
-                        ))
-                ],
+                    if (user.id != SessionHelper.id)
+                      Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: CircleAvatar(
+                            backgroundColor: backgroundColor,
+                            radius: 1.2.h,
+                            child: SvgPicture.asset(
+                              "assets/icons/wink_img.svg",
+                            ),
+                          ))
+                  ],
+                ),
               ),
             if (status != WinkBoxStatus.winkToId)
-              SizedBox(
-                height: 8.h,
-                width: 8.h,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10.w),
-                  child: Image.network(
-                    user.imageUrl,
-                    fit: BoxFit.contain,
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => ProfileScreen(id: user.id)),
+                  ); 
+                },
+                child: SizedBox(
+                  height: 8.h,
+                  width: 8.h,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10.w),
+                    child: Image.network(
+                      user.imageUrl,
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),
@@ -313,40 +330,75 @@ class _ParticipantBoxState extends State<ParticipantBox> {
           onTap: () async {
             final TextEditingController _textEditingController =
                 TextEditingController(text: winkModel.message);
+            bool loading = false;
             showDialog(
               context: context,
-              builder: (context) {
-                return AlertDialog(
-                  backgroundColor: backgroundColor,
-                  title: Text('Send Connection Message'),
-                  content: TextField(
-                    controller: _textEditingController,
-                  ),
-                  actions: [
-                    InkWell(
-                      onTap: () async {
-                        await eventService.updateWink(
-                          context: context,
-                          winkId: winkModel.id!,
-                          message: _textEditingController.text,
-                          status: WinkStatus.winked.index,
-                        );
-                        setState(() {
-                          status = WinkBoxStatus.winkById;
-                        });
-                      },
-                      child: Text(
-                        "Wink",
+              builder: (context) => AlertDialog(
+                backgroundColor: backgroundColor,
+                content: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Connection Message ',
                         style: GoogleFonts.poppins(
-                          color: Color(0xffB70450),
-                          fontSize: 10.sp,
-                          fontWeight: FontWeight.w300,
-                        ),
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            height: 1.1),
                       ),
-                    )
-                  ],
-                );
-              },
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      Text(
+                        'Enter a message to introduce yourself:',
+                        style:
+                            GoogleFonts.poppins(fontSize: 12.sp, height: 1.3),
+                      ),
+                      SizedBox(height: 4.h),
+                      TextFormField(
+                        controller: _textEditingController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText:
+                              'Hi, I saw your profile and would like to connect...',
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      StatefulBuilder(
+                        builder: (BuildContext context, StateSetter ses) {
+                          return CustomButton(
+                            loading: loading,
+                            buttonText: "Send",
+                            onPressed: () async {
+                              ses(() {
+                                loading = true;
+                              });
+
+                              await eventService
+                                  .wink(
+                                context: context,
+                                winkToId: widget.user.id,
+                                message: _textEditingController.text,
+                              )
+                                  .then((value) {
+                                setState(() {
+                                  status = WinkBoxStatus.winkById;
+                                  loading = false;
+                                });
+                              });
+                            },
+                          );
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ),
             );
           },
           child: Container(
@@ -480,12 +532,12 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                         height: 2.h,
                       ),
                       StatefulBuilder(
-                        builder: (BuildContext context, StateSetter setState) {
+                        builder: (BuildContext context, StateSetter ses) {
                           return CustomButton(
                             loading: loading,
                             buttonText: "Send",
                             onPressed: () async {
-                              setState(() {
+                              ses(() {
                                 loading = true;
                               });
 
@@ -501,8 +553,6 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                                   loading = false;
                                 });
                               });
-
-                              Navigator.of(context).pop();
                             },
                           );
                         },

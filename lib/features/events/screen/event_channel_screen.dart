@@ -4,6 +4,7 @@ import 'package:buddy_go/config/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
+import '../../../widgets/big_load_animations.dart';
 import '../../chat/screens/channel_page.dart';
 
 class EventChannelScreen extends StatefulWidget {
@@ -41,9 +42,7 @@ class _EventChannelScreenState extends State<EventChannelScreen> {
           if (snapshot.hasError) {
             showSnackBar(context, snapshot.error.toString());
           } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const BigLoadAnimations();
           } else if (snapshot.hasData) {
             List<String> members = [];
             if (snapshot.data!.isEmpty) return SizedBox.shrink();

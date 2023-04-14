@@ -10,6 +10,7 @@ import 'package:buddy_go/features/chat/screens/channel_list_page.dart';
 import 'package:buddy_go/features/events/screen/event_screen.dart';
 import 'package:buddy_go/features/home/screens/create_event_screen.dart';
 import 'package:buddy_go/features/home/screens/winks_screen.dart';
+import 'package:buddy_go/features/maps/full_map_screen.dart';
 import 'package:buddy_go/features/maps/map_screen.dart';
 import 'package:buddy_go/features/search/screens/search_event_screen.dart';
 import 'package:buddy_go/models/event_model.dart';
@@ -102,6 +103,16 @@ class CustomRouter {
             eventModels: settings.arguments as List<EventModel>,
           ),
         );
+      case FullMapScreen.routename:
+        return PageTransition(
+          type: PageTransitionType.leftToRight,
+          duration: Duration(milliseconds: 500),
+          settings: const RouteSettings(name: FullMapScreen.routename),
+          child: FullMapScreen(
+            latitude: (settings.arguments as List<double?>)[0]!,
+            longitude: (settings.arguments as List<double?>)[1]!,
+          ),
+        );
       case SearchEvent.routename:
         return MaterialPageRoute(
           settings: const RouteSettings(name: SearchEvent.routename),
@@ -141,7 +152,7 @@ class CustomRouter {
       case MapScreen.routename:
         return MaterialPageRoute(
           settings: const RouteSettings(name: MapScreen.routename),
-          builder: (_) =>  MapScreen(),
+          builder: (_) => MapScreen(),
         );
       case SplashScreen.routename:
         return MaterialPageRoute(

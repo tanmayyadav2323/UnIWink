@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../models/user_model.dart';
+import '../../../widgets/big_load_animations.dart';
 import '../services/home_services.dart';
 
 class WinkScreen extends StatefulWidget {
@@ -54,7 +55,7 @@ class _WinkScreenState extends State<WinkScreen> {
       future: homeServices.winkMembers(context: context),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return const BigLoadAnimations();
         } else if (snapshot.hasError) {
           showSnackBar(context, snapshot.error.toString());
         } else if (snapshot.hasData) {

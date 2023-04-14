@@ -7,6 +7,7 @@ import 'package:buddy_go/features/chat/utils/chat_client.dart';
 import 'package:buddy_go/features/home/screens/home_screen.dart';
 import 'package:buddy_go/features/Onboarding/screens/choose_avatar_screen.dart';
 import 'package:buddy_go/providers/user_provider.dart';
+import 'package:buddy_go/widgets/big_load_animations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -69,9 +70,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
+      body: BigLoadAnimations(),
     );
   }
 }

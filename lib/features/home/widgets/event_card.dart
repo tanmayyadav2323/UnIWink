@@ -117,6 +117,7 @@ class _EventCardState extends State<EventCard> {
                   child: Column(
                     children: [
                       Expanded(
+                        flex: 2,
                         child: Row(
                           children: [
                             Expanded(

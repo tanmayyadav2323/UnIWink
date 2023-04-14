@@ -4,6 +4,7 @@ enum WinkStatus {
   accepted,
   winked,
   unwinked,
+  none
 }
 
 class WinkModel {
@@ -25,7 +26,7 @@ class WinkModel {
     return WinkModel(
         winkedById: '',
         winkedToId: '',
-        status: WinkStatus.unwinked,
+        status: WinkStatus.none,
         message: '');
   }
 

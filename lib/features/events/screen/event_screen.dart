@@ -9,6 +9,7 @@ import 'package:buddy_go/features/events/services/event_services.dart';
 import 'package:buddy_go/features/events/widgets/custom_modal_sheet.dart';
 import 'package:buddy_go/features/home/screens/create_event_screen.dart';
 import 'package:buddy_go/features/home/services/home_services.dart';
+import 'package:buddy_go/features/maps/full_map_screen.dart';
 import 'package:buddy_go/widgets/participant_box.dart';
 import 'package:buddy_go/models/user_model.dart' as UserModel;
 import 'package:buddy_go/widgets/custom_button.dart';
@@ -24,6 +25,7 @@ import 'package:sizer/sizer.dart';
 import 'package:buddy_go/models/event_model.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
+import '../../../widgets/big_load_animations.dart';
 import '../../Dashboard/screns/dashboard_screen.dart';
 import '../../chat/screens/channel_page.dart';
 import 'event_channel_screen.dart';
@@ -212,12 +214,10 @@ class _EventScreenState extends State<EventScreen> {
                         Spacer(),
                         InkWell(
                           onTap: () async {
-                            String googleMapsUrl = 'geo:$latitude,$longitude';
-                            if (true) {
-                              await launchURL(context, googleMapsUrl);
-                            } else {
-                              throw 'Could not launch Google Maps.';
-                            }
+                     
+                            Navigator.of(context).pushNamed(
+                                FullMapScreen.routename,
+                                arguments: [latitude, longitude]);
                           },
                           child: IgnorePointer(
                             ignoring: true,
@@ -444,9 +444,7 @@ class _EventScreenState extends State<EventScreen> {
                 SizedBox(
                   height: 87.5.h,
                   child: channel == null
-                      ? Center(
-                          child: CircularProgressIndicator(),
-                        )
+                      ? BigLoadAnimations()
                       : StreamChannel(
                           key: ValueKey(channel!.cid),
                           channel: channel!,

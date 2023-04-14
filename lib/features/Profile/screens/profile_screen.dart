@@ -24,6 +24,7 @@ import 'package:buddy_go/widgets/participant_box.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 import '../../../models/user_model.dart' as UserModel;
+import '../../../widgets/big_load_animations.dart';
 import '../../chat/screens/channel_page.dart';
 import '../widgets/buddy_wink_event_card.dart';
 
@@ -67,7 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: loading
-            ? Center(child: CircularProgressIndicator())
+            ? BigLoadAnimations()
             : Padding(
                 padding: EdgeInsets.symmetric(horizontal: 4.w),
                 child: SingleChildScrollView(

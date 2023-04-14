@@ -254,10 +254,13 @@ class EventServices {
         ).toJson(),
       );
       // ignore: use_build_context_synchronously
+      log("wink message ${res.body}");
       httpErrorHandle(
         response: res,
         context: context,
-        onSuccess: () {},
+        onSuccess: () {
+          Navigator.of(context).pop();
+        },
       );
     } catch (e) {
       showSnackBar(context, e.toString());

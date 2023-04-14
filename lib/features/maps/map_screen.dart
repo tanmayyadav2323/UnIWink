@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:buddy_go/widgets/big_load_animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -237,11 +238,7 @@ class _TopSearchWidgetState extends State<TopSearchWidget> {
             );
           }
           if (snap.connectionState == ConnectionState.waiting) {
-            return Card(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
+            return BigLoadAnimations();
           }
           return SizedBox();
         },
