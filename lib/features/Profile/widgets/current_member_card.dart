@@ -1,8 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:buddy_go/features/Profile/widgets/terms_of_condition.dart';
 import 'package:buddy_go/features/home/services/home_services.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 import '../../../config/theme_colors.dart';
 import '../../../models/user_model.dart' as UserModel;
@@ -145,8 +147,13 @@ class _CurrentMemberCardState extends State<CurrentMemberCard> {
             ),
           ),
         ),
-        buildTile("Privacy Policy", () {}),
-        buildTile("Terms of Condition", () {}),
+        buildTile("Privacy Policy", () {
+          launchURL(context,
+              "https://www.privacypolicies.com/live/92ae9a0b-73c8-4650-836e-93b20e804507");
+        }),
+        buildTile("Terms and Conditions", () {
+          Navigator.of(context).pushNamed(TermsAndConditionScreen.routename);
+        }),
         buildTile("Log Out", () {
           showDialog(
             context: context,

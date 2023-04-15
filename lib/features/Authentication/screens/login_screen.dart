@@ -1,15 +1,18 @@
 import 'dart:math';
+import 'package:buddy_go/features/Profile/widgets/terms_of_condition.dart';
 import 'package:buddy_go/features/background/bg_screen.dart';
 import 'package:buddy_go/widgets/custom_button.dart';
 import 'package:buddy_go/config/utils.dart';
 import 'package:buddy_go/features/authentication/screens/verify_screen.dart';
 import 'package:buddy_go/features/authentication/services/auth_services.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sms_autofill/sms_autofill.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 final phoneNumberController = TextEditingController();
 
@@ -113,6 +116,37 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 SizedBox(height: 4.h),
+                RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 8.sp,
+                      fontFamily: 'Poppins',
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(text: 'By Signing in you are accepting '),
+                      TextSpan(
+                        text: ' Privacy Policy ',
+                        style: TextStyle(color: Colors.blue),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            launchURL(context,
+                                "https://www.privacypolicies.com/live/92ae9a0b-73c8-4650-836e-93b20e804507");
+                          },
+                      ),
+                      TextSpan(text: 'and '),
+                      TextSpan(
+                        text: ' Terms and Conditions ',
+                        style: TextStyle(color: Colors.blue),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.of(context)
+                                .pushNamed(TermsAndConditionScreen.routename);
+                          },
+                      ),
+                    ],
+                  ),
+                ),
                 CustomButton(
                   buttonText: "Login",
                   loading: false,

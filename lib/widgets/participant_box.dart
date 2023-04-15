@@ -475,6 +475,8 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                   key: ValueKey(channel[0].cid),
                   channel: channel[0],
                   child: ChannelPage(
+                    bannedUser: [],
+                    onTap: (_) {},
                     name: channel[0].extraData['${user.id}_name'].toString(),
                   ),
                 ),

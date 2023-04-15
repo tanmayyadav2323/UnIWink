@@ -46,6 +46,7 @@ class _EventScreenState extends State<EventScreen> {
   final EventServices eventServices = EventServices();
   final HomeServices homeService = HomeServices();
   bool saved = false;
+  List bannedUser = [];
   final scrollController = ScrollController();
 
   List<UserModel.User> participants = [];
@@ -87,6 +88,10 @@ class _EventScreenState extends State<EventScreen> {
         )
         .first;
     channel = channels.isNotEmpty ? channels[0] : null;
+    if (channel != null) {
+      bannedUser = (await channel!.queryBannedUsers()).bans;
+      log("bannedUser:" + bannedUser.toString());
+    }
   }
 
   @override
@@ -448,7 +453,14 @@ class _EventScreenState extends State<EventScreen> {
                           key: ValueKey(channel!.cid),
                           channel: channel!,
                           child: ChannelPage(
-                            onTap: (){},
+                            bannedUser: bannedUser,
+                            onTap: (String id) async {
+                              final reason =
+                                  'Reason for banning'; // replace with the reason for banning
+                              final response = await channel!.banMember(id, {
+                                reason: 'Banned By Admin',
+                              });
+                            },
                             showBackButton: false,
                             isAdmin: SessionHelper.id ==
                                 channel!.extraData["admin"].toString(),

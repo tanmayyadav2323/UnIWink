@@ -2,6 +2,7 @@ import 'package:buddy_go/features/Dashboard/screns/dashboard_screen.dart';
 import 'package:buddy_go/features/Profile/screens/buddy_wink_screen.dart';
 import 'package:buddy_go/features/Profile/screens/profile_event_screen.dart';
 import 'package:buddy_go/features/Profile/screens/profile_screen.dart';
+import 'package:buddy_go/features/Profile/widgets/terms_of_condition.dart';
 import 'package:buddy_go/features/authentication/screens/verify_screen.dart';
 import 'package:buddy_go/features/Home/screens/home_screen.dart';
 import 'package:buddy_go/features/Onboarding/screens/about_me_screen.dart';
@@ -79,6 +80,14 @@ class CustomRouter {
           child: BuddyWinkScreen(
             users: settings.arguments as List<User>,
           ),
+        );
+      case TermsAndConditionScreen.routename:
+        return PageTransition(
+          type: PageTransitionType.leftToRight,
+          duration: Duration(milliseconds: 500),
+          settings:
+              const RouteSettings(name: TermsAndConditionScreen.routename),
+          child: TermsAndConditionScreen(),
         );
       case ChannelListPage.routename:
         return PageTransition(

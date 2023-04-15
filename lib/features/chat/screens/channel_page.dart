@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/config/theme_colors.dart';
 import 'package:flutter/material.dart';
@@ -14,13 +16,15 @@ class ChannelPage extends StatefulWidget {
       this.joined = true,
       required this.onTap,
       this.isAdmin = false,
+      required this.bannedUser,
       this.name = ''})
       : super(key: key);
 
   final bool showBackButton;
   final bool joined;
+  final List bannedUser;
   final bool isAdmin;
-  final Function() onTap;
+  final Function(String) onTap;
   final String name;
   final void Function(BuildContext)? onBackPressed;
 
@@ -31,6 +35,16 @@ class ChannelPage extends StatefulWidget {
 class _ChannelPageState extends State<ChannelPage> {
   late final messageInputController = StreamMessageInputController();
   final focusNode = FocusNode();
+  bool curUserBan = false;
+  @override
+  void initState() {
+    for (var banUser in (widget.bannedUser)) {
+      if (banUser.user.id == SessionHelper.id) {
+        curUserBan = true;
+      }
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +93,16 @@ class _ChannelPageState extends State<ChannelPage> {
                 );
               },
               messageBuilder: (context, details, messages, defaultWidget) {
+                bool banned = false;
+                for (var banUser in (widget.bannedUser)) {
+                  if (banUser.user.id == details.message.user!.id) {
+                    banned = true;
+                    return StreamMessageWidget(
+                      message: Message(text: "Blocked Message", shadowed: true),
+                      messageTheme: defaultWidget.messageTheme,
+                    );
+                  }
+                }
                 return defaultWidget.copyWith(
                   showUsername: false,
                   showPinHighlight: false,
@@ -91,11 +115,11 @@ class _ChannelPageState extends State<ChannelPage> {
                         leading: Icon(Icons.block),
                         title: Text("Block"),
                         onTap: (_) {
-                          widget.onTap();
+                          widget.onTap(details.message.user!.id);
+                          Navigator.of(context).pop();
                         },
                       )
                   ],
-                  textBuilder: (p0, p1) => Text("hey"),
                   padding: EdgeInsets.symmetric(vertical: 6, horizontal: 3.w),
                   borderRadiusGeometry: BorderRadius.horizontal(
                     left: Radius.circular(10),
@@ -106,7 +130,7 @@ class _ChannelPageState extends State<ChannelPage> {
               key: widget.key,
             ),
           ),
-          if (widget.joined)
+          if (widget.joined && !curUserBan)
             StreamMessageInput(
               onQuotedMessageCleared: messageInputController.clearQuotedMessage,
               focusNode: focusNode,

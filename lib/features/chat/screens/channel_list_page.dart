@@ -2,8 +2,10 @@ import 'dart:math';
 
 import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/config/theme_colors.dart';
+import 'package:buddy_go/config/utils.dart';
 import 'package:buddy_go/features/Profile/screens/profile_screen.dart';
 import 'package:buddy_go/features/chat/screens/channel_page.dart';
+import 'package:buddy_go/widgets/custom_button.dart';
 import 'package:buddy_go/widgets/members_row.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -272,6 +274,21 @@ class _ChannelListPageState extends State<ChannelListPage> {
     final subtitle = lastMessage == null ? 'nothing yet' : lastMessage.text!;
     final opacity = (channel.state?.unreadCount ?? 0) > 0 ? 1.0 : 0.5;
     final theme = StreamChatTheme.of(context);
+    bool isBanned = false;
+    bool isBannedByUser = false;
+    if (channel.extraData["bannedBy_${SessionHelper.id}"] != null &&
+        channel.extraData["bannedBy_${SessionHelper.id}"] == true) {
+      isBannedByUser = true;
+      isBanned = true;
+    } else if (channel.extraData["bannedBy_${member!.id}"] != null &&
+        channel.extraData["bannedBy_${member!.id}"] == true) {
+      isBannedByUser = false;
+      isBanned = true;
+    }
+    String title, buttonText, message;
+    title = "";
+    buttonText = "";
+    message = "";
 
     String favorite =
         channels[index].extraData['${SessionHelper.id}_fav'] == null
@@ -280,18 +297,77 @@ class _ChannelListPageState extends State<ChannelListPage> {
 
     return ListTile(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => StreamChannel(
-              channel: channel,
-              child: ChannelPage(
-                name: channels[index].extraData['${member.id}_name'].toString(),
-                onTap: (){},
+        if (isBanned) {
+          showSnackBar(context, "Blocked");
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => StreamChannel(
+                channel: channel,
+                child: ChannelPage(
+                  bannedUser: [],
+                  name:
+                      channels[index].extraData['${member.id}_name'].toString(),
+                  onTap: (_) {},
+                ),
               ),
             ),
-          ),
-        );
+          );
+        }
+      },
+      onLongPress: () {
+        if (isBanned && isBannedByUser) {
+          title = "Unblock User";
+          buttonText = "Unblock";
+          message = "Are you sure you want to unblock this user?";
+        } else if (!isBanned) {
+          title = "Block User";
+          buttonText = "Block";
+          message = "Are you sure you want to block this user?";
+        }
+
+        if (isBanned && !isBannedByUser) {
+          showSnackBar(context, "You are blocked");
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              backgroundColor: backgroundColor,
+              title: Text(title),
+              content: Text(message),
+              actions: [
+                CustomButton(
+                  onPressed: () async {
+                    // Perform ban or unban operation here
+                    if (!isBanned) {
+                      // Unban user
+                      await channel.updatePartial(
+                          set: {'bannedBy_${SessionHelper.id}': true});
+                      isBanned = true;
+                      isBannedByUser = true;
+                    } else {
+                      // Ban user
+                      isBanned = false;
+                      isBannedByUser = false;
+                      await channel.updatePartial(
+                          set: {'bannedBy_${SessionHelper.id}': false});
+                    }
+                    setState(() {});
+                    Navigator.pop(context);
+                  },
+                  buttonText: buttonText,
+                ),
+                CustomButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  buttonText: "Cancel",
+                ),
+              ],
+            ),
+          );
+        }
       },
       tileColor: channel.state!.unreadCount > 0
           ? Color(0xffB70450).withOpacity(0.4)

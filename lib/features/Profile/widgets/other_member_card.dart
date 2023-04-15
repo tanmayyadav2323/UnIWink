@@ -6,8 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
-import 'package:buddy_go/config/session_helper.dart';
-import 'package:buddy_go/config/utils.dart';
 
 import '../../../models/user_model.dart' as UserModel;
 import '../../chat/screens/channel_page.dart';
@@ -120,7 +118,8 @@ class _OtherMemberCardState extends State<OtherMemberCard> {
                               key: ValueKey(channel!.cid),
                               channel: channel!,
                               child: ChannelPage(
-                                onTap: () {},
+                                onTap: (_) {},
+                                bannedUser: [],
                                 name: channel!.extraData["${user.id}_name"]
                                     .toString(),
                               ),

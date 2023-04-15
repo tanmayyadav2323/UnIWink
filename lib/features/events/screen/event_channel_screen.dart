@@ -51,8 +51,9 @@ class _EventChannelScreenState extends State<EventChannelScreen> {
               key: ValueKey(channel.cid),
               channel: channel,
               child:  ChannelPage(
+                bannedUser: [],
                 showBackButton: false,
-                onTap: (){},
+                onTap: (_){},
               ),
             );
           }
