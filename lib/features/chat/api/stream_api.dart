@@ -29,7 +29,7 @@ class StreamApi {
     );
     var token = jwt.sign(
         SecretKey(
-            '8yn923syd8yy9uqa265cy36d2yxggfzxcnbda628k4khr5fzaynz98qx73m6gvps'),
+            'yskp856s4a5b3fnxrduq4rqd6kat8qu6vznffkfujv6yrh7247gp4p952yu5jn8s'),
         algorithm: JWTAlgorithm.HS256);
     return token;
   }

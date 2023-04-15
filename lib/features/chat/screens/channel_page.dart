@@ -1,3 +1,4 @@
+import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/config/theme_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,16 +7,20 @@ import 'package:sizer/sizer.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class ChannelPage extends StatefulWidget {
-  const ChannelPage(
+  ChannelPage(
       {Key? key,
       this.showBackButton = true,
       this.onBackPressed,
       this.joined = true,
+      required this.onTap,
+      this.isAdmin = false,
       this.name = ''})
       : super(key: key);
 
   final bool showBackButton;
   final bool joined;
+  final bool isAdmin;
+  final Function() onTap;
   final String name;
   final void Function(BuildContext)? onBackPressed;
 
@@ -36,9 +41,14 @@ class _ChannelPageState extends State<ChannelPage> {
           : StreamChannelHeader(
               showTypingIndicator: true,
               elevation: 0,
-              leading: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.black,
+              leading: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.black,
+                ),
               ),
               title: Text(
                 widget.name,
@@ -71,7 +81,21 @@ class _ChannelPageState extends State<ChannelPage> {
               messageBuilder: (context, details, messages, defaultWidget) {
                 return defaultWidget.copyWith(
                   showUsername: false,
+                  showPinHighlight: false,
+                  showPinButton: false,
                   onReplyTap: reply,
+                  customActions: [
+                    if (widget.isAdmin &&
+                        details.message.user!.id != SessionHelper.id)
+                      StreamMessageAction(
+                        leading: Icon(Icons.block),
+                        title: Text("Block"),
+                        onTap: (_) {
+                          widget.onTap();
+                        },
+                      )
+                  ],
+                  textBuilder: (p0, p1) => Text("hey"),
                   padding: EdgeInsets.symmetric(vertical: 6, horizontal: 3.w),
                   borderRadiusGeometry: BorderRadius.horizontal(
                     left: Radius.circular(10),

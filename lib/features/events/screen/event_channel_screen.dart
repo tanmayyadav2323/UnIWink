@@ -50,8 +50,9 @@ class _EventChannelScreenState extends State<EventChannelScreen> {
             return StreamChannel(
               key: ValueKey(channel.cid),
               channel: channel,
-              child: const ChannelPage(
+              child:  ChannelPage(
                 showBackButton: false,
+                onTap: (){},
               ),
             );
           }

@@ -11,6 +11,8 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
+final phoneNumberController = TextEditingController();
+
 class LoginScreen extends StatefulWidget {
   static const routename = '/login-screen';
   const LoginScreen({super.key});
@@ -34,8 +36,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final AuthService _authService = AuthService();
   @override
   Widget build(BuildContext context) {
-    final phoneNumberController = TextEditingController();
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: BgScreen(
@@ -131,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.of(context).pushNamed(
                         VerifyPhoneNumberScreen.routename,
                         arguments: [userId, phoneNumberController.text],
-                      );
+                      ).then((value) {});
                     }
                   },
                 ),

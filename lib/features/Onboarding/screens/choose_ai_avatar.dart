@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:buddy_go/config/session_helper.dart';
+import 'package:buddy_go/features/Dashboard/screns/dashboard_screen.dart';
 import 'package:buddy_go/features/Profile/screens/profile_screen.dart';
 import 'package:buddy_go/features/home/services/home_services.dart';
 import 'package:flutter/material.dart';
@@ -48,6 +49,15 @@ class _ChooseAIAvatarScreenState extends State<ChooseAIAvatarScreen>
     "img_7",
     "img_8",
     "img_9",
+    "img_10",
+    "img_11",
+    "img_12",
+    "img_13",
+    "img_14",
+    "img_15",
+  ];
+
+  List<String> imageFemale = [
     "img_1",
     "img_2",
     "img_3",
@@ -57,24 +67,12 @@ class _ChooseAIAvatarScreenState extends State<ChooseAIAvatarScreen>
     "img_7",
     "img_8",
     "img_9",
-  ];
-
-  List<String> imageFemale = [
-    "assets/images/ai_avatar_img1.png",
-    "assets/images/ai_avatar_img2.png",
-    "assets/images/ai_avatar_img3.png",
-    "assets/images/ai_avatar_img1.png",
-    "assets/images/ai_avatar_img2.png",
-    "assets/images/ai_avatar_img3.png",
-    "assets/images/ai_avatar_img1.png",
-    "assets/images/ai_avatar_img2.png",
-    "assets/images/ai_avatar_img3.png",
-    "assets/images/ai_avatar_img1.png",
-    "assets/images/ai_avatar_img2.png",
-    "assets/images/ai_avatar_img3.png",
-    "assets/images/ai_avatar_img1.png",
-    "assets/images/ai_avatar_img2.png",
-    "assets/images/ai_avatar_img3.png",
+    "img_10",
+    "img_11",
+    "img_12",
+    "img_13",
+    "img_14",
+    "img_15",
   ];
 
   @override
@@ -231,36 +229,60 @@ class _ChooseAIAvatarScreenState extends State<ChooseAIAvatarScreen>
                         },
                       ),
                     ),
-                    SizedBox(
+                    Container(
+                      padding: EdgeInsets.only(left: 4.w, right: 4.w),
                       height: double.infinity,
                       width: double.infinity,
                       child: GridView.builder(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.only(
+                            left: 2.w, right: 2.w, bottom: 20.h, top: 4.h),
                         itemCount: imageFemale.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 6.w,
+                          mainAxisSpacing: 3.h,
+                        ),
                         itemBuilder: (context, index) {
-                          return Container(
-                            padding: const EdgeInsets.all(0),
-                            decoration: BoxDecoration(
-                              border: indexFemale == index
-                                  ? Border.all(color: Colors.blue)
-                                  : null,
-                            ),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {
-                                  indexMale = -1;
-                                  if (indexFemale == index) {
-                                    indexFemale = -1;
-                                  } else {
-                                    indexFemale = index;
-                                  }
-                                  setState(() {});
-                                },
-                                child: Image.asset(
-                                  imageFemale[index],
+                          return Material(
+                            borderRadius: BorderRadius.circular(18),
+                            color: Colors.transparent,
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(18),
+                              splashColor: Colors.blue.withOpacity(1),
+                              hoverColor: Colors.blue.withOpacity(1),
+                              onTap: () {
+                                indexMale = -1;
+                                if (indexFemale == index) {
+                                  indexFemale = -1;
+                                } else {
+                                  indexFemale = index;
+                                }
+                                setState(() {});
+                              },
+                              child: Container(
+                                height: 10.h,
+                                padding: EdgeInsets.all(0),
+                                decoration: BoxDecoration(
+                                    border: indexFemale == index
+                                        ? Border.all(color: Colors.white)
+                                        : null,
+                                    borderRadius: BorderRadius.circular(18),
+                                    boxShadow: [
+                                      indexFemale == index
+                                          ? BoxShadow(
+                                              color: Colors.white,
+                                              blurRadius: 15,
+                                              spreadRadius: 0,
+                                            )
+                                          : BoxShadow()
+                                    ]),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(18),
+                                  child: Image.asset(
+                                    "assets/images/ai_gimg/${imageFemale[index]}.png",
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
                               ),
                             ),
@@ -333,9 +355,11 @@ class _ChooseAIAvatarScreenState extends State<ChooseAIAvatarScreen>
   void editImage() {
     loading = true;
     setState(() {});
-    final user = Provider.of<UserProvider>(context, listen: false).user;
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
 
     if (indexMale >= 0) {
+      final user = userProvider.user.copyWith(gender: "male");
+
       HomeServices()
           .updateUser(
         context: context,
@@ -343,19 +367,22 @@ class _ChooseAIAvatarScreenState extends State<ChooseAIAvatarScreen>
         imagePath: "assets/images/ai_bimg/${imageMale[indexMale]}.png",
       )
           .then((value) {
-        Navigator.of(context).popAndPushNamed(ProfileScreen.routename,
-            arguments: SessionHelper.id);
+        Navigator.of(context).popUntil((route) => route.isFirst);
+        Navigator.of(context)
+            .pushNamed(ProfileScreen.routename, arguments: SessionHelper.id);
       });
     } else if (indexFemale >= 0) {
+      final user = userProvider.user.copyWith(gender: "female");
       HomeServices()
           .updateUser(
         context: context,
         user: user,
-        imagePath: "assets/images/ai_bimg/${imageFemale[indexFemale]}.png",
+        imagePath: "assets/images/ai_gimg/${imageFemale[indexFemale]}.png",
       )
           .then((value) {
-        Navigator.of(context).popAndPushNamed(ProfileScreen.routename,
-            arguments: SessionHelper.id);
+        Navigator.of(context).popUntil((route) => route.isFirst);
+        Navigator.of(context)
+            .pushNamed(ProfileScreen.routename, arguments: SessionHelper.id);
       });
     } else {
       Fluttertoast.showToast(
@@ -376,7 +403,7 @@ class _ChooseAIAvatarScreenState extends State<ChooseAIAvatarScreen>
       Navigator.of(context).pushNamed(AboutMeScreen.routename,
           arguments: {"image": imageMale[indexMale], "user": user});
     } else if (indexFemale >= 0) {
-      final user = userProvider.user.copyWith(gender: "male");
+      final user = userProvider.user.copyWith(gender: "female");
       Navigator.of(context).pushNamed(AboutMeScreen.routename,
           arguments: {"image": imageFemale[indexFemale], "user": user});
     } else {

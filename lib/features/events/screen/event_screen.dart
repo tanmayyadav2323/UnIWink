@@ -214,7 +214,6 @@ class _EventScreenState extends State<EventScreen> {
                         Spacer(),
                         InkWell(
                           onTap: () async {
-                     
                             Navigator.of(context).pushNamed(
                                 FullMapScreen.routename,
                                 arguments: [latitude, longitude]);
@@ -448,8 +447,11 @@ class _EventScreenState extends State<EventScreen> {
                       : StreamChannel(
                           key: ValueKey(channel!.cid),
                           channel: channel!,
-                          child: const ChannelPage(
+                          child: ChannelPage(
+                            onTap: (){},
                             showBackButton: false,
+                            isAdmin: SessionHelper.id ==
+                                channel!.extraData["admin"].toString(),
                           ),
                         ),
                 ),

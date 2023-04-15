@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   final client = StreamChatClient(
-    'hqkzqb89kphf',
+    'cfh7d4xfp29y',
     logLevel: Level.INFO,
   );
 

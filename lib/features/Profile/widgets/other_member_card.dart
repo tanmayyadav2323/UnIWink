@@ -31,42 +31,39 @@ class _OtherMemberCardState extends State<OtherMemberCard> {
   @override
   void initState() {
     user = widget.user;
-    super.initState();
+    _queryChannels();
+  }
+
+  Channel? channel;
+  Future<void> _queryChannels() async {
+    final channels = await StreamChat.of(context)
+        .client
+        .queryChannels(
+          state: true,
+          watch: true,
+          filter: Filter.and([
+            Filter.in_('members', [user.id]),
+            Filter.notExists('channel_type'),
+          ]),
+        )
+        .first;
+    if (channels.isNotEmpty) {
+      channel = channels[0];
+      _nameController.text = channel!.extraData["${user.id}_name"].toString();
+      log("hey hello ${channel!.cid}");
+      setState(() {});
+    }
   }
 
   bool edit = true;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 4.w),
-      child: FutureBuilder(
-        future: StreamChat.of(context)
-            .client
-            .queryChannels(
-              state: true,
-              watch: true,
-              filter: Filter.and([
-                Filter.in_('members', [user.id]),
-                Filter.notExists('channel_type'),
-              ]),
-            )
-            .first,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            showSnackBar(context, snapshot.error.toString());
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
-            // return Center(
-            //   child: CircularProgressIndicator(),
-            // );
-            return SizedBox.shrink();
-          } else if (snapshot.data != null) {
-            Channel? channel;
-            channel = snapshot.data![0];
-            _nameController.text =
-                channel.extraData["${user.id}_name"].toString();
-            log("hey hello ${channel.cid}");
-            return Column(
+    return channel == null
+        ? SizedBox.shrink()
+        : Padding(
+            padding: EdgeInsets.symmetric(horizontal: 4.w),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
@@ -121,9 +118,10 @@ class _OtherMemberCardState extends State<OtherMemberCard> {
                           MaterialPageRoute(
                             builder: (_) => StreamChannel(
                               key: ValueKey(channel!.cid),
-                              channel: channel,
+                              channel: channel!,
                               child: ChannelPage(
-                                name: channel.extraData["${user.id}_name"]
+                                onTap: () {},
+                                name: channel!.extraData["${user.id}_name"]
                                     .toString(),
                               ),
                             ),
@@ -170,12 +168,6 @@ class _OtherMemberCardState extends State<OtherMemberCard> {
                   ),
                 ),
               ],
-            );
-          }
-
-          return Text("no data");
-        },
-      ),
-    );
+            ));
   }
 }

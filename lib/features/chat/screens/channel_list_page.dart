@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/config/theme_colors.dart';
 import 'package:buddy_go/features/Profile/screens/profile_screen.dart';
@@ -255,7 +257,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
   Widget _channelTileBuilder(BuildContext context, List<Channel> channels,
       int index, StreamChannelListTile defaultChannelTile) {
     final channel = channels[index];
-    var lastMessage = null; 
+    var lastMessage = null;
     final member = channels[index]
         .state!
         .members
@@ -285,6 +287,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
               channel: channel,
               child: ChannelPage(
                 name: channels[index].extraData['${member.id}_name'].toString(),
+                onTap: (){},
               ),
             ),
           ),

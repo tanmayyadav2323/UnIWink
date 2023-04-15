@@ -324,11 +324,11 @@ eventRouter.post('/api/delete-event', auth, async (req, res) => {
 eventRouter.post('/api/update-wink', auth, async (req, res) => {
     try {
         const winkId = req.body.winkId;
-        const status = req.body.status;
-        const message = req.body.message;
+        let status = req.body.status;
+        let message = req.body.message;
 
         let wink = await Wink.findById(winkId);
-
+        console.log(wink);
         wink.message = message;
         wink.status = status;
         await wink.save();

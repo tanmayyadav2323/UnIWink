@@ -275,6 +275,7 @@ class EventServices {
   }) async {
     try {
       final userProvider = Provider.of<UserProvider>(context, listen: false);
+      log("hey" + status.toString());
       http.Response res = await http.post(
         Uri.parse('$uri/api/update-wink'),
         headers: <String, String>{
@@ -287,6 +288,7 @@ class EventServices {
           "message": message,
         }),
       );
+      log("hey" + status.toString());
       // ignore: use_build_context_synchronously
       httpErrorHandle(
         response: res,

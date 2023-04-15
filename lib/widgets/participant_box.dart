@@ -1,4 +1,5 @@
-import 'dart:math';
+import 'dart:developer';
+import 'dart:math' as m;
 import 'package:buddy_go/config/global_variables.dart';
 import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/config/theme_colors.dart';
@@ -14,7 +15,6 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import '../models/wink_model.dart';
 import '../features/chat/api/stream_api.dart';
 import '../features/chat/screens/channel_page.dart';
-
 
 enum WinkBoxStatus {
   winkById,
@@ -41,30 +41,34 @@ class _ParticipantBoxState extends State<ParticipantBox> {
   WinkBoxStatus status = WinkBoxStatus.none;
   late UserModel.User user;
   final eventService = EventServices();
-  late WinkModel winkModel;
+  WinkModel? winkModel;
 
   @override
   void initState() {
     user = widget.user;
+    log(user.id);
     List<dynamic> winks = user.winks;
     winkModel = WinkModel.empty();
     for (int i = 0; i < winks.length; i++) {
       winkModel = WinkModel.fromMap(winks[i]);
       if (winks[i]['winkedToId'] == SessionHelper.id ||
           winks[i]['winkedById'] == SessionHelper.id) {
-        if (winkModel.status == WinkStatus.winked) {
+        if (winkModel!.status == WinkStatus.winked) {
           if (winks[i]['winkedById'] == SessionHelper.id) {
             status = WinkBoxStatus.winkById;
           } else {
             status = WinkBoxStatus.winkToId;
           }
-        } else if (winkModel.status == WinkStatus.accepted) {
+        } else if (winkModel!.status == WinkStatus.accepted) {
           status = WinkBoxStatus.accepted;
-        } else if (winkModel.status == WinkStatus.unwinked) {
+        } else if (winkModel!.status == WinkStatus.unwinked) {
           status = WinkBoxStatus.unWinked;
         }
+        break;
       }
     }
+    log(winks.toString());
+    log(status.toString());
     super.initState();
   }
 
@@ -133,7 +137,7 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                     context,
                     MaterialPageRoute(
                         builder: (_) => ProfileScreen(id: user.id)),
-                  ); 
+                  );
                 },
                 child: SizedBox(
                   height: 8.h,
@@ -186,9 +190,9 @@ class _ParticipantBoxState extends State<ParticipantBox> {
           onTap: () async {
             await eventService.updateWink(
               context: context,
-              winkId: winkModel.id!,
+              winkId: winkModel!.id!,
               status: WinkStatus.unwinked.index,
-              message: winkModel.message,
+              message: winkModel!.message,
             );
             setState(() {
               status = WinkBoxStatus.unWinked;
@@ -212,7 +216,7 @@ class _ParticipantBoxState extends State<ParticipantBox> {
       case WinkBoxStatus.winkToId:
         return Column(
           children: [
-            if (winkModel.message.isNotEmpty)
+            if (winkModel!.message.isNotEmpty)
               Align(
                 alignment: Alignment.centerLeft,
                 child: Expanded(
@@ -231,7 +235,7 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                       ),
                       Expanded(
                         child: Text(
-                          winkModel.message,
+                          winkModel!.message,
                           style: GoogleFonts.poppins(
                             fontSize: 10.sp,
                             fontWeight: FontWeight.w300,
@@ -251,21 +255,21 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                 InkWell(
                   onTap: () async {
                     String randomName1 =
-                        randomNames[Random().nextInt(randomNames.length)];
+                        randomNames[m.Random().nextInt(randomNames.length)];
                     String randomName2 =
-                        randomNames[Random().nextInt(randomNames.length)];
+                        randomNames[m.Random().nextInt(randomNames.length)];
 
                     await eventService.updateWink(
                         context: context,
-                        winkId: winkModel.id!,
-                        message: winkModel.message,
+                        winkId: winkModel!.id!,
+                        message: winkModel!.message,
                         status: WinkStatus.accepted.index);
                     final channel = StreamChat.of(context).client.channel(
                           'messaging',
                           extraData: {
                             'members': [SessionHelper.id, widget.user.id],
-                            'u1id': SessionHelper.id,
-                            'u2id': widget.user.id,
+                            // 'u1id': SessionHelper.id,
+                            // 'u2id': widget.user.id,
                             '${SessionHelper.id}_name': randomName1,
                             '${widget.user.id}_name': randomName2,
                           },
@@ -300,8 +304,8 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                   onTap: () async {
                     await eventService.updateWink(
                         context: context,
-                        message: winkModel.message,
-                        winkId: winkModel.id!,
+                        message: winkModel!.message,
+                        winkId: winkModel!.id!,
                         status: WinkStatus.unwinked.index);
                     setState(() {
                       status = WinkBoxStatus.unWinked;
@@ -329,7 +333,7 @@ class _ParticipantBoxState extends State<ParticipantBox> {
         return InkWell(
           onTap: () async {
             final TextEditingController _textEditingController =
-                TextEditingController(text: winkModel.message);
+                TextEditingController(text: winkModel!.message);
             bool loading = false;
             showDialog(
               context: context,
@@ -422,28 +426,30 @@ class _ParticipantBoxState extends State<ParticipantBox> {
       case WinkBoxStatus.accepted:
         return InkWell(
           onTap: () async {
+            log(user.id);
             final client = StreamChat.of(context).client;
             final channel = await client
                 .queryChannels(
                   state: true,
                   watch: true,
-                  filter: Filter.in_(
-                    'members',
-                    [widget.user.id, SessionHelper.id],
-                  ),
+                  filter: Filter.and([
+                    Filter.in_('members', [user.id]),
+                    Filter.in_('members', [SessionHelper.id]),
+                    Filter.notExists('channel_type'),
+                  ]),
                 )
                 .first;
-
+            log(channel[0].cid!);
             if (channel.isEmpty) {
               String randomName1 =
-                  randomNames[Random().nextInt(randomNames.length)];
+                  randomNames[m.Random().nextInt(randomNames.length)];
               String randomName2 =
-                  randomNames[Random().nextInt(randomNames.length)];
+                  randomNames[m.Random().nextInt(randomNames.length)];
 
               await eventService.updateWink(
                   context: context,
-                  winkId: winkModel.id!,
-                  message: winkModel.message,
+                  winkId: winkModel!.id!,
+                  message: winkModel!.message,
                   status: WinkStatus.accepted.index);
               final channel = StreamChat.of(context).client.channel(
                     'messaging',
@@ -452,22 +458,25 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                       'u1id': SessionHelper.id,
                       'u2id': widget.user.id,
                       '${SessionHelper.id}_name': randomName1,
-                      '${widget.user.id}_name': randomName2,
+                      '${user.id}_name': randomName2,
                     },
                     id: StreamApi.generateChannelId(
                       SessionHelper.id,
-                      widget.user.id,
+                      user.id,
                     ),
                   );
               await channel.watch();
             }
+            // ignore: use_build_context_synchronously
             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (_) => StreamChannel(
-                  key: ValueKey(channel.first.cid),
-                  channel: channel.first,
-                  child: const ChannelPage(),
+                  key: ValueKey(channel[0].cid),
+                  channel: channel[0],
+                  child: ChannelPage(
+                    name: channel[0].extraData['${user.id}_name'].toString(),
+                  ),
                 ),
               ),
             );

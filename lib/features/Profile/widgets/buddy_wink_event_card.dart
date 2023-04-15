@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
+import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/models/event_model.dart';
 import 'package:flutter/material.dart';
 
@@ -33,67 +34,64 @@ class _BuddyWinkEventCardState extends State<BuddyWinkEventCard> {
 
   late UserModel.User user;
   List<EventModel> events = [];
+  List<UserModel.User> buddyUsers = [];
+  List<UserModel.User> winks = [];
 
   @override
   void initState() {
     user = widget.user;
-    getUserEvents();
+    getParticipants();
+
     super.initState();
+  }
+
+  getParticipants() async {
+    final snapshot = await homeServices.winkMembers(context: context);
+    final participants = snapshot;
+
+    for (int i = 0; i < participants.length; i++) {
+      for (int j = 0; j < participants[i].winks.length; j++) {
+        if (participants[i].winks[j]['winkedToId'] == user.id ||
+            participants[i].winks[j]['winkedById'] == user.id) {
+          if (participants[i].winks[j]["status"] == 0) {
+            if (participants[i].id != user.id &&
+                participants[i].id != SessionHelper.id)
+              buddyUsers.add(participants[i]);
+          } else {
+            if (participants[i].id != user.id &&
+                participants[i].id != SessionHelper.id)
+              winks.add(participants[i]);
+          }
+        }
+      }
+    }
+    getUserEvents();
   }
 
   getUserEvents() async {
     events = await profileServices.getUserEvents(
         context: context, userId: widget.user.id);
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: homeServices.winkMembers(context: context),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const BigLoadAnimations();
-        } else if (snapshot.hasError) {
-          showSnackBar(context, snapshot.error.toString());
-        } else if (snapshot.hasData) {
-          final participants = snapshot.data as List<UserModel.User>;
-          List<UserModel.User> buddyUsers = [];
-          List<UserModel.User> winks = [];
-
-          for (int i = 0; i < participants.length; i++) {
-            for (int j = 0; j < participants[i].winks.length; j++) {
-              if (participants[i].winks[j]['winkedToId'] == user.id ||
-                  participants[i].winks[j]['winkedById'] == user.id) {
-                if (participants[i].winks[j]["status"] == 0) {
-                  buddyUsers.add(participants[i]);
-                } else {
-                  winks.add(participants[i]);
-                }
-              }
-            }
-          }
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              buildContainer(buddyUsers.length, "Buddies", () {
-                Navigator.of(context).pushNamed(BuddyWinkScreen.routename,
-                    arguments: buddyUsers);
-              }),
-              buildContainer(winks.length, "Winks", () {
-                Navigator.of(context)
-                    .pushNamed(BuddyWinkScreen.routename, arguments: winks);
-              }),
-              buildContainer(events.length, "Events", () {
-                Navigator.of(context)
-                    .pushNamed(ProfileEventScreen.routename, arguments: events);
-              })
-            ],
-          );
-        } else {
-          return const Center(child: Text('No data'));
-        }
-        return const SizedBox.shrink();
-      },
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        buildContainer(buddyUsers.length, "Buddies", () {
+          Navigator.of(context)
+              .pushNamed(BuddyWinkScreen.routename, arguments: buddyUsers);
+        }),
+        buildContainer(winks.length, "Winks", () {
+          Navigator.of(context)
+              .pushNamed(BuddyWinkScreen.routename, arguments: winks);
+        }),
+        buildContainer(events.length, "Events", () {
+          Navigator.of(context)
+              .pushNamed(ProfileEventScreen.routename, arguments: events);
+        })
+      ],
     );
   }
 

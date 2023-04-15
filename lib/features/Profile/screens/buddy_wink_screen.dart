@@ -43,7 +43,7 @@ class _BuddyWinkScreenState extends State<BuddyWinkScreen> {
                 ),
                 Column(
                   children: widget.users.map((participant) {
-                    return ParticipantBox(
+                  return ParticipantBox(
                       user: participant,
                     );
                   }).toList(),

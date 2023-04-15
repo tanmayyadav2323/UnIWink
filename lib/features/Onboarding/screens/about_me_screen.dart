@@ -26,7 +26,6 @@ class AboutMeScreen extends StatefulWidget {
 }
 
 class _AboutMeScreenState extends State<AboutMeScreen> {
-
   int selectedDes = 0;
 
   TextEditingController _desController = TextEditingController();
@@ -107,7 +106,9 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                           child: Transform.scale(
                             scale: 1,
                             child: Image.asset(
-                              "assets/images/ai_bimg/${widget.image}.png",
+                              widget.user.gender == "male"
+                                  ? "assets/images/ai_bimg/${widget.image}.png"
+                                  : "assets/images/ai_gimg/${widget.image}.png",
                               fit: BoxFit.fitHeight,
                             ),
                           ),
@@ -202,8 +203,9 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                           await OnBoardingServices().setUpAccount(
                             context: context,
                             user: user,
-                            imagePath:
-                                "assets/images/ai_bimg/${widget.image}.png",
+                            imagePath: widget.user.gender == "male"
+                                ? "assets/images/ai_bimg/${widget.image}.png"
+                                : "assets/images/ai_gimg/${widget.image}.png",
                           );
                         }
                       },

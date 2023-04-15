@@ -104,6 +104,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/ai_bimg/
+    - assets/images/ai_gimg/
     - assets/icons/
     - assets/animations/
     - lib/.env
