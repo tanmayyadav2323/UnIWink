@@ -70,8 +70,6 @@ dependencies:
   geocoding: ^2.1.0
   lottie: ^2.3.2
   flutter_html: ^3.0.0-alpha.6
-  # mapbox_gl: ^0.16.0
-  # location: ^4.4.0
 
 dev_dependencies:
   flutter_test:

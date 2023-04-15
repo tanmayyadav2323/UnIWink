@@ -1,4 +1,4 @@
-String uri = 'http://192.168.1.7:3000';
+String uri = 'http://uniwink-env.eba-f2uem3ah.ap-south-1.elasticbeanstalk.com';
 
 List<String> randomNames = [
   'Nova',
