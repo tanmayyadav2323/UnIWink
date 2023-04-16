@@ -98,7 +98,7 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         gradient: (user.id != SessionHelper.id)
-                            ? LinearGradient(
+                            ? const LinearGradient(
                                 colors: [
                                   Color(0XFFFF005C),
                                   Color(0XFFFFFFFF),
@@ -175,7 +175,7 @@ class _ParticipantBoxState extends State<ParticipantBox> {
           height: 1.h,
         ),
         if (widget.dividerOff == false)
-          Divider(
+          const Divider(
             color: Colors.white,
             thickness: 0.2,
           )
@@ -217,41 +217,36 @@ class _ParticipantBoxState extends State<ParticipantBox> {
         return Column(
           children: [
             if (winkModel!.message.isNotEmpty)
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Expanded(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Message : ",
-                        style: GoogleFonts.poppins(
-                          fontSize: 10.sp,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 2.w,
-                      ),
-                      Expanded(
-                        child: Text(
-                          winkModel!.message,
-                          style: GoogleFonts.poppins(
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.w300,
-                            fontStyle: FontStyle.italic,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 10,
-                        ),
-                      )
-                    ],
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Message : ",
+                    style: GoogleFonts.poppins(
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
-                ),
+                  SizedBox(
+                    width: 2.w,
+                  ),
+                  Expanded(
+                    child: Text(
+                      winkModel!.message,
+                      style: GoogleFonts.poppins(
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.w300,
+                        fontStyle: FontStyle.italic,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 10,
+                    ),
+                  )
+                ],
               ),
             Row(
               children: [
-                Spacer(),
+                const Spacer(),
                 InkWell(
                   onTap: () async {
                     String randomName1 =
@@ -288,11 +283,11 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                     decoration: BoxDecoration(
                       color: Colors.transparent,
                       shape: BoxShape.circle,
-                      border: Border.all(color: Color(0xffB70450)),
+                      border: Border.all(color: const Color(0xffB70450)),
                     ),
                     child: Icon(
                       Icons.check,
-                      color: Color(0xffB70450),
+                      color: const Color(0xffB70450),
                       size: 3.h,
                     ),
                   ),
@@ -362,13 +357,13 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                       SizedBox(height: 4.h),
                       TextFormField(
                         controller: _textEditingController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           hintText:
                               'Hi, I saw your profile and would like to connect...',
                           hintStyle: TextStyle(color: Colors.grey),
                         ),
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                       SizedBox(
                         height: 2.h,
@@ -410,7 +405,7 @@ class _ParticipantBoxState extends State<ParticipantBox> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               border: Border.all(
-                color: Color(0xffB70450),
+                color: const Color(0xffB70450),
               ),
             ),
             child: Text(
@@ -418,7 +413,7 @@ class _ParticipantBoxState extends State<ParticipantBox> {
               style: GoogleFonts.poppins(
                 fontSize: 10.sp,
                 fontWeight: FontWeight.w300,
-                color: Color(0xffB70450),
+                color: const Color(0xffB70450),
               ),
             ),
           ),
@@ -531,13 +526,13 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                       SizedBox(height: 4.h),
                       TextFormField(
                         controller: _textEditingController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           hintText:
                               'Hi, I saw your profile and would like to connect...',
                           hintStyle: TextStyle(color: Colors.grey),
                         ),
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                       SizedBox(
                         height: 2.h,
@@ -605,7 +600,7 @@ class _ParticipantBoxState extends State<ParticipantBox> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               border: Border.all(
-                color: Color(0xffB70450),
+                color: const Color(0xffB70450),
               ),
             ),
             child: Text(
@@ -613,7 +608,7 @@ class _ParticipantBoxState extends State<ParticipantBox> {
               style: GoogleFonts.poppins(
                 fontSize: 10.sp,
                 fontWeight: FontWeight.w300,
-                color: Color(0xffB70450),
+                color: const Color(0xffB70450),
               ),
             ),
           ),

@@ -59,10 +59,11 @@ class _MembersRowState extends State<MembersRow>
           List<User?> members = [];
           if (snapshot.hasData) {
             channels = snapshot.data!;
-            if (channels.isEmpty)
+            if (channels.isEmpty) {
               return SizedBox(
                 height: 3.h,
               );
+            }
             for (final channel in channels) {
               final otherMembers = channel.state!.members
                   .where((m) => m.userId != SessionHelper.id)
@@ -82,16 +83,16 @@ class _MembersRowState extends State<MembersRow>
                 child: Row(
                   children: [
                     AnimatedContainer(
-                      duration: Duration(milliseconds: 500),
+                      duration: const Duration(milliseconds: 500),
                       width: channels.isEmpty
                           ? MediaQuery.of(context).size.width * 0.9
                           : 0,
                       alignment: Alignment.bottomCenter,
                       height: 5.h,
-                      child: SizedBox(),
+                      child: const SizedBox(),
                     ),
                     AnimatedContainer(
-                      duration: Duration(milliseconds: 500),
+                      duration: const Duration(milliseconds: 500),
                       width: channels.isNotEmpty
                           ? MediaQuery.of(context).size.width * 0.9
                           : 0,
@@ -99,7 +100,7 @@ class _MembersRowState extends State<MembersRow>
                       child: ListView.builder(
                           shrinkWrap: true,
                           itemCount: members.length,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
                             return InkWell(
@@ -127,13 +128,13 @@ class _MembersRowState extends State<MembersRow>
                                     bottom: 0.5.h,
                                     right: 2.5.w,
                                     child: CircleAvatar(
-                                      backgroundColor: Color(0xff0D0E34),
+                                      backgroundColor: const Color(0xff0D0E34),
                                       radius: 0.75.h,
                                       child: CircleAvatar(
                                         radius: 0.50.h,
                                         backgroundColor: members[index]!.online
-                                            ? Color(0xff00AE31)
-                                            : Color(0xffAE0000),
+                                            ? const Color(0xff00AE31)
+                                            : const Color(0xffAE0000),
                                       ),
                                     ),
                                   )
