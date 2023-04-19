@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:sizer/sizer.dart';
 
 class AnimatedTextFade extends StatefulWidget {
@@ -48,7 +48,7 @@ class _AnimatedTextFadeState extends State<AnimatedTextFade>
             width: 50.w,
             child: Text(
               widget.text,
-              style: GoogleFonts.poppins(
+              style: TextStyle(
                 fontSize: 16.sp,
               ),
               maxLines: 1,

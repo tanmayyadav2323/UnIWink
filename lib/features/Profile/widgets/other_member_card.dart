@@ -2,7 +2,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:sizer/sizer.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
@@ -77,7 +77,7 @@ class _OtherMemberCardState extends State<OtherMemberCard> {
                         },
                         focusNode: _focusNode,
                         controller: _nameController,
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.italic,
@@ -155,7 +155,7 @@ class _OtherMemberCardState extends State<OtherMemberCard> {
                         ),
                         child: Text(
                           _isEditing ? "Save" : "Chat",
-                          style: GoogleFonts.poppins(
+                          style: TextStyle(
                             fontSize: 10.sp,
                           ),
                         ),
@@ -168,7 +168,7 @@ class _OtherMemberCardState extends State<OtherMemberCard> {
                 ),
                 Text(
                   "About",
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w400,
                   ),
@@ -178,7 +178,7 @@ class _OtherMemberCardState extends State<OtherMemberCard> {
                 ),
                 Text(
                   ' " ${user.des} " ',
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
                     fontSize: 12.sp,
                     fontStyle: FontStyle.italic,
                     fontWeight: FontWeight.w200,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:sizer/sizer.dart';
 
 class CustomButton extends StatefulWidget {
@@ -45,13 +45,13 @@ class _CustomButtonState extends State<CustomButton> {
             child: widget.loading
                 ? Center(
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(16.0),
                       child: CircularProgressIndicator(),
                     ),
                   )
                 : Text(
                     widget.buttonText,
-                    style: GoogleFonts.poppins(
+                    style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
                       color: Colors.white,

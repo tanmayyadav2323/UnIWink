@@ -1,7 +1,8 @@
 import 'package:buddy_go/features/Profile/screens/profile_event_screen.dart';
 import 'package:buddy_go/features/Profile/screens/profile_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:sizer/sizer.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
@@ -118,8 +119,8 @@ class _MembersRowState extends State<MembersRow>
                                     radius: 4.5.h,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(30),
-                                      child: Image.network(
-                                        members[index]!.image!,
+                                      child: CachedNetworkImage(
+                                        imageUrl: members[index]!.image!,
                                         fit: BoxFit.cover,
                                       ),
                                     ),

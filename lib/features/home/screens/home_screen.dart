@@ -7,7 +7,7 @@ import 'package:buddy_go/features/home/widgets/upcoming_event.dart';
 import 'package:buddy_go/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -169,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen>
                                       children: [
                                         Text(
                                           "Search for an Event",
-                                          style: GoogleFonts.poppins(
+                                          style: TextStyle(
                                             fontSize: 12.sp,
                                             fontWeight: FontWeight.w400,
                                             color:

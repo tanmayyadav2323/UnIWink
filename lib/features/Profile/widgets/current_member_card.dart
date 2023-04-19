@@ -2,7 +2,7 @@
 import 'package:buddy_go/features/Profile/widgets/terms_of_condition.dart';
 import 'package:buddy_go/features/home/services/home_services.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:sizer/sizer.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
@@ -44,7 +44,7 @@ class _CurrentMemberCardState extends State<CurrentMemberCard> {
                   children: [
                     Text(
                       "About",
-                      style: GoogleFonts.poppins(
+                      style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w400,
                       ),
@@ -73,7 +73,7 @@ class _CurrentMemberCardState extends State<CurrentMemberCard> {
                                 children: [
                                   Text(
                                     'Edit Description',
-                                    style: GoogleFonts.poppins(
+                                    style: TextStyle(
                                         fontSize: 16.sp,
                                         fontWeight: FontWeight.w600,
                                         height: 1.1),
@@ -83,8 +83,8 @@ class _CurrentMemberCardState extends State<CurrentMemberCard> {
                                   ),
                                   Text(
                                     'Enter a description about yourself:',
-                                    style: GoogleFonts.poppins(
-                                        fontSize: 12.sp, height: 1.3),
+                                    style:
+                                        TextStyle(fontSize: 12.sp, height: 1.3),
                                   ),
                                   SizedBox(height: 4.h),
                                   TextFormField(
@@ -134,7 +134,7 @@ class _CurrentMemberCardState extends State<CurrentMemberCard> {
                 ),
                 Text(
                   ' " ${user.des} " ',
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
                       fontSize: 12.sp,
                       fontStyle: FontStyle.italic,
                       fontWeight: FontWeight.w200,
@@ -160,7 +160,7 @@ class _CurrentMemberCardState extends State<CurrentMemberCard> {
             builder: (context) => AlertDialog(
               title: Text(
                 'Log Out',
-                style: GoogleFonts.poppins(
+                style: TextStyle(
                     fontSize: 16.sp, fontWeight: FontWeight.w600, height: 1.1),
               ),
               backgroundColor: backgroundColor,
@@ -169,7 +169,7 @@ class _CurrentMemberCardState extends State<CurrentMemberCard> {
                 children: [
                   Text(
                     'Are you sure you want to logout?',
-                    style: GoogleFonts.poppins(fontSize: 12.sp, height: 1.3),
+                    style: TextStyle(fontSize: 12.sp, height: 1.3),
                   ),
                   SizedBox(height: 2.h),
                   Column(
@@ -205,7 +205,7 @@ class _CurrentMemberCardState extends State<CurrentMemberCard> {
       contentPadding: EdgeInsets.symmetric(horizontal: 4.w),
       title: Text(
         title,
-        style: GoogleFonts.poppins(
+        style: TextStyle(
           fontSize: 14.sp,
           fontWeight: FontWeight.w300,
           color: Colors.white,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:sizer/sizer.dart';
 
 List<String> desList = [
@@ -148,7 +148,7 @@ class _CarouselViewState extends State<CarouselView> {
                   return Center(
                     child: Text(
                       slides[index].title,
-                      style: GoogleFonts.poppins(
+                      style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w300,
                         color: Colors.white,

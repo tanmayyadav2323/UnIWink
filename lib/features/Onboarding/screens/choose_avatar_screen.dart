@@ -3,7 +3,7 @@ import 'package:buddy_go/widgets/custom_button.dart';
 import 'package:buddy_go/config/theme_colors.dart';
 import 'package:buddy_go/features/onboarding/screens/choose_ai_avatar.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:sizer/sizer.dart';
 
 class ChooseAvatarScreen extends StatefulWidget {
@@ -31,7 +31,7 @@ class _ChooseAvatarScreenState extends State<ChooseAvatarScreen> {
                 ),
                 Text(
                   "U & I Wink",
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 28.sp,
                   ),
@@ -73,7 +73,7 @@ class _ChooseAvatarScreenState extends State<ChooseAvatarScreen> {
                 ),
                 Text(
                   "Time to Set your AI AVATAR ! ",
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
                     fontSize: 8.sp,
                     fontWeight: FontWeight.w800,
                     color: Colors.white,
@@ -84,7 +84,7 @@ class _ChooseAvatarScreenState extends State<ChooseAvatarScreen> {
                   width: (MediaQuery.of(context).size.width) * 0.6,
                   child: Text(
                     "And yes, don’t forget to give a brief description about yourself and your interests....",
-                    style: GoogleFonts.poppins(
+                    style: TextStyle(
                       fontSize: 8.sp,
                       fontWeight: FontWeight.w300,
                       color: Colors.white,

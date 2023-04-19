@@ -5,7 +5,7 @@ import 'package:buddy_go/features/Profile/screens/profile_screen.dart';
 import 'package:buddy_go/features/home/services/home_services.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -114,7 +114,7 @@ class _ChooseAIAvatarScreenState extends State<ChooseAIAvatarScreen>
                           ),
                           Text(
                             "AI avatar",
-                            style: GoogleFonts.poppins(
+                            style: TextStyle(
                               fontSize: 28.sp,
                               fontWeight: FontWeight.w500,
                             ),
@@ -127,7 +127,7 @@ class _ChooseAIAvatarScreenState extends State<ChooseAIAvatarScreen>
                             child: Text(
                               "To keep your identity partially confidential, we introduce your AI Avatar that will represent you in UnIWink ! time to customize one.",
                               maxLines: 3,
-                              style: GoogleFonts.poppins(
+                              style: TextStyle(
                                 fontSize: 10.sp,
                                 fontWeight: FontWeight.w400,
                                 fontStyle: FontStyle.italic,

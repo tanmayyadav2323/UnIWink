@@ -3,7 +3,7 @@ import 'package:buddy_go/models/user_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:buddy_go/widgets/participant_box.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:sizer/sizer.dart';
 
 class BuddyWinkScreen extends StatefulWidget {
@@ -35,15 +35,14 @@ class _BuddyWinkScreenState extends State<BuddyWinkScreen> {
                 ),
                 Text(
                   "Members",
-                  style:
-                      GoogleFonts.poppins(fontSize: 20.sp, color: Colors.white),
+                  style: TextStyle(fontSize: 20.sp, color: Colors.white),
                 ),
                 SizedBox(
                   height: 4.h,
                 ),
                 Column(
                   children: widget.users.map((participant) {
-                  return ParticipantBox(
+                    return ParticipantBox(
                       user: participant,
                     );
                   }).toList(),

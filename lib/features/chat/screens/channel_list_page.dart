@@ -5,10 +5,12 @@ import 'package:buddy_go/config/theme_colors.dart';
 import 'package:buddy_go/config/utils.dart';
 import 'package:buddy_go/features/Profile/screens/profile_screen.dart';
 import 'package:buddy_go/features/chat/screens/channel_page.dart';
+import 'package:buddy_go/widgets/big_load_animations.dart';
 import 'package:buddy_go/widgets/custom_button.dart';
 import 'package:buddy_go/widgets/members_row.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:sizer/sizer.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -67,7 +69,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
 
                   // Text(
                   //   "Your Pairs",
-                  //   style: GoogleFonts.poppins(
+                  //   style: TextStyle(
                   //       fontSize: 16.sp, fontWeight: FontWeight.w400),
                   // ),
                   SizedBox(
@@ -87,8 +89,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
                       Spacer(),
                       Text(
                         "Messages ",
-                        style: GoogleFonts.poppins(
-                            fontSize: 20.sp, color: Colors.white),
+                        style: TextStyle(fontSize: 20.sp, color: Colors.white),
                       ),
                       Spacer(),
                       SizedBox(
@@ -153,7 +154,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
                                 alignment: Alignment.center,
                                 child: Text(
                                   "Buddies",
-                                  style: GoogleFonts.poppins(
+                                  style: TextStyle(
                                     fontSize: 10.sp,
                                     fontWeight: FontWeight.w400,
                                   ),
@@ -214,7 +215,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
                                 alignment: Alignment.center,
                                 child: Text(
                                   "Favorites",
-                                  style: GoogleFonts.poppins(
+                                  style: TextStyle(
                                     fontSize: 10.sp,
                                     fontWeight: FontWeight.w400,
                                   ),
@@ -233,6 +234,9 @@ class _ChannelListPageState extends State<ChannelListPage> {
               ),
             ),
             StreamChannelListView(
+              loadingBuilder: (_) {
+                return BigLoadAnimations();
+              },
               shrinkWrap: true,
               controller: _listController,
               itemBuilder: _channelTileBuilder,
@@ -244,7 +248,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
                   child: Center(
                     child: Text(
                       buddies ? "No Chats Yet" : "Mark your favorites now",
-                      style: GoogleFonts.poppins(fontSize: 14.sp),
+                      style: TextStyle(fontSize: 14.sp),
                     ),
                   ),
                 );
@@ -388,8 +392,8 @@ class _ChannelListPageState extends State<ChannelListPage> {
               radius: 4.5.h,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(30),
-                child: Image.network(
-                  member!.image!,
+                child: CachedNetworkImage(
+                  imageUrl: member!.image!,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -451,7 +455,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
                     channel.lastMessageAt != null
                         ? Text(
                             getTime(channel.lastMessageAt!),
-                            style: GoogleFonts.poppins(
+                            style: TextStyle(
                                 fontSize: 7.sp, fontWeight: FontWeight.w300),
                           )
                         : SizedBox.shrink(),

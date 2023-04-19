@@ -2,7 +2,7 @@ import 'package:buddy_go/config/theme_colors.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
@@ -49,6 +49,7 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           title: 'UniWink',
           theme: ThemeData(
+            fontFamily: 'Poppins',
             progressIndicatorTheme: ProgressIndicatorThemeData(
               color: Colors.white,
             ),
@@ -77,7 +78,7 @@ class _MyAppState extends State<MyApp> {
                   inputBackgroundColor: backgroundColor,
                   actionButtonColor: Colors.white,
                   borderRadius: BorderRadius.circular(10),
-                  inputTextStyle: GoogleFonts.poppins(
+                  inputTextStyle: TextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
                   ),
@@ -96,7 +97,7 @@ class _MyAppState extends State<MyApp> {
                     fillColor: backgroundColor,
                     focusColor: backgroundColor,
                     hintText: "Type Message...",
-                    hintStyle: GoogleFonts.poppins(
+                    hintStyle: TextStyle(
                       fontSize: 10.sp,
                       color: Colors.white.withOpacity(0.5),
                     ),
@@ -111,7 +112,7 @@ class _MyAppState extends State<MyApp> {
                 ),
                 channelHeaderTheme: StreamChannelHeaderThemeData(),
                 textTheme: StreamTextTheme.dark(
-                  body: GoogleFonts.poppins(
+                  body: TextStyle(
                     fontSize: 10.sp,
                     fontWeight: FontWeight.w500,
                   ),

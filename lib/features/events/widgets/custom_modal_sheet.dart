@@ -2,7 +2,7 @@ import 'package:buddy_go/features/events/services/event_services.dart';
 import 'package:buddy_go/features/home/screens/home_screen.dart';
 import 'package:buddy_go/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:sizer/sizer.dart';
 
 class CustomModalSheet extends StatefulWidget {
@@ -51,7 +51,7 @@ class _CustomModalSheetState extends State<CustomModalSheet> {
               ),
               Text(
                 "Event Reported!",
-                style: GoogleFonts.poppins(
+                style: TextStyle(
                   fontSize: 12.sp,
                   color: Colors.black,
                   fontWeight: FontWeight.w700,
@@ -62,7 +62,7 @@ class _CustomModalSheetState extends State<CustomModalSheet> {
               ),
               Text(
                 "Our team will look into it soon",
-                style: GoogleFonts.poppins(
+                style: TextStyle(
                   fontSize: 10.sp,
                   color: Colors.black,
                   fontWeight: FontWeight.w400,
@@ -110,7 +110,7 @@ class _CustomModalSheetState extends State<CustomModalSheet> {
                 alignment: Alignment.center,
                 child: Text(
                   "Report",
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
                     fontSize: 14.sp,
                     color: Colors.black,
                     fontWeight: FontWeight.w700,
@@ -122,7 +122,7 @@ class _CustomModalSheetState extends State<CustomModalSheet> {
               ),
               Text(
                 "Why are you reporting this event?",
-                style: GoogleFonts.poppins(
+                style: TextStyle(
                   fontSize: 12.sp,
                   color: Colors.black,
                   fontWeight: FontWeight.w700,
@@ -138,7 +138,7 @@ class _CustomModalSheetState extends State<CustomModalSheet> {
                     leading: null,
                     title: Text(
                       messages[index],
-                      style: GoogleFonts.poppins(
+                      style: TextStyle(
                         fontSize: 12.sp,
                         color: Colors.black,
                         fontWeight: FontWeight.w500,

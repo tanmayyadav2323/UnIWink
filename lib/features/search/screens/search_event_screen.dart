@@ -2,7 +2,7 @@ import 'package:buddy_go/features/search/services/search_services.dart';
 import 'package:buddy_go/models/event_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:sizer/sizer.dart';
 
 import '../../../config/theme_colors.dart';
@@ -52,14 +52,14 @@ class _SearchEventState extends State<SearchEvent> {
                         color: backgroundColor,
                       ),
                       child: TextFormField(
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w500,
                         ),
                         cursorColor: Colors.white,
                         decoration: InputDecoration(
                           hintText: "Search for an Event",
-                          hintStyle: GoogleFonts.poppins(
+                          hintStyle: TextStyle(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
                             color: Colors.white.withOpacity(0.6),

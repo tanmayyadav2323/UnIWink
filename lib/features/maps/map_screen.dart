@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:buddy_go/widgets/big_load_animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:sizer/sizer.dart';
 
 class MapScreen extends StatefulWidget {
@@ -80,12 +80,12 @@ class _MapScreenState extends State<MapScreen> {
                   filled: true,
                   fillColor: Colors.black54,
                   hintText: "search",
-                  hintStyle: GoogleFonts.poppins(
-                      fontSize: 12.sp, fontWeight: FontWeight.w500),
+                  hintStyle:
+                      TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
                   border: InputBorder.none,
                   enabledBorder: InputBorder.none,
 
-                  // style: GoogleFonts.poppins(
+                  // style: TextStyle(
                   //   fontSize: 16.sp,
                   //   fontWeight: FontWeight.w500,
                   //   color: Colors.white,

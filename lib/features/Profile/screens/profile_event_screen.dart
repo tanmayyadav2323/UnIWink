@@ -3,7 +3,7 @@ import 'package:buddy_go/features/home/widgets/event_card.dart';
 import 'package:flutter/material.dart';
 
 import 'package:buddy_go/models/event_model.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:sizer/sizer.dart';
 
 class ProfileEventScreen extends StatefulWidget {
@@ -36,8 +36,7 @@ class _ProfileEventScreenState extends State<ProfileEventScreen> {
                 ),
                 Text(
                   "Events",
-                  style:
-                      GoogleFonts.poppins(fontSize: 20.sp, color: Colors.white),
+                  style: TextStyle(fontSize: 20.sp, color: Colors.white),
                 ),
                 Column(
                   children: widget.eventModels.map((event) {

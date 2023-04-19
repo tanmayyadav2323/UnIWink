@@ -6,10 +6,11 @@ import 'package:buddy_go/config/theme_colors.dart';
 import 'package:buddy_go/features/Profile/screens/profile_screen.dart';
 import 'package:buddy_go/features/events/services/event_services.dart';
 import 'package:buddy_go/widgets/custom_button.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:buddy_go/models/user_model.dart' as UserModel;
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:sizer/sizer.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import '../models/wink_model.dart';
@@ -110,8 +111,8 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10.w),
-                        child: Image.network(
-                          user.imageUrl,
+                        child: CachedNetworkImage(
+                          imageUrl: user.imageUrl,
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -144,8 +145,8 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                   width: 8.h,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10.w),
-                    child: Image.network(
-                      user.imageUrl,
+                    child: CachedNetworkImage(
+                      imageUrl: user.imageUrl,
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -159,7 +160,7 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                 '"${user.des}"',
                 maxLines: 4,
                 overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.poppins(
+                style: TextStyle(
                   fontSize: 10.sp,
                   fontWeight: FontWeight.w300,
                 ),
@@ -206,7 +207,7 @@ class _ParticipantBoxState extends State<ParticipantBox> {
             ),
             child: Text(
               "Winked",
-              style: GoogleFonts.poppins(
+              style: TextStyle(
                 fontSize: 10.sp,
                 fontWeight: FontWeight.w300,
               ),
@@ -222,7 +223,7 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                 children: [
                   Text(
                     "Message : ",
-                    style: GoogleFonts.poppins(
+                    style: TextStyle(
                       fontSize: 10.sp,
                       fontWeight: FontWeight.w400,
                     ),
@@ -233,7 +234,7 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                   Expanded(
                     child: Text(
                       winkModel!.message,
-                      style: GoogleFonts.poppins(
+                      style: TextStyle(
                         fontSize: 10.sp,
                         fontWeight: FontWeight.w300,
                         fontStyle: FontStyle.italic,
@@ -341,7 +342,7 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                     children: [
                       Text(
                         'Connection Message ',
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w600,
                             height: 1.1),
@@ -351,8 +352,7 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                       ),
                       Text(
                         'Enter a message to introduce yourself:',
-                        style:
-                            GoogleFonts.poppins(fontSize: 12.sp, height: 1.3),
+                        style: TextStyle(fontSize: 12.sp, height: 1.3),
                       ),
                       SizedBox(height: 4.h),
                       TextFormField(
@@ -410,7 +410,7 @@ class _ParticipantBoxState extends State<ParticipantBox> {
             ),
             child: Text(
               "Wink",
-              style: GoogleFonts.poppins(
+              style: TextStyle(
                 fontSize: 10.sp,
                 fontWeight: FontWeight.w300,
                 color: const Color(0xffB70450),
@@ -486,7 +486,7 @@ class _ParticipantBoxState extends State<ParticipantBox> {
             ),
             child: Text(
               "Chat",
-              style: GoogleFonts.poppins(
+              style: TextStyle(
                 fontSize: 10.sp,
                 fontWeight: FontWeight.w300,
               ),
@@ -510,7 +510,7 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                     children: [
                       Text(
                         'Connection Message ',
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w600,
                             height: 1.1),
@@ -520,8 +520,7 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                       ),
                       Text(
                         'Enter a message to introduce yourself:',
-                        style:
-                            GoogleFonts.poppins(fontSize: 12.sp, height: 1.3),
+                        style: TextStyle(fontSize: 12.sp, height: 1.3),
                       ),
                       SizedBox(height: 4.h),
                       TextFormField(
@@ -605,7 +604,7 @@ class _ParticipantBoxState extends State<ParticipantBox> {
             ),
             child: Text(
               "Wink",
-              style: GoogleFonts.poppins(
+              style: TextStyle(
                 fontSize: 10.sp,
                 fontWeight: FontWeight.w300,
                 color: const Color(0xffB70450),

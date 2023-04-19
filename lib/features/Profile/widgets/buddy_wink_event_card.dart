@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:buddy_go/config/utils.dart';
 import 'package:buddy_go/features/Profile/screens/buddy_wink_screen.dart';
 import 'package:buddy_go/features/home/services/home_services.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:sizer/sizer.dart';
 
 import '../../../models/user_model.dart' as UserModel;
@@ -103,7 +103,7 @@ class _BuddyWinkEventCardState extends State<BuddyWinkEventCard> {
         children: [
           Text(
             val.toString(),
-            style: GoogleFonts.poppins(
+            style: TextStyle(
               fontSize: 20.sp,
               fontWeight: FontWeight.w600,
               fontStyle: FontStyle.italic,
@@ -111,7 +111,7 @@ class _BuddyWinkEventCardState extends State<BuddyWinkEventCard> {
           ),
           Text(
             colname,
-            style: GoogleFonts.poppins(
+            style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w300,
             ),

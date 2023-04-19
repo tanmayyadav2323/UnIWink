@@ -6,9 +6,10 @@ import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/config/theme_colors.dart';
 import 'package:buddy_go/features/events/screen/event_screen.dart';
 import 'package:buddy_go/features/home/services/home_services.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
@@ -73,7 +74,9 @@ class _EventCardState extends State<EventCard> {
                       borderRadius: BorderRadius.circular(15),
                       image: DecorationImage(
                         fit: BoxFit.fill,
-                        image: NetworkImage(widget.event.image),
+                        image: CachedNetworkImageProvider(
+                          widget.event.image,
+                        ),
                       ),
                     ),
                   ),
@@ -134,7 +137,7 @@ class _EventCardState extends State<EventCard> {
                                       children: [
                                         Text(
                                           widget.event.title,
-                                          style: GoogleFonts.poppins(
+                                          style: TextStyle(
                                             fontSize: 16.sp,
                                             fontWeight: FontWeight.w700,
                                           ),
@@ -148,7 +151,7 @@ class _EventCardState extends State<EventCard> {
                                   Expanded(
                                     child: Text(
                                       "by ${widget.event.organizer}",
-                                      style: GoogleFonts.poppins(
+                                      style: TextStyle(
                                         fontSize: 8.sp,
                                         color: Colors.white.withOpacity(0.8),
                                         fontWeight: FontWeight.w600,
@@ -178,7 +181,7 @@ class _EventCardState extends State<EventCard> {
                                                 ? widget.event.startDateTime
                                                 : widget.event.endDateTime)
                                             .toString(),
-                                        style: GoogleFonts.poppins(
+                                        style: TextStyle(
                                           fontSize: 8.sp,
                                           fontWeight: FontWeight.w500,
                                           color: Colors.black,
@@ -194,7 +197,7 @@ class _EventCardState extends State<EventCard> {
                                                 ? widget.event.startDateTime
                                                 : widget.event.endDateTime)
                                             .toString(),
-                                        style: GoogleFonts.poppins(
+                                        style: TextStyle(
                                           fontSize: 8.sp,
                                           fontWeight: FontWeight.w500,
                                           color: Colors.black,
@@ -222,7 +225,7 @@ class _EventCardState extends State<EventCard> {
                                   for (var n = 0;
                                       n < widget.event.memberImageUrls.length;
                                       n++)
-                                    NetworkImage(
+                                    CachedNetworkImageProvider(
                                       widget.event.memberImageUrls[n],
                                     ),
                                 ],

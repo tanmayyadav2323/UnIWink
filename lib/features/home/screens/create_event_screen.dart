@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -215,8 +215,8 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                             widget.eventModel == null
                                 ? "Add Event"
                                 : "Edit Event",
-                            style: GoogleFonts.poppins(
-                                fontSize: 20.sp, color: Colors.white),
+                            style:
+                                TextStyle(fontSize: 20.sp, color: Colors.white),
                           ),
                         ),
                       ),
@@ -232,14 +232,14 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                   TextFormField(
                     controller: _titleController,
                     cursorColor: Colors.white,
-                    style: GoogleFonts.poppins(
+                    style: TextStyle(
                       fontSize: 16.sp,
                       fontStyle: FontStyle.italic,
                       fontWeight: FontWeight.w400,
                     ),
                     decoration: InputDecoration(
                       hintText: "Event Name",
-                      hintStyle: GoogleFonts.poppins(
+                      hintStyle: TextStyle(
                         fontSize: 16.sp,
                         fontStyle: FontStyle.italic,
                         fontWeight: FontWeight.w300,
@@ -271,7 +271,7 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                   TextFormField(
                     controller: _orgController,
                     cursorColor: Colors.white,
-                    style: GoogleFonts.poppins(
+                    style: TextStyle(
                       fontSize: 12.sp,
                       fontStyle: FontStyle.italic,
                       fontWeight: FontWeight.w400,
@@ -279,7 +279,7 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                     focusNode: _focusNode,
                     decoration: InputDecoration(
                       hintText: "Organized by",
-                      hintStyle: GoogleFonts.poppins(
+                      hintStyle: TextStyle(
                         fontSize: 12.sp,
                         fontStyle: FontStyle.italic,
                         fontWeight: FontWeight.w300,
@@ -310,7 +310,7 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                           children: [
                             Text(
                               "Start Time",
-                              style: GoogleFonts.poppins(fontSize: 10.sp),
+                              style: TextStyle(fontSize: 10.sp),
                             ),
                             SizedBox(
                               height: 1.h,
@@ -341,7 +341,7 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                                     _startDay != null
                                         ? '${_startDay!.hour}:${_startDay!.minute.toString().padLeft(2, '0')} ${_startDay!.period == DayPeriod.am ? 'am' : 'pm'}'
                                         : '',
-                                    style: GoogleFonts.poppins(
+                                    style: TextStyle(
                                         fontSize: 12.sp,
                                         fontWeight: FontWeight.w300),
                                   ),
@@ -359,7 +359,7 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                           children: [
                             Text(
                               "End Time",
-                              style: GoogleFonts.poppins(fontSize: 10.sp),
+                              style: TextStyle(fontSize: 10.sp),
                             ),
                             SizedBox(
                               height: 1.h,
@@ -390,7 +390,7 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                                     _endDay != null
                                         ? '${_endDay!.hour}:${_endDay!.minute.toString().padLeft(2, '0')} ${_endDay!.period == DayPeriod.am ? 'am' : 'pm'}'
                                         : '',
-                                    style: GoogleFonts.poppins(
+                                    style: TextStyle(
                                         fontSize: 12.sp,
                                         fontWeight: FontWeight.w300),
                                   ),
@@ -414,14 +414,14 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                     child: TextFormField(
                       controller: _aboutController,
                       cursorColor: Colors.white,
-                      style: GoogleFonts.poppins(
+                      style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.italic,
                       ),
                       decoration: InputDecoration(
                         hintText: "Event Description",
-                        hintStyle: GoogleFonts.poppins(
+                        hintStyle: TextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w300,
                           fontStyle: FontStyle.italic,
@@ -514,7 +514,7 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                     children: [
                       Text(
                         "Add Cover Image",
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(
                           fontSize: 14.sp,
                         ),
                       ),
@@ -548,7 +548,7 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                     children: [
                       Text(
                         "Add More images",
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(
                           fontSize: 14.sp,
                         ),
                       ),
@@ -804,11 +804,11 @@ class _CalendarRangePickerState extends State<CalendarRangePicker> {
           rowHeight: 6.h,
           daysOfWeekHeight: 4.h,
           daysOfWeekStyle: DaysOfWeekStyle(
-            weekdayStyle: GoogleFonts.poppins(
+            weekdayStyle: TextStyle(
               fontSize: 11.sp,
               fontWeight: FontWeight.w600,
             ),
-            weekendStyle: GoogleFonts.poppins(
+            weekendStyle: TextStyle(
               fontSize: 11.sp,
               fontWeight: FontWeight.w600,
             ),
@@ -841,11 +841,11 @@ class _CalendarRangePickerState extends State<CalendarRangePicker> {
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(5.0),
             ),
-            weekendTextStyle: GoogleFonts.poppins(
+            weekendTextStyle: TextStyle(
               fontSize: 10.sp,
               fontWeight: FontWeight.w500,
             ),
-            weekNumberTextStyle: GoogleFonts.poppins(
+            weekNumberTextStyle: TextStyle(
               fontSize: 10.sp,
               fontWeight: FontWeight.w500,
             ),
@@ -854,11 +854,11 @@ class _CalendarRangePickerState extends State<CalendarRangePicker> {
             formatButtonShowsNext: false,
             leftChevronVisible: false,
             rightChevronVisible: false,
-            formatButtonTextStyle: GoogleFonts.poppins(
+            formatButtonTextStyle: TextStyle(
               fontSize: 10.sp,
               fontWeight: FontWeight.w500,
             ),
-            titleTextStyle: GoogleFonts.poppins(
+            titleTextStyle: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w500,
             ),
@@ -877,14 +877,14 @@ class _CalendarRangePickerState extends State<CalendarRangePicker> {
         ),
         Text(
           'Start Date :  ${DateFormat('MMMM dd, yyyy').format(_selectedStartDate)}',
-          style: GoogleFonts.poppins(fontSize: 10.sp),
+          style: TextStyle(fontSize: 10.sp),
         ),
         SizedBox(
           height: 1.h,
         ),
         Text(
           'End Date :  ${DateFormat('MMMM dd, yyyy').format(_selectedEndDate)}',
-          style: GoogleFonts.poppins(fontSize: 10.sp),
+          style: TextStyle(fontSize: 10.sp),
         ),
       ],
     );

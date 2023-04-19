@@ -13,12 +13,13 @@ import 'package:buddy_go/features/maps/full_map_screen.dart';
 import 'package:buddy_go/widgets/participant_box.dart';
 import 'package:buddy_go/models/user_model.dart' as UserModel;
 import 'package:buddy_go/widgets/custom_button.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:sizer/sizer.dart';
@@ -69,8 +70,8 @@ class _EventScreenState extends State<EventScreen> {
 
     memberIds = widget.event.memberIds;
     for (int i = 0; i < widget.event.images!.length; i++) {
-      eventImages.add(Image.network(
-        widget.event.images![i],
+      eventImages.add(CachedNetworkImage(
+        imageUrl: widget.event.images![i],
         fit: BoxFit.cover,
       ));
     }
@@ -148,7 +149,7 @@ class _EventScreenState extends State<EventScreen> {
                       children: [
                         Text(
                           widget.event.title,
-                          style: GoogleFonts.poppins(
+                          style: TextStyle(
                             fontSize: 24.sp,
                             fontStyle: FontStyle.italic,
                           ),
@@ -167,7 +168,7 @@ class _EventScreenState extends State<EventScreen> {
                     ),
                     Text(
                       "By ${widget.event.organizer}",
-                      style: GoogleFonts.poppins(
+                      style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w200,
                       ),
@@ -193,7 +194,7 @@ class _EventScreenState extends State<EventScreen> {
                               DateFormat("dd MMMM, yyyy hh:mm a")
                                   .format(widget.event.startDateTime)
                                   .toString(),
-                              style: GoogleFonts.poppins(
+                              style: TextStyle(
                                 fontSize: 10.sp,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.white,
@@ -207,7 +208,7 @@ class _EventScreenState extends State<EventScreen> {
                               DateFormat("dd MMMM, yyyy hh:mm a")
                                   .format(widget.event.endDateTime)
                                   .toString(),
-                              style: GoogleFonts.poppins(
+                              style: TextStyle(
                                 fontSize: 10.sp,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.white,
@@ -282,7 +283,7 @@ class _EventScreenState extends State<EventScreen> {
                       ),
                       child: Text(
                         widget.event.about,
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(
                           fontSize: 10.sp,
                           fontWeight: FontWeight.w300,
                           fontStyle: FontStyle.italic,
@@ -338,7 +339,7 @@ class _EventScreenState extends State<EventScreen> {
                                   alignment: Alignment.center,
                                   child: Text(
                                     "Participants",
-                                    style: GoogleFonts.poppins(
+                                    style: TextStyle(
                                       fontSize: 10.sp,
                                       fontWeight: FontWeight.w400,
                                     ),
@@ -396,7 +397,7 @@ class _EventScreenState extends State<EventScreen> {
                                   alignment: Alignment.center,
                                   child: Text(
                                     "Event Discussion",
-                                    style: GoogleFonts.poppins(
+                                    style: TextStyle(
                                       fontSize: 10.sp,
                                       fontWeight: FontWeight.w400,
                                     ),
@@ -424,19 +425,6 @@ class _EventScreenState extends State<EventScreen> {
                     participantsContainer(),
                     SizedBox(
                       height: 2.h,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 4.w),
-                      child: Text(
-                        "Rate Event",
-                        style: GoogleFonts.poppins(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 1.h,
                     ),
                     eventRateContainer(),
                     SizedBox(
@@ -483,26 +471,44 @@ class _EventScreenState extends State<EventScreen> {
         } else if (snapshot.hasError) {
           showSnackBar(context, snapshot.error.toString());
         } else if (snapshot.hasData) {
-          return Container(
-            margin: EdgeInsets.symmetric(horizontal: 4.w),
-            width: MediaQuery.of(context).size.width,
-            height: 5.h,
-            child: RatingBar.builder(
-              itemBuilder: (context, index) => Icon(
-                Icons.star,
-                color: Colors.amber,
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 4.w),
+                child: Text(
+                  "Rate Event",
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
-              itemSize: 5.h,
-              initialRating: snapshot.data,
-              itemCount: 5,
-              unratedColor: Colors.white.withOpacity(0.3),
-              onRatingUpdate: (double value) {
-                eventServices.rateEvent(
-                    context: context,
-                    eventId: widget.event.id!,
-                    rateValue: value);
-              },
-            ),
+              SizedBox(
+                height: 1.h,
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 4.w),
+                width: MediaQuery.of(context).size.width,
+                height: 5.h,
+                child: RatingBar.builder(
+                  itemBuilder: (context, index) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  itemSize: 5.h,
+                  initialRating: snapshot.data,
+                  itemCount: 5,
+                  unratedColor: Colors.white.withOpacity(0.3),
+                  onRatingUpdate: (double value) {
+                    eventServices.rateEvent(
+                        context: context,
+                        eventId: widget.event.id!,
+                        rateValue: value);
+                  },
+                ),
+              ),
+            ],
           );
         } else {
           return const Center(child: Text('No data'));
@@ -564,7 +570,7 @@ class _EventScreenState extends State<EventScreen> {
                           children: [
                             Text(
                               "View and chat with the pariticipants ",
-                              style: GoogleFonts.poppins(
+                              style: TextStyle(
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.w500,
                                 fontStyle: FontStyle.italic,
@@ -656,7 +662,7 @@ class _EventScreenState extends State<EventScreen> {
                   minLeadingWidth: 1.w,
                   title: Text(
                     "Leave Event",
-                    style: GoogleFonts.poppins(
+                    style: TextStyle(
                       fontSize: 12.sp,
                       color: Colors.black,
                       fontWeight: FontWeight.w500,
@@ -709,7 +715,7 @@ class _EventScreenState extends State<EventScreen> {
                     minLeadingWidth: 1.w,
                     title: Text(
                       "Edit Event",
-                      style: GoogleFonts.poppins(
+                      style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w500,
                         color: Colors.black,
@@ -741,7 +747,7 @@ class _EventScreenState extends State<EventScreen> {
                 minLeadingWidth: 1.w,
                 title: Text(
                   saved ? "Unsave" : "Save",
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
                     fontSize: 12.sp,
                     color: Colors.black,
                     fontWeight: FontWeight.w500,
@@ -761,7 +767,7 @@ class _EventScreenState extends State<EventScreen> {
                   minLeadingWidth: 1.w,
                   title: Text(
                     "Report Event",
-                    style: GoogleFonts.poppins(
+                    style: TextStyle(
                       fontSize: 12.sp,
                       color: Colors.red,
                       fontWeight: FontWeight.w500,
@@ -778,7 +784,7 @@ class _EventScreenState extends State<EventScreen> {
                   minLeadingWidth: 1.w,
                   title: Text(
                     "Delete Event",
-                    style: GoogleFonts.poppins(
+                    style: TextStyle(
                       fontSize: 12.sp,
                       color: Colors.red,
                       fontWeight: FontWeight.w500,

@@ -2,7 +2,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:sizer/sizer.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
@@ -81,7 +81,7 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
                     ),
                     Text(
                       "OTP Verification",
-                      style: GoogleFonts.poppins(
+                      style: TextStyle(
                         fontSize: 24.sp,
                         fontWeight: FontWeight.w500,
                       ),
@@ -93,7 +93,7 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
                       padding: EdgeInsets.symmetric(horizontal: 4.w),
                       child: Text(
                         "Enter the OTP that sent on your mobile number through SMS",
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(
                           fontSize: 10.sp,
                           fontWeight: FontWeight.w300,
                         ),
@@ -108,7 +108,7 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
                       children: [
                         Text(
                           "Resend OTP in",
-                          style: GoogleFonts.poppins(
+                          style: TextStyle(
                             fontSize: 10.sp,
                             fontWeight: FontWeight.w300,
                           ),
@@ -146,7 +146,7 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
                             codeLength: 6,
                             autoFocus: true,
                             decoration: BoxLooseDecoration(
-                              textStyle: GoogleFonts.poppins(
+                              textStyle: TextStyle(
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.white,
@@ -163,7 +163,7 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
                             children: [
                               Text(
                                 "Didn’t receive the code ?",
-                                style: GoogleFonts.poppins(
+                                style: TextStyle(
                                   fontSize: 10.sp,
                                   fontWeight: FontWeight.w300,
                                 ),
@@ -192,7 +192,7 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
                                       },
                                 child: Text(
                                   "Resend",
-                                  style: GoogleFonts.poppins(
+                                  style: TextStyle(
                                     fontSize: 10.sp,
                                     fontWeight: FontWeight.w300,
                                     color: isButtonDisabled
@@ -230,7 +230,7 @@ class Countdown extends AnimatedWidget {
         '${clockTimer.inMinutes.remainder(60).toString()}:${clockTimer.inSeconds.remainder(60).toString().padLeft(2, '0')}';
     return Text(
       timerText,
-      style: GoogleFonts.poppins(
+      style: TextStyle(
         fontSize: 12.sp,
         fontWeight: FontWeight.w400,
       ),

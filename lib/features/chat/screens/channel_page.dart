@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:buddy_go/config/session_helper.dart';
 import 'package:buddy_go/config/theme_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
@@ -216,7 +216,7 @@ class CutsomDateWidget extends StatelessWidget {
             : isYesterday
                 ? 'Yesterday, ${formatter.format(date)}'
                 : formatter.format(date),
-        style: GoogleFonts.poppins(
+        style: TextStyle(
           fontSize: 10.sp,
           fontWeight: FontWeight.w400,
           color: Color(0xff55578F),

@@ -3,8 +3,9 @@ import 'package:buddy_go/features/Onboarding/screens/choose_ai_avatar.dart';
 import 'package:buddy_go/features/Onboarding/screens/choose_avatar_screen.dart';
 import 'package:buddy_go/features/Profile/widgets/current_member_card.dart';
 import 'package:buddy_go/features/Profile/widgets/other_member_card.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -92,8 +93,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Spacer(),
                           Text(
                             "Profile ",
-                            style: GoogleFonts.poppins(
-                                fontSize: 20.sp, color: Colors.white),
+                            style:
+                                TextStyle(fontSize: 20.sp, color: Colors.white),
                           ),
                           Spacer(),
                           SizedBox(
@@ -116,8 +117,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           height: 15.h,
                           padding: EdgeInsets.all(2),
                           child: ClipRRect(
-                            child: Image.network(
-                              user.imageUrl,
+                            child: CachedNetworkImage(
+                              imageUrl: user.imageUrl,
                               fit: BoxFit.fill,
                             ),
                             borderRadius: BorderRadius.circular(15.h),
@@ -135,7 +136,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       Text(
                         "Avatar",
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w400,
                         ),

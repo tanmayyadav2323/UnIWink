@@ -3,7 +3,7 @@ import 'package:buddy_go/features/onboarding/services/onboarding_services.dart';
 import 'package:buddy_go/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:sizer/sizer.dart';
 import 'package:buddy_go/config/theme_colors.dart';
 import '../../../models/user_model.dart';
@@ -57,7 +57,7 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                     ),
                     Text(
                       "About Me",
-                      style: GoogleFonts.poppins(
+                      style: TextStyle(
                         fontSize: 28.sp,
                         fontWeight: FontWeight.w500,
                       ),
@@ -70,7 +70,7 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                       child: Text(
                         'Write something about yourself like a quote, your areas of interest, what do you seek e.t.c',
                         maxLines: 3,
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(
                           fontSize: 10.sp,
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.italic,
@@ -120,7 +120,7 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                     ),
                     Text(
                       "Choose what best describes you",
-                      style: GoogleFonts.nunito(
+                      style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w100,
                         color: Colors.white,
@@ -168,7 +168,7 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                         decoration: InputDecoration(
                           counterText: "",
                           hintText: "or write a custom description",
-                          hintStyle: GoogleFonts.poppins(
+                          hintStyle: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 9.5.sp,
                             fontStyle: FontStyle.italic,
@@ -178,7 +178,7 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                           border: InputBorder.none,
                         ),
                         cursorColor: Colors.white,
-                        style: GoogleFonts.nunito(
+                        style: TextStyle(
                           fontWeight: FontWeight.w400,
                           color: Colors.white,
                           fontSize: 12.sp,

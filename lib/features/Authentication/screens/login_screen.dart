@@ -8,7 +8,7 @@ import 'package:buddy_go/features/authentication/services/auth_services.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sms_autofill/sms_autofill.dart';
@@ -57,8 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     Text(
                       "UnIw",
-                      style: GoogleFonts.poppins(
-                          fontSize: 32.sp, letterSpacing: 6),
+                      style: TextStyle(fontSize: 32.sp, letterSpacing: 6),
                     ),
                     SizedBox(
                       width: 2.w,
@@ -69,8 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     Text(
                       "nk",
-                      style: GoogleFonts.poppins(
-                          fontSize: 32.sp, letterSpacing: 6),
+                      style: TextStyle(fontSize: 32.sp, letterSpacing: 6),
                     ),
                   ],
                 ),
@@ -95,14 +93,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     cursorColor: Colors.white,
                     disableLengthCheck: true,
-                    style: GoogleFonts.poppins(
+                    style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),
                     decoration: InputDecoration(
                       hintText: "Enter Phone Number",
-                      hintStyle: GoogleFonts.poppins(
+                      hintStyle: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w300,
                         color: Colors.white,

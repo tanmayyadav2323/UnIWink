@@ -2,7 +2,7 @@ import 'package:buddy_go/config/utils.dart';
 import 'package:buddy_go/features/background/bg_screen.dart';
 import 'package:buddy_go/widgets/participant_box.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:sizer/sizer.dart';
 
 import '../../../models/user_model.dart';
@@ -35,8 +35,7 @@ class _WinkScreenState extends State<WinkScreen> {
                 ),
                 Text(
                   "Winks",
-                  style:
-                      GoogleFonts.poppins(fontSize: 20.sp, color: Colors.white),
+                  style: TextStyle(fontSize: 20.sp, color: Colors.white),
                 ),
                 SizedBox(
                   height: 4.h,

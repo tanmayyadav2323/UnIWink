@@ -2,7 +2,7 @@
 import 'package:buddy_go/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:latlong2/latlong.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
@@ -34,7 +34,7 @@ class _FullMapScreenState extends State<FullMapScreen> {
             ),
             Text(
               "Location",
-              style: GoogleFonts.poppins(fontSize: 20.sp, color: Colors.white),
+              style: TextStyle(fontSize: 20.sp, color: Colors.white),
             ),
             SizedBox(
               height: 4.h,
