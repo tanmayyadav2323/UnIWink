@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
-
 import '../../../models/user_model.dart' as UserModel;
 import '../../chat/screens/channel_page.dart';
 
@@ -69,9 +68,12 @@ class _OtherMemberCardState extends State<OtherMemberCard> {
                     Expanded(
                       flex: 2,
                       child: TextField(
-                        readOnly: !_isEditing,
                         onTap: () {
-                          edit = false;
+                          if (_isEditing == false) {
+                            _focusNode.requestFocus();
+                            _isEditing = true;
+                            setState(() {});
+                          }
                         },
                         focusNode: _focusNode,
                         controller: _nameController,
@@ -81,51 +83,68 @@ class _OtherMemberCardState extends State<OtherMemberCard> {
                           fontStyle: FontStyle.italic,
                         ),
                         decoration: InputDecoration(
-                          // border: InputBorder.none,
-                          // focusedBorder: UnderlineInputBorder(),
-                          suffixIcon: _isEditing
-                              ? GestureDetector(
-                                  child: Icon(Icons.save),
-                                  onTap: () async {
-                                    // Save text and exit edit mode
-                                    await channel!.update({
-                                      "${user.id}_name": _nameController.text
-                                    });
-                                    _isEditing = false;
+                            // border: InputBorder.none,
+                            // focusedBorder: UnderlineInputBorder(),
+                            // suffix: _isEditing
+                            //     ? InkWell(
+                            //         child: Expanded(
+                            //           child: Container(
+                            //             child: Icon(Icons.save),
+                            //           ),
+                            //         ),
+                            //         onTap: () async {
+                            //           // Save text and exit edit mode
+                            //           await channel!.update({
+                            //             "${user.id}_name": _nameController.text
+                            //           });
+                            //           _isEditing = false;
 
-                                    setState(() {});
-                                  },
-                                )
-                              : GestureDetector(
-                                  child: Icon(Icons.edit),
-                                  onTap: () {
-                                    // Enter edit mode
-                                    _focusNode.requestFocus();
-                                    _isEditing = true;
-                                    setState(() {});
-                                  },
-                                ),
-                        ),
+                            //           setState(() {});
+                            //         },
+                            //       )
+                            //     : InkWell(
+                            //         child: Expanded(
+                            //           child: Container(
+                            //             child: Icon(Icons.edit),
+                            //           ),
+                            //         ),
+                            //         onTap: () {
+                            //           // Enter edit mode
+                            //           _focusNode.requestFocus();
+                            //           _isEditing = true;
+                            //           setState(() {});
+                            //         },
+                            //       ),
+                            ),
                       ),
                     ),
                     Expanded(child: Container()),
                     InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => StreamChannel(
-                              key: ValueKey(channel!.cid),
-                              channel: channel!,
-                              child: ChannelPage(
-                                onTap: (_) {},
-                                bannedUser: [],
-                                name: channel!.extraData["${user.id}_name"]
-                                    .toString(),
+                      onTap: () async {
+                        if (_isEditing == false) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => StreamChannel(
+                                key: ValueKey(channel!.cid),
+                                channel: channel!,
+                                child: ChannelPage(
+                                  onTap: (_) {},
+                                  bannedUser: [],
+                                  name: channel!.extraData["${user.id}_name"]
+                                      .toString(),
+                                ),
                               ),
                             ),
-                          ),
-                        );
+                          );
+                        } else {
+                          _isEditing = false;
+                          _focusNode.unfocus();
+                          await channel!.update(
+                              {"${user.id}_name": _nameController.text});
+
+                          setState(() {});
+                        }
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(
@@ -135,7 +154,7 @@ class _OtherMemberCardState extends State<OtherMemberCard> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
-                          "Chat",
+                          _isEditing ? "Save" : "Chat",
                           style: GoogleFonts.poppins(
                             fontSize: 10.sp,
                           ),

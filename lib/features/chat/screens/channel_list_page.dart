@@ -296,6 +296,9 @@ class _ChannelListPageState extends State<ChannelListPage> {
             : (channels[index].extraData['${SessionHelper.id}_fav'].toString());
 
     return ListTile(
+      minVerticalPadding: 0,
+      minLeadingWidth: 0,
+      contentPadding: EdgeInsets.only(left: 16, top: 0, bottom: 0, right: 0),
       onTap: () {
         if (isBanned) {
           showSnackBar(context, "Blocked");
@@ -413,39 +416,50 @@ class _ChannelListPageState extends State<ChannelListPage> {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
-      trailing: SizedBox(
-        width: 25.w,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            InkWell(
-              child: favorite == "0"
-                  ? Icon(Icons.favorite_outline)
-                  : Icon(
-                      Icons.favorite,
-                      color: Colors.red,
-                    ),
-              onTap: () async {
-                if (favorite == "0") {
-                  favorite = "1";
-                } else {
-                  favorite = "0";
-                }
-                await channel
-                    .updatePartial(set: {'${SessionHelper.id}_fav': favorite});
-                setState(() {});
-              },
-            ),
-            Spacer(),
-            channel.lastMessageAt != null
-                ? Text(
-                    getTime(channel.lastMessageAt!),
-                    style: GoogleFonts.poppins(
-                        fontSize: 7.sp, fontWeight: FontWeight.w300),
-                  )
-                : SizedBox.shrink(),
-            Spacer()
-          ],
+      trailing: InkWell(
+        overlayColor: MaterialStatePropertyAll(Colors.transparent),
+        onTap: () async {
+          if (favorite == "0") {
+            favorite = "1";
+          } else {
+            favorite = "0";
+          }
+          await channel
+              .updatePartial(set: {'${SessionHelper.id}_fav': favorite});
+          setState(() {});
+        },
+        child: SizedBox(
+          width: 25.w,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    favorite == "0"
+                        ? Icon(Icons.favorite_outline)
+                        : Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                          ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    channel.lastMessageAt != null
+                        ? Text(
+                            getTime(channel.lastMessageAt!),
+                            style: GoogleFonts.poppins(
+                                fontSize: 7.sp, fontWeight: FontWeight.w300),
+                          )
+                        : SizedBox.shrink(),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

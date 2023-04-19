@@ -42,6 +42,7 @@ class CreateEventScreen extends StatefulWidget {
 
 class _CreateEventScreenState extends State<CreateEventScreen>
     with SingleTickerProviderStateMixin {
+  final FocusNode _focusNode = FocusNode();
   GeoPoint? geoPoint;
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _aboutController = TextEditingController();
@@ -130,6 +131,7 @@ class _CreateEventScreenState extends State<CreateEventScreen>
   }
 
   Future<void> _selectTime(BuildContext context, int index) async {
+    _focusNode.unfocus();
     TimeOfDay? pickedTime = await showTimePicker(
       context: context,
       initialTime: (index == 0 ? _startDay : _endDay) ?? TimeOfDay.now(),
@@ -274,6 +276,7 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                       fontStyle: FontStyle.italic,
                       fontWeight: FontWeight.w400,
                     ),
+                    focusNode: _focusNode,
                     decoration: InputDecoration(
                       hintText: "Organized by",
                       hintStyle: GoogleFonts.poppins(

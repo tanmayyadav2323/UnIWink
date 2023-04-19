@@ -111,6 +111,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     initialCountryCode: 'IN',
                     onChanged: (phone) {
+                      if (phone.number.length == 10) {
+                        FocusScope.of(context).unfocus();
+                      }
                       phoneNumberController.text = phone.number;
                     },
                   ),
