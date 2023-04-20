@@ -27,6 +27,7 @@ class AboutMeScreen extends StatefulWidget {
 
 class _AboutMeScreenState extends State<AboutMeScreen> {
   int selectedDes = 0;
+  bool isloading = false;
 
   TextEditingController _desController = TextEditingController();
 
@@ -194,7 +195,11 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                     ),
                     CustomButton(
                       buttonText: "Set Profile",
+                      loading: isloading,
                       onPressed: () async {
+                        setState(() {
+                          isloading = true;
+                        });
                         if (_desController.text.isEmpty) {
                           Fluttertoast.showToast(msg: "Please enter some text");
                         } else {
@@ -208,6 +213,9 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                                 : "assets/images/ai_gimg/${widget.image}.png",
                           );
                         }
+                        setState(() {
+                          isloading = false;
+                        });
                       },
                     ),
                     SizedBox(

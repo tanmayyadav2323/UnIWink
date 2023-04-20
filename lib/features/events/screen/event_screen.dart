@@ -73,6 +73,7 @@ class _EventScreenState extends State<EventScreen> {
       eventImages.add(CachedNetworkImage(
         imageUrl: widget.event.images![i],
         fit: BoxFit.cover,
+
       ));
     }
 

@@ -120,6 +120,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: CachedNetworkImage(
                               imageUrl: user.imageUrl,
                               fit: BoxFit.fill,
+                              imageBuilder: (context, imageProvider) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: imageProvider,
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                             borderRadius: BorderRadius.circular(15.h),
                           ),

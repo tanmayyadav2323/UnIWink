@@ -44,8 +44,9 @@ class _CustomButtonState extends State<CustomButton> {
             width: double.infinity,
             child: widget.loading
                 ? Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
+                    child: SizedBox(
+                      height: 2.h,
+                      width: 2.h,
                       child: CircularProgressIndicator(),
                     ),
                   )

@@ -47,8 +47,8 @@ class _MembersRowState extends State<MembersRow>
             state: true,
             watch: true,
             filter: Filter.and([
-              Filter.in_('members', [SessionHelper.id]),
               Filter.notExists('channel_type'),
+              Filter.in_('members', [SessionHelper.id]),
             ]),
           )
           .first,
@@ -79,73 +79,79 @@ class _MembersRowState extends State<MembersRow>
               SizedBox(
                 height: 3.h,
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 500),
-                      width: channels.isEmpty
-                          ? MediaQuery.of(context).size.width * 0.9
-                          : 0,
-                      alignment: Alignment.bottomCenter,
-                      height: 5.h,
-                      child: const SizedBox(),
-                    ),
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 500),
-                      width: channels.isNotEmpty
-                          ? MediaQuery.of(context).size.width * 0.9
-                          : 0,
-                      height: 7.h,
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: members.length,
-                          physics: const NeverScrollableScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => ProfileScreen(
-                                          id: members[index]!.id)),
-                                );
-                              },
-                              child: Stack(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 4.5.h,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(30),
-                                      child: CachedNetworkImage(
-                                        imageUrl: members[index]!.image!,
-                                        fit: BoxFit.cover,
-                                      ),
+              Row(
+                children: [
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 500),
+                    width: channels.isEmpty
+                        ? MediaQuery.of(context).size.width * 0.9
+                        : 0,
+                    alignment: Alignment.bottomCenter,
+                    height: 5.h,
+                    child: const SizedBox(),
+                  ),
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 500),
+                    width: channels.isNotEmpty
+                        ? MediaQuery.of(context).size.width * 0.9
+                        : 0,
+                    height: 7.h,
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: members.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) =>
+                                        ProfileScreen(id: members[index]!.id)),
+                              );
+                            },
+                            child: Stack(
+                              children: [
+                                CircleAvatar(
+                                  radius: 4.5.h,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(30),
+                                    child: CachedNetworkImage(
+                                      imageUrl: members[index]!.image!,
+                                      fit: BoxFit.cover,
+                                      imageBuilder: (context, imageProvider) {
+                                        return Container(
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            image: DecorationImage(
+                                              image: imageProvider,
+                                            ),
+                                          ),
+                                        );
+                                      },
                                     ),
                                   ),
-                                  Positioned(
-                                    bottom: 0.5.h,
-                                    right: 2.5.w,
+                                ),
+                                Positioned(
+                                  bottom: 0.5.h,
+                                  right: 2.5.w,
+                                  child: CircleAvatar(
+                                    backgroundColor: const Color(0xff0D0E34),
+                                    radius: 0.75.h,
                                     child: CircleAvatar(
-                                      backgroundColor: const Color(0xff0D0E34),
-                                      radius: 0.75.h,
-                                      child: CircleAvatar(
-                                        radius: 0.50.h,
-                                        backgroundColor: members[index]!.online
-                                            ? const Color(0xff00AE31)
-                                            : const Color(0xffAE0000),
-                                      ),
+                                      radius: 0.50.h,
+                                      backgroundColor: members[index]!.online
+                                          ? const Color(0xff00AE31)
+                                          : const Color(0xffAE0000),
                                     ),
-                                  )
-                                ],
-                              ),
-                            );
-                          }),
-                    ),
-                  ],
-                ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        }),
+                  ),
+                ],
               ),
               SizedBox(
                 height: 4.h,

@@ -395,6 +395,16 @@ class _ChannelListPageState extends State<ChannelListPage> {
                 child: CachedNetworkImage(
                   imageUrl: member!.image!,
                   fit: BoxFit.cover,
+                  imageBuilder: (context, imageProvider) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: imageProvider,
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
@@ -436,6 +446,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
           width: 25.w,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
             children: [
               Expanded(
                 child: Column(

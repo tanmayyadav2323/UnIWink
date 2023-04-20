@@ -28,20 +28,22 @@ class _WinkScreenState extends State<WinkScreen> {
         child: BgScreen(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 4.w),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 1.h,
-                ),
-                Text(
-                  "Winks",
-                  style: TextStyle(fontSize: 20.sp, color: Colors.white),
-                ),
-                SizedBox(
-                  height: 4.h,
-                ),
-                winkMemberContainer(context),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 1.h,
+                  ),
+                  Text(
+                    "Winks",
+                    style: TextStyle(fontSize: 20.sp, color: Colors.white),
+                  ),
+                  SizedBox(
+                    height: 4.h,
+                  ),
+                  winkMemberContainer(context),
+                ],
+              ),
             ),
           ),
         ),

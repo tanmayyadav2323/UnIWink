@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
+import 'package:buddy_go/config/session_helper.dart';
 import 'package:flutter/material.dart';
 
 import 'package:sizer/sizer.dart';
@@ -39,8 +40,9 @@ class _OtherMemberCardState extends State<OtherMemberCard> {
           state: true,
           watch: true,
           filter: Filter.and([
-            Filter.in_('members', [user.id]),
             Filter.notExists('channel_type'),
+            Filter.in_('members', [user.id]),
+            Filter.in_('members', [SessionHelper.id]),
           ]),
         )
         .first;

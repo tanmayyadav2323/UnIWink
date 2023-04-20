@@ -227,6 +227,7 @@ class _EventCardState extends State<EventCard> {
                                       n++)
                                     CachedNetworkImageProvider(
                                       widget.event.memberImageUrls[n],
+                                      
                                     ),
                                 ],
                               ),

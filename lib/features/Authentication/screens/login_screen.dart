@@ -25,6 +25,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool isloading = false;
   @override
   void initState() {
     super.initState();
@@ -118,6 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: 4.h),
                 RichText(
+                  textAlign: TextAlign.center,
                   text: TextSpan(
                     style: TextStyle(
                       color: Colors.white,
@@ -150,23 +152,32 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 CustomButton(
                   buttonText: "Login",
-                  loading: false,
+                  loading: isloading,
                   onPressed: () async {
-                    if (phoneNumberController.text.length != 10) {
-                      showSnackBar(
-                        context,
-                        "Phone number must be of 10 digits",
-                      );
-                    } else {
-                      String userId = await _authService.authenticateUserPhone(
-                        phoneNumber: phoneNumberController.text,
-                        context: context,
-                      );
+                    if (isloading == false) {
+                      setState(() {
+                        isloading = true;
+                      });
+                      if (phoneNumberController.text.length != 10) {
+                        showSnackBar(
+                          context,
+                          "Phone number must be of 10 digits",
+                        );
+                      } else {
+                        String userId =
+                            await _authService.authenticateUserPhone(
+                          phoneNumber: phoneNumberController.text,
+                          context: context,
+                        );
 
-                      Navigator.of(context).pushNamed(
-                        VerifyPhoneNumberScreen.routename,
-                        arguments: [userId, phoneNumberController.text],
-                      ).then((value) {});
+                        Navigator.of(context).pushNamed(
+                          VerifyPhoneNumberScreen.routename,
+                          arguments: [userId, phoneNumberController.text],
+                        ).then((value) {});
+                      }
+                      setState(() {
+                        isloading = false;
+                      });
                     }
                   },
                 ),

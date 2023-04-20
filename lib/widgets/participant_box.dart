@@ -114,6 +114,16 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                         child: CachedNetworkImage(
                           imageUrl: user.imageUrl,
                           fit: BoxFit.contain,
+                          imageBuilder: (context, imageProvider) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image: imageProvider,
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),
@@ -148,6 +158,16 @@ class _ParticipantBoxState extends State<ParticipantBox> {
                     child: CachedNetworkImage(
                       imageUrl: user.imageUrl,
                       fit: BoxFit.contain,
+                      imageBuilder: (context, imageProvider) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: imageProvider,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),
