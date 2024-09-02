@@ -1,4 +1,4 @@
-String uri = 'http://uniwink-env.eba-f2uem3ah.ap-south-1.elasticbeanstalk.com';
+String uri = 'https://uniwinks.azurewebsites.net';
 
 List<String> randomNames = [
   'Nova',
